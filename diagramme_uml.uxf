@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>210</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Territory
+--
+int revenue
+int baseRevenue
+int remainingTroops
+int baseTroops
+bool isCapital</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>650</x>
+      <y>150</y>
+      <w>210</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Lord
+--
+vector&lt;double&gt; preferences
+shared_ptr&lt;Lord&gt; overlord
+--
+double approve()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>270</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>GameManager
+--
+--
+void nextTurn()
+bool isGameWon()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>360</y>
+      <w>210</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+int availableTroops
+int funds
+--
+void attack(Territory)
+void buy(Territory)
+void negociateWith(Lord)
+void threaten(Lord)
+void raiseTroops(Territory)</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
