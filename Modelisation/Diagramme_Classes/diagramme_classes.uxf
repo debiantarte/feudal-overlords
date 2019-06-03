@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>840</x>
-      <y>250</y>
+      <x>690</x>
+      <y>290</y>
       <w>210</w>
       <h>150</h>
     </coordinates>
@@ -23,8 +23,8 @@ Lord&amp; owner
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>10</x>
-      <y>10</y>
+      <x>20</x>
+      <y>50</y>
       <w>360</w>
       <h>120</h>
     </coordinates>
@@ -41,8 +41,8 @@ void launchNewGame(int nbr_players; int nbr_ais)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>10</x>
-      <y>330</y>
+      <x>20</x>
+      <y>370</y>
       <w>210</w>
       <h>70</h>
     </coordinates>
@@ -55,8 +55,8 @@ getInput()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
-      <y>110</y>
+      <x>430</x>
+      <y>150</y>
       <w>210</w>
       <h>110</h>
     </coordinates>
@@ -73,8 +73,8 @@ vector&lt;Territory&gt; territories
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>410</x>
-      <y>260</y>
+      <x>260</x>
+      <y>300</y>
       <w>150</w>
       <h>100</h>
     </coordinates>
@@ -90,8 +90,8 @@ void rebel()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>840</x>
-      <y>110</y>
+      <x>690</x>
+      <y>150</y>
       <w>210</w>
       <h>70</h>
     </coordinates>
@@ -105,8 +105,8 @@ void generate()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>10</x>
-      <y>240</y>
+      <x>20</x>
+      <y>280</y>
       <w>210</w>
       <h>70</h>
     </coordinates>
@@ -118,8 +118,8 @@ showUI()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>10</x>
-      <y>150</y>
+      <x>20</x>
+      <y>190</y>
       <w>210</w>
       <h>70</h>
     </coordinates>
@@ -132,8 +132,8 @@ quit()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>740</x>
-      <y>530</y>
+      <x>590</x>
+      <y>540</y>
       <w>210</w>
       <h>70</h>
     </coordinates>
@@ -145,8 +145,8 @@ ResourceType type</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>730</x>
-      <y>210</y>
+      <x>580</x>
+      <y>250</y>
       <w>30</w>
       <h>70</h>
     </coordinates>
@@ -156,8 +156,8 @@ ResourceType type</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>210</y>
+      <x>360</x>
+      <y>250</y>
       <w>110</w>
       <h>70</h>
     </coordinates>
@@ -167,8 +167,8 @@ ResourceType type</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>410</y>
+      <x>750</x>
+      <y>450</y>
       <w>150</w>
       <h>80</h>
     </coordinates>
@@ -182,8 +182,8 @@ countryside</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>0</y>
+      <x>610</x>
+      <y>40</y>
       <w>140</w>
       <h>60</h>
     </coordinates>
@@ -196,8 +196,8 @@ display()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>870</x>
-      <y>50</y>
+      <x>720</x>
+      <y>90</y>
       <w>30</w>
       <h>80</h>
     </coordinates>
@@ -207,8 +207,8 @@ display()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>730</x>
-      <y>50</y>
+      <x>580</x>
+      <y>90</y>
       <w>80</w>
       <h>80</h>
     </coordinates>
@@ -218,20 +218,20 @@ display()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>190</y>
+      <x>630</x>
+      <y>230</y>
       <w>70</w>
-      <h>360</h>
+      <h>330</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 </panel_attributes>
-    <additional_attributes>10.0;20.0;50.0;20.0;50.0;340.0</additional_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0;50.0;310.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
-      <y>170</y>
+      <x>780</x>
+      <y>210</y>
       <w>30</w>
       <h>100</h>
     </coordinates>
@@ -241,19 +241,19 @@ display()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>30</y>
-      <w>420</w>
+      <x>370</x>
+      <y>70</y>
+      <w>260</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;400.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;240.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
-      <y>610</y>
+      <x>430</x>
+      <y>530</y>
       <w>150</w>
       <h>80</h>
     </coordinates>
@@ -267,19 +267,19 @@ economy</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>870</x>
-      <y>390</y>
+      <x>720</x>
+      <y>430</y>
       <w>30</w>
-      <h>160</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
-      <y>260</y>
+      <x>430</x>
+      <y>300</y>
       <w>210</w>
       <h>150</h>
     </coordinates>
@@ -296,8 +296,8 @@ void raiseTroops(Territory)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>410</x>
-      <y>370</y>
+      <x>260</x>
+      <y>410</y>
       <w>150</w>
       <h>80</h>
     </coordinates>
@@ -311,8 +311,8 @@ winWithOverlord</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>180</y>
+      <x>630</x>
+      <y>220</y>
       <w>100</w>
       <h>90</h>
     </coordinates>
@@ -322,8 +322,8 @@ winWithOverlord</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>70</x>
-      <y>410</y>
+      <x>80</x>
+      <y>450</y>
       <w>150</w>
       <h>110</h>
     </coordinates>
