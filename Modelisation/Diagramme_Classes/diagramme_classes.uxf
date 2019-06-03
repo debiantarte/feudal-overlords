@@ -135,11 +135,13 @@ quit()</panel_attributes>
       <x>590</x>
       <y>540</y>
       <w>210</w>
-      <h>70</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>Resources
 --
-ResourceType type</panel_attributes>
+ResourceType type
+int current
+int max</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
