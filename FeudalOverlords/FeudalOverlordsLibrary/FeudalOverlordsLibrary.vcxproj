@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Displayable.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Lord.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Territory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Displayable.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Lord.cpp" />
