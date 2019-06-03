@@ -1,13 +1,23 @@
 #include "stdafx.h"
+#include <cassert>
+
 #include "Territory.h"
 
 
-Territory::Territory(int baseMoney, int baseTroops, TerritoryType type, Lord& owner) : baseMoney(baseMoney), remainingMoney(baseMoney),
-baseTroops(baseTroops), remainingTroops(baseTroops), type(type), owner(owner)
+Territory::Territory(Resource money, Resource military, TerritoryType type, Lord& owner) : money(money), military(military),
+type(type), owner(owner)
 {
+	assert(money.getType() == ResourceType::money);
+	assert(military.getType() == ResourceType::military);
 }
 
 
 Territory::~Territory()
 {
+}
+
+void Territory::resetResources()
+{
+	this->military.resetAmount();
+	this->money.resetAmount();
 }
