@@ -6,6 +6,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx} 
+\usepackage{textcomp}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
 \author{Pierre BIDAULT \& Matthias GOFFETTE}
@@ -23,20 +24,25 @@
 \section{Pré- et Post-conditions des Cas d'utilisation}
 
 \begin{itemize}
-\item Cas numéro 1 : Lever des Troupes
+\item Cas n°1 : Lever des Troupes
 	\begin{itemize}
 	\item Précondition : Troupes disponibles > 0 $ \land $ Territoire appartient au joueur courant
 	\item Postcondition : Le joueur courant a ajouté Troupes disponibles à son total
 	\end{itemize}
-\item Cas numéro 2 : Persuader un vassal
+\item Cas n°2 : Persuader un vassal
 	\begin{itemize}
 	\item Précondition : La méthode choisie est valide $ \land $ le vassal s'est rebellé $ \land $ le joueur dispose de suffisamment de ressources
 	\item Postcondition : Le vassal n'est plus rebelle $ \land $ le joueur a dépensé les ressources nécessaires
 	\end{itemize}
-\item Cas numéro 3 : Acheter une province
+\item Cas n°3 : Acheter une province
 	\begin{itemize}
 	\item Précondition : Le joueur a assez d'argent $ \land $ le vassal apprécie suffisamment le joueur $ \lor $ le joueur détenant la province accepte
 	\item Postcondition : Le vassal appartient désormais au joueur ayant acheté la province $ \land $ ce dernier a perdu la quantité d'argent correspondant au prix
+	\end{itemize}
+\item Cas n°4 : Envoyer des troupes attaquer une province
+	\begin{itemize}
+	\item Précondition : La/Les province.s d'origine.s appartien.nen.t au joueur $ \land $ la province attaquée ne lui appartient pas $ \land $ des troupes ont été levées dans la/les province.s d'origine.s
+	\item Postcondition : Les troupes envoyées sont retranchées des troupes disponibles du joueur $ \land $ soit la province se rallie à l'attaquant, soit elle reste sous le contrôle du défenseur
 	\end{itemize}
 \end{itemize}
 
