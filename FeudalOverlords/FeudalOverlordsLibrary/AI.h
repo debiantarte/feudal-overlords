@@ -23,6 +23,7 @@ class AI :
 public:
 	AI();
 	AI(AIGoal, vector<int>);
+	double approve();
 	//~AI();
 private:
 	AIGoal goal;
