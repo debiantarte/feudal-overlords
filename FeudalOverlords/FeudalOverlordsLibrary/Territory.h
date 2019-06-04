@@ -5,7 +5,7 @@
 class Territory
 {
 public:
-	Territory(int baseMoney, int baseTroops, TerritoryType type, Lord& owner);
+	Territory(int baseMoney, int baseTroops, TerritoryType type, Lord* owner);
 	~Territory();
 private:
 	int remainingMoney;
