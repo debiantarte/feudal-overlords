@@ -147,9 +147,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="Displayable.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Lord.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -157,9 +160,12 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Displayable.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Lord.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

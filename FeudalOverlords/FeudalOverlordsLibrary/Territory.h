@@ -20,3 +20,12 @@ private:
 	TerritoryType type;
 	Lord& owner;
 };
+<<<<<<< HEAD
+=======
+
+enum TerritoryType {
+	capital,
+	countryside,
+	endTerritoryType
+};
+>>>>>>> 728a338f082d9f5356e1c6e7e355eb5bde3425b4
