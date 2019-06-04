@@ -18,5 +18,6 @@ private:
 
 enum TerritoryType {
 	capital,
-	countryside
+	countryside,
+	endTerritoryType
 };
