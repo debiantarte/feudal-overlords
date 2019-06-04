@@ -1,4 +1,11 @@
 #pragma once
+
+enum ResourceType
+{
+	money,
+	military
+};
+
 class Resource
 {
 public:
@@ -11,10 +18,4 @@ private:
 	int maxAmount;
 	int currentAmount;
 	ResourceType type;
-};
-
-enum ResourceType
-{
-	money,
-	military
 };

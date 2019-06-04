@@ -3,6 +3,11 @@
 #include "Lord.h"
 #include "Resource.h"
 
+enum TerritoryType {
+	capital,
+	countryside
+};
+
 class Territory
 {
 public:
@@ -14,9 +19,4 @@ private:
 	Resource military;
 	TerritoryType type;
 	Lord& owner;
-};
-
-enum TerritoryType {
-	capital,
-	countryside
 };
