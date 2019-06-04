@@ -2,6 +2,7 @@
 #include <vector>
 #include "Displayable.h"
 #include "Territory.h"
+#include "Player.h"
 
 #define BOARD_HEIGHT 10
 #define BOARD_WIDTH 10
@@ -12,7 +13,7 @@ class Board :
 	public Displayable
 {
 public:
-	Board();
+	Board(vector<Player>);
 	//~Board();
 private:
 	vector<Territory> territories;

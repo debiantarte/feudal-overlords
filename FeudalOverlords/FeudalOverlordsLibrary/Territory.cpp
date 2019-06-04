@@ -1,10 +1,11 @@
 #include "stdafx.h"
-#include <cassert>
-
 #include "Territory.h"
+#include <cassert>
+#include <memory>
 
+using namespace std;
 
-Territory::Territory(Resource money, Resource military, TerritoryType type, Lord& owner) : money(money), military(military),
+Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner) : money(money), military(military),
 type(type), owner(owner)
 {
 	assert(money.getType() == ResourceType::money);

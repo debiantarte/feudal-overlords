@@ -13,5 +13,7 @@ public:
 	void negociateWith(Lord&);
 	void threaten(Lord&);
 	void raiseTroops(Territory);
+	
+	virtual void display();
 };
 

@@ -45,3 +45,8 @@ double AI::approve()
 	}
 	return result;
 }
+
+void AI::display()
+{
+
+}

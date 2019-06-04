@@ -24,6 +24,7 @@ public:
 	AI();
 	AI(AIGoal, vector<int>);
 	double approve();
+	virtual void display();
 	//~AI();
 private:
 	AIGoal goal;

@@ -36,3 +36,8 @@ void Player::raiseTroops(Territory)
 {
 
 }
+
+void Player::display()
+{
+
+}
