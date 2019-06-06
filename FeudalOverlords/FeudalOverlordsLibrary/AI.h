@@ -24,6 +24,7 @@ public:
 	AI();
 	AI(AIGoal, vector<int>);
 	double approve();
+	void rebel(); // TODO
 	//~AI();
 private:
 	AIGoal goal;
