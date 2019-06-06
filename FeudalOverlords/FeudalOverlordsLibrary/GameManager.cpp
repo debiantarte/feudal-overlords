@@ -24,6 +24,8 @@ void GameManager::nextTurn()
 		// it's player's turn
 		// we should display that it's their turn
 		// then act depending on their input
+		// select territory : left click
+		// to move troop or resources to another territory : right click on the destination territory
 	}
 }
 
