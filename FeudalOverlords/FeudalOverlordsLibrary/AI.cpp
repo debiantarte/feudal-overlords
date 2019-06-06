@@ -68,8 +68,10 @@ void AI::rebel()
 	{
 		isRebellious = approvalRate < 25;
 	}
-<<<<<<< HEAD
-	return result;
+	if (not(isRebellious))
+	{
+		return;
+	}
 }
 
 unique_ptr<sf::Drawable> AI::display()
@@ -77,12 +79,6 @@ unique_ptr<sf::Drawable> AI::display()
 	// placeholder
 	unique_ptr<sf::Drawable> shape = make_unique<sf::Drawable>(sf::RectangleShape(sf::Vector2f(120.F, 50.F)));
 	return move(shape);
-}
-=======
-	if (not(isRebellious))
-	{
-		return;
-	}
 	// for all territories under the control of the AI, make them independant
 	// vector<unique_ptr> territories;
 	// for (auto t: territories)
@@ -90,4 +86,3 @@ unique_ptr<sf::Drawable> AI::display()
 	//     t->owner = this;
 	// }
 }
->>>>>>> develop

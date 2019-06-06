@@ -3,6 +3,7 @@
 #include "AI.h"
 #include "Resource.h"
 #include <random>
+#include <cassert>
 
 /*
  * helper function to generate random territories
@@ -15,14 +16,15 @@ int rng(int const min, int const max)
 	return distribution(engine);
 }
 
-Board::Board(vector<Player> players)
+Board::Board(vector<Player> players) :
+	board_vertices(sf::VertexArray()), board_tileset(sf::Texture())
 {
 	// we want to place the capital somewhere in the middle
 	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1);
 	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1);
 	for (int i = 0; i < BOARD_WIDTH; i++)
 	{
-		for (int j = 0; i < BOARD_HEIGHT; i++)
+		for (int j = 0; j < BOARD_HEIGHT; j++)
 		{
 			TerritoryType type = countryside;
 			if (i == capital_x && j == capital_y)
@@ -38,7 +40,7 @@ Board::Board(vector<Player> players)
 				money *= 2;
 				owner = make_shared<Lord>(players[0]);
 			}
-			territories.push_back(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner));
+			territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner)));
 		}
 	}
 }
@@ -51,5 +53,27 @@ Board::~Board()
 
 unique_ptr<sf::Drawable> Board::display()
 {
+	// load the tileset texture
+	assert(board_tileset.loadFromFile("TestSpriteSheet.png"));
 
+	// resize the vertex array to fit the level size
+	board_vertices.setPrimitiveType(sf::Quads);
+	board_vertices.resize(BOARD_WIDTH * BOARD_WIDTH * 4);
+
+	for (int i = 0; i < BOARD_WIDTH; i++)
+	{
+		for (int j = 0; j < BOARD_HEIGHT; j++)
+		{
+			// get the current tile number
+			int textureNumber = (territories[i + j]->getType() == countryside) ? rand() % 3 : 3;
+			// find its position in the tileset texture
+			int texturePos = textureNumber * 64;
+
+			// get a pointer to the current tile's quad
+			sf::Vertex* quad = &board_vertices[(i + j * BOARD_WIDTH) * 4];
+			sf::VertexArray* territoryQuad = &(territories[i + j]->getShape());
+
+			quad[0].position = (territoryQuad->operator[](0)).position;
+		}
+	}
 }

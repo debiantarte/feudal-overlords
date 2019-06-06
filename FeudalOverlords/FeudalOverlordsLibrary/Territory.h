@@ -2,6 +2,7 @@
 
 #include "Lord.h"
 #include "Resource.h"
+#include <SFML/Graphics.hpp>
 
 enum TerritoryType {
 	capital,
@@ -14,6 +15,8 @@ public:
 	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner);
 	~Territory();
 	void resetResources();
+	sf::VertexArray getShape();
+	TerritoryType getType() const;
 private:
 	Resource money;
 	Resource military;
