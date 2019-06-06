@@ -36,13 +36,39 @@ AI::~AI()
 }
 */
 
+/**
+	Approve function returns a double
+	It is for now random, based on the psyche traits
+*/
 double AI::approve()
 {
 	double result = 0;
 	for (int i = 0; i < endPsyTraits; i++)
 	{
-		result += rng(psychology[i] * 1.F);
+		result += rng((float) psychology[i]);
 	}
+	return result/endPsyTraits;
+}
+
+/**
+	rebel method, used when the approval is too low (the threshold depends on the goal of the AI) :
+	  * independance : at least 50
+	  * winWithOverlord : at least 25
+	WIP
+*/
+void AI::rebel()
+{
+	double approvalRate = approve();
+	bool isRebellious;
+	if (goal == independance)
+	{
+		isRebellious = approvalRate < 50;
+	}
+	else if (goal == winWithOverlord)
+	{
+		isRebellious = approvalRate < 25;
+	}
+<<<<<<< HEAD
 	return result;
 }
 
@@ -52,3 +78,16 @@ unique_ptr<sf::Drawable> AI::display()
 	unique_ptr<sf::Drawable> shape = make_unique<sf::Drawable>(sf::RectangleShape(sf::Vector2f(120.F, 50.F)));
 	return move(shape);
 }
+=======
+	if (not(isRebellious))
+	{
+		return;
+	}
+	// for all territories under the control of the AI, make them independant
+	// vector<unique_ptr> territories;
+	// for (auto t: territories)
+	// {
+	//     t->owner = this;
+	// }
+}
+>>>>>>> develop
