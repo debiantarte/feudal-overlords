@@ -3,6 +3,7 @@
 #include <memory>
 #include "Displayable.h"
 #include "Player.h"
+#include "Board.h"
 
 using namespace std;
 
@@ -16,9 +17,10 @@ public:
 	int nbrPlayers;
 	int nbrAIs;
 	vector<Displayable> displayableObjects;
-	vector<unique_ptr<Player>> players;
+	vector<shared_ptr<Player>> players;
+	Board board;
 
-	GameManager(int nbrPplayers, int nbrAIs);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>);
 
 	void nextTurn(); // TODO
 	bool isGameWon(); // TODO

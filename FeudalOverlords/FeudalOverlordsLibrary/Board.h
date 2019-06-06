@@ -15,7 +15,7 @@ class Board :
 	public Displayable
 {
 public:
-	Board(vector<Player>);
+	Board(vector<shared_ptr<Player>>);
 	//~Board();
 	virtual unique_ptr<sf::Drawable> display();
 private:

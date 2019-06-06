@@ -5,14 +5,10 @@
 
 
 
-GameManager::GameManager(int nbrPlayers, int nbrAIs) : nbrPlayers(nbrPlayers), nbrAIs(nbrAIs)
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players) :
+	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players), board(players)
 {
-	assert(nbrPlayers >= 0);
 	assert(nbrAIs >= 0);
-	for (int i = 0; i < nbrPlayers; i++)
-	{
-		players.push_back(make_unique<Player>());
-	}
 }
 
 void GameManager::nextTurn()
@@ -34,3 +30,4 @@ bool GameManager::isGameWon()
 	// TODO
 	return false;
 }
+

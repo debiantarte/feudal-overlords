@@ -9,7 +9,7 @@ class Player :
 	public Lord
 {
 public:
-	Player();
+	Player(string name);
 	//~Player();
 	void attack(Territory);
 	void buy(Territory);
@@ -18,5 +18,8 @@ public:
 	void raiseTroops(Territory);
 	
 	virtual unique_ptr<sf::Drawable> display();
+
+private:
+	string name;
 };
 
