@@ -56,21 +56,20 @@ double AI::approve()
 	  * winWithOverlord : at least 25
 	WIP
 */
-void AI::rebel()
+bool AI::rebel(double approval)
 {
-	double approvalRate = approve();
 	bool isRebellious;
 	if (goal == independance)
 	{
-		isRebellious = approvalRate < 50;
+		isRebellious = approval < 50;
 	}
 	else if (goal == winWithOverlord)
 	{
-		isRebellious = approvalRate < 25;
+		isRebellious = approval < 25;
 	}
 	if (not(isRebellious))
 	{
-		return;
+		return false;
 	}
 	// for all territories under the control of the AI, make them independant
 	// vector<unique_ptr> territories;
@@ -78,4 +77,21 @@ void AI::rebel()
 	// {
 	//     t->owner = this;
 	// }
+	return true;
+}
+
+vector<int> AI::getPsychology()
+{
+	return psychology;
+}
+
+AIGoal AI::getGoal()
+{
+	return goal;
+}
+
+
+void AI::display()
+{
+	return;
 }

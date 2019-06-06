@@ -5,7 +5,8 @@
 
 enum TerritoryType {
 	capital,
-	countryside
+	countryside,
+	endTerritoryType
 };
 
 class Territory

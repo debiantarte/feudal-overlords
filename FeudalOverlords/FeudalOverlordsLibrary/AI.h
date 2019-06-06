@@ -24,8 +24,11 @@ public:
 	AI();
 	AI(AIGoal, vector<int>);
 	double approve();
-	void rebel(); // TODO
+	bool rebel(double approval); // TODO
+	virtual void display() override; // TODO
 	//~AI();
+	vector<int> getPsychology();
+	AIGoal getGoal();
 private:
 	AIGoal goal;
 	vector<int> psychology;
