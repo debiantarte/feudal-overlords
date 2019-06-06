@@ -21,7 +21,7 @@ Board::Board()
 		{
 			int troops = rng(BOARD_HEIGHT / 2 + j + BOARD_WIDTH / 2 + i) * 1000;
 			int money = rng(BOARD_HEIGHT / 2 - j + BOARD_WIDTH / 2 - i) * 1000;
-			territories.push_back(Territory(money, troops, (TerritoryType) (rand() % endTerritoryType), ));
+			territories.push_back(Territory(money, troops, (TerritoryType) (rand() % endTerritoryType), nullptr)); // TODO
 		}
 	}
 }

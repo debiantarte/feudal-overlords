@@ -9,16 +9,22 @@ GameManager::GameManager(int nbrPlayers, int nbrAIs) : nbrPlayers(nbrPlayers), n
 {
 	assert(nbrPlayers >= 0);
 	assert(nbrAIs >= 0);
-}
-
-GameManager::~GameManager()
-{
+	for (int i = 0; i < nbrPlayers; i++)
+	{
+		players.push_back(make_unique<Player>());
+	}
 }
 
 void GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
+	for (auto& player: players)
+	{
+		// it's player's turn
+		// we should display that it's their turn
+		// then act depending on their input
+	}
 }
 
 bool GameManager::isGameWon()

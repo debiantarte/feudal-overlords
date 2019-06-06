@@ -1,6 +1,8 @@
 #pragma once
-#include "Displayable.h"
 #include <vector>
+#include <memory>
+#include "Displayable.h"
+#include "Player.h"
 
 using namespace std;
 
@@ -14,10 +16,12 @@ public:
 	int nbrPlayers;
 	int nbrAIs;
 	vector<Displayable> displayableObjects;
+	vector<unique_ptr<Player>> players;
+
 	GameManager(int nbrPplayers, int nbrAIs);
-	~GameManager();
 
 	void nextTurn(); // TODO
 	bool isGameWon(); // TODO
+private:
 };
 
