@@ -33,12 +33,12 @@ Board::Board(vector<Player> players) :
 			}
 			int troops = rng(0, BOARD_HEIGHT / 2 + j + BOARD_WIDTH / 2 + i) * 1000;
 			int money = rng(0, BOARD_HEIGHT / 2 - j + BOARD_WIDTH / 2 - i) * 1000;
-			shared_ptr<Lord> owner = make_shared<Lord>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
+			shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
 			if (type == capital)
 			{
 				troops /= 2;
 				money *= 2;
-				owner = make_shared<Lord>(players[0]);
+				owner = make_shared<Player>(players[0]);
 			}
 			territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner)));
 		}
@@ -76,4 +76,6 @@ unique_ptr<sf::Drawable> Board::display()
 			quad[0].position = (territoryQuad->operator[](0)).position;
 		}
 	}
+
+	return make_unique<sf::VertexArray>(board_vertices);
 }

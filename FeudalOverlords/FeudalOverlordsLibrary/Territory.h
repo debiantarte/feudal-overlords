@@ -3,6 +3,9 @@
 #include "Lord.h"
 #include "Resource.h"
 #include <SFML/Graphics.hpp>
+#include <memory>
+
+using namespace std;
 
 enum TerritoryType {
 	capital,

@@ -77,7 +77,7 @@ void AI::rebel()
 unique_ptr<sf::Drawable> AI::display()
 {
 	// placeholder
-	unique_ptr<sf::Drawable> shape = make_unique<sf::Drawable>(sf::RectangleShape(sf::Vector2f(120.F, 50.F)));
+	unique_ptr<sf::Drawable> shape = make_unique<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(120.F, 50.F)));
 	return move(shape);
 	// for all territories under the control of the AI, make them independant
 	// vector<unique_ptr> territories;

@@ -3,6 +3,7 @@
 #include "Displayable.h"
 #include "Territory.h"
 #include "Player.h"
+#include <memory>
 
 #define BOARD_HEIGHT	10
 #define BOARD_WIDTH		10

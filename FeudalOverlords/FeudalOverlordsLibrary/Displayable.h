@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <memory>
+
+using namespace std;
 
 class Displayable
 {
