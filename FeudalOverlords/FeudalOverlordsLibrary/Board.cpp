@@ -24,7 +24,6 @@ Board::Board(vector<Player> players)
 	{
 		for (int j = 0; i < BOARD_HEIGHT; i++)
 		{
-<<<<<<< HEAD
 			TerritoryType type = countryside;
 			if (i == capital_x && j == capital_y)
 			{
@@ -40,11 +39,6 @@ Board::Board(vector<Player> players)
 				owner = make_shared<Lord>(players[0]);
 			}
 			territories.push_back(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner));
-=======
-			int troops = rng(BOARD_HEIGHT / 2 + j + BOARD_WIDTH / 2 + i) * 1000;
-			int money = rng(BOARD_HEIGHT / 2 - j + BOARD_WIDTH / 2 - i) * 1000;
-			territories.push_back(Territory(money, troops, (TerritoryType) (rand() % endTerritoryType), nullptr)); // TODO
->>>>>>> develop
 		}
 	}
 }
