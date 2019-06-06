@@ -46,7 +46,9 @@ double AI::approve()
 	return result;
 }
 
-void AI::display()
+unique_ptr<sf::Drawable> AI::display()
 {
-
+	// placeholder
+	unique_ptr<sf::Drawable> shape = make_unique<sf::Drawable>(sf::RectangleShape(sf::Vector2f(120.F, 50.F)));
+	return move(shape);
 }

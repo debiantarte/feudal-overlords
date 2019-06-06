@@ -49,3 +49,7 @@ Board::~Board()
 }
 */
 
+unique_ptr<sf::Drawable> Board::display()
+{
+
+}

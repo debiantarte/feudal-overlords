@@ -1,9 +1,11 @@
 #pragma once
+#include <SFML/Graphics.hpp>
+
 class Displayable
 {
 public:
 	Displayable();
-	virtual void display() = 0;
+	virtual unique_ptr<sf::Drawable> display() = 0;
 	~Displayable();
 };
 

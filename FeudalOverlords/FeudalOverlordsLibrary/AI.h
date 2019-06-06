@@ -24,7 +24,7 @@ public:
 	AI();
 	AI(AIGoal, vector<int>);
 	double approve();
-	virtual void display();
+	virtual unique_ptr<sf::Drawable> display(); // TODO, placeholder state
 	//~AI();
 private:
 	AIGoal goal;
