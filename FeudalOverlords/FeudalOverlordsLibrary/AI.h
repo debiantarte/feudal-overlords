@@ -24,11 +24,8 @@ public:
 	AI();
 	AI(AIGoal, vector<int>);
 	double approve();
-<<<<<<< HEAD
 	virtual unique_ptr<sf::Drawable> display(); // TODO, placeholder state
-=======
 	void rebel(); // TODO
->>>>>>> develop
 	//~AI();
 private:
 	AIGoal goal;
