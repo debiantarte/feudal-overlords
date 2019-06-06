@@ -18,6 +18,8 @@ public:
 	//~Board();
 	virtual unique_ptr<sf::Drawable> display();
 private:
-	vector<Territory> territories;
+	vector<unique_ptr<Territory>> territories;
+	sf::VertexArray board_vertices;
+	sf::Texture board_tileset;
 };
 

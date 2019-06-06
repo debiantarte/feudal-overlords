@@ -1,6 +1,7 @@
 #pragma once
 #include "Lord.h"
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
