@@ -71,6 +71,7 @@ bool AI::rebel(double approval)
 	{
 		return false;
 	}
+	return true;
 }
 
 unique_ptr<sf::Drawable> AI::display()
@@ -84,7 +85,6 @@ unique_ptr<sf::Drawable> AI::display()
 	// {
 	//     t->owner = this;
 	// }
-	return true;
 }
 
 vector<int> AI::getPsychology()
@@ -95,10 +95,4 @@ vector<int> AI::getPsychology()
 AIGoal AI::getGoal()
 {
 	return goal;
-}
-
-
-void AI::display()
-{
-	return;
 }
