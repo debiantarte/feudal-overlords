@@ -17,9 +17,14 @@ int rng(int const min, int const max)
 	return distribution(engine);
 }
 
-Board::Board(vector<shared_ptr<Player>> players) :
-	board_vertices(sf::VertexArray()), board_tileset(sf::Texture())
+Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
+	board_vertices(sf::VertexArray()), win(win_)
 {
+	/* TODO : check if paths are right */
+	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png"));
+	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex.png"));
+	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png"));
+	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png"));
 	// we want to place the capital somewhere in the middle
 	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1);
 	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1);
@@ -54,27 +59,41 @@ Board::~Board()
 
 unique_ptr<sf::Drawable> Board::display()
 {
-	// load the tileset texture
-	assert(board_tileset.loadFromFile("TestSpriteSheet.png")); // TODO : check if the path is right
-
 	// resize the vertex array to fit the level size
-	board_vertices.setPrimitiveType(sf::Quads);
-	board_vertices.resize(BOARD_WIDTH * BOARD_WIDTH * 4);
-
-	for (int i = 0; i < BOARD_WIDTH; i++)
+	board_vertices.setPrimitiveType(sf::TriangleFan);
+	for (auto& tile : territories)
 	{
-		for (int j = 0; j < BOARD_HEIGHT; j++)
+		// get the current tile number
+		int textureNumber = (tile->getType() == countryside) ? rand() % 3 : 3;
+		// find its position in the tileset texture
+		//int texturePos = textureNumber * 64;
+
+		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
-			// get the current tile number
-			int textureNumber = (territories[i + j]->getType() == countryside) ? rand() % 3 : 3;
-			// find its position in the tileset texture
-			int texturePos = textureNumber * 64;
-
-			// get a pointer to the current tile's quad
-			sf::Vertex* quad = &board_vertices[(i + j * BOARD_WIDTH) * 4];
-			sf::VertexArray* territoryQuad = &(territories[i + j]->getShape());
-
-			quad[0].position = (territoryQuad->operator[](0)).position;
+			for (int j = 0; j < BOARD_HEIGHT; j++)
+			{
+				sf::RenderStates states;
+				states.transform.translate(i*TILE_SIZE, j*TILE_SIZE);
+				states.transform.scale(TILE_SIZE, TILE_SIZE);
+				switch (textureNumber)
+				{
+				case 0:
+					states.texture = &dirtTex;
+					break;
+				case 1:
+					states.texture = &grassTex;
+					break;
+				case 2:
+					states.texture = &mountainTex;
+					break;
+				case 3:
+					states.texture = &cityTex;
+					break;
+				default:
+					break;
+				}
+				territories[i + j * BOARD_WIDTH]->display(win, states);
+			}
 		}
 	}
 

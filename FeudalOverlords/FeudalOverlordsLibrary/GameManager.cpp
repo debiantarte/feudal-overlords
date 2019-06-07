@@ -5,8 +5,8 @@
 
 
 
-GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players) :
-	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players), board(players)
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, Window& win) :
+	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players), board(Board(players, win))
 {
 	assert(nbrAIs >= 0);
 }

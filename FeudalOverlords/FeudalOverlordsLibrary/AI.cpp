@@ -45,7 +45,7 @@ double AI::approve()
 	double result = 0;
 	for (int i = 0; i < endPsyTraits; i++)
 	{
-		result += rng((float) psychology[i]);
+		result += rng(/*(float)*/ psychology[i]);
 	}
 	return result/endPsyTraits;
 }
