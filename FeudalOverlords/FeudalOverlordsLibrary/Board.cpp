@@ -93,3 +93,11 @@ unique_ptr<sf::Drawable> Board::display()
 	}
 	return make_unique<sf::VertexArray>(board_vertices);
 }
+
+void Board::onClick(sf::Mouse::Button)
+{
+	for (auto& tile : territories)
+	{
+
+	}
+}

@@ -23,6 +23,7 @@ public:
 	void resetResources();
 	void display(Window&, const sf::RenderStates&);
 	TerritoryType getType() const;
+	void onClick(int, int, sf::Mouse::Button);
 private:
 	Resource money;
 	Resource military;
