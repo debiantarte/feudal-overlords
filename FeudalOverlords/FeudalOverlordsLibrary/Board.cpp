@@ -27,8 +27,8 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png"));
 	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png"));
 	// we want to place the capital somewhere in the middle
-	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1);
-	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1);
+	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1) -1;
+	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1) -1;
 	for (int j = 0; j < BOARD_HEIGHT; j++)
 	{
 		for (int i = 0; i < BOARD_WIDTH; i++)
