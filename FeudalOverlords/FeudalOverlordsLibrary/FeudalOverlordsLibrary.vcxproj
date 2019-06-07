@@ -177,6 +177,10 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\Assets\Textures\CityTex.png" />
+    <Image Include="..\..\Assets\Textures\DirtTex.png" />
+    <Image Include="..\..\Assets\Textures\GrassTex.png" />
+    <Image Include="..\..\Assets\Textures\MountainTex.png" />
     <Image Include="..\..\Assets\Textures\TestSpriteSheet.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
