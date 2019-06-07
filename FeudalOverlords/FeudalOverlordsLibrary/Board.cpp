@@ -29,15 +29,11 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 	// we want to place the capital somewhere in the middle
 	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1);
 	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1);
-	for (int i = 0; i < BOARD_WIDTH; i++)
+	for (int j = 0; j < BOARD_HEIGHT; j++)
 	{
-		for (int j = 0; j < BOARD_HEIGHT; j++)
+		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
 			TerritoryType type = (i == capital_x && j == capital_y) ? capital : countryside;
-			if (type == capital)
-			{
-				std::cout << "Found the capital! x: " << i << "; y: " << j << std::endl;
-			}
 			int troops = rng(0, BOARD_HEIGHT + j + BOARD_WIDTH + i) * 1000;
 			int money = rng(0, BOARD_HEIGHT - j + BOARD_WIDTH - i) * 1000;
 			shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
@@ -46,13 +42,8 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 				troops /= 2;
 				money *= 2;
 				owner = players[0]; // make_shared<Player>(players[0]);
-				std::cout << "Hello !" << std::endl;
 			}
 			territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner)));
-			if (territories[i + j].get()->getType() == capital)
-			{
-				std::cout << "Yolo !" << std::endl;
-			}
 		}
 	}
 }
@@ -67,25 +58,11 @@ unique_ptr<sf::Drawable> Board::display()
 {
 	// resize the vertex array to fit the level size
 	board_vertices.setPrimitiveType(sf::TriangleFan);
-	std::cout << "number of territories :" << territories.size() << std::endl;
-	int debug = 0;
-	for (int i = 0; i < BOARD_WIDTH; i++)
+	for (int j = 0; j < BOARD_HEIGHT; j++)
 	{
-		for (int j = 0; j < BOARD_HEIGHT; j++)
+		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
-			/*
-			int textureNumber;
-			if (territories[i + j]->getType() == capital)
-			{
-				textureNumber = 3;
-				std::cout << "The capital ! finally !" << std::endl;
-			}
-			else
-			{
-				textureNumber = 2;
-			}
-			*/
-			int textureNumber = (territories[i + j]->getType() == countryside) ? rand() % 3 : 3;
+			int textureNumber = (territories[i + j * BOARD_WIDTH]->getType() == countryside) ? rand() % 3 : 3;
 			
 			sf::RenderStates states;
 			sf::Transform trans;
@@ -93,7 +70,6 @@ unique_ptr<sf::Drawable> Board::display()
 			trans.translate(i*(win.dimensions.first / TILE_SIZE), j*(win.dimensions.second / TILE_SIZE));
 			trans.scale((win.dimensions.first / TILE_SIZE), (win.dimensions.second / TILE_SIZE));
 			states.transform = trans;
-			debug++;
 			switch (textureNumber)
 			{
 			case 0:
@@ -107,7 +83,6 @@ unique_ptr<sf::Drawable> Board::display()
 				break;
 			case 3:
 				states.texture = &cityTex;
-				std::cout << "I'm a capital !" << std::endl;
 				break;
 			default:
 				abort();
@@ -116,7 +91,5 @@ unique_ptr<sf::Drawable> Board::display()
 			territories[i + j * BOARD_WIDTH]->display(win, states);
 		}
 	}
-	//win.display();
-	std::cout << debug << std::endl;
 	return make_unique<sf::VertexArray>(board_vertices);
 }
