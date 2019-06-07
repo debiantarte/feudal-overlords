@@ -21,5 +21,5 @@ void Window::showUI()
 	rectangle.setOutlineThickness(2); // Outline
 	rectangle.setOutlineColor(sf::Color(0, 0, 0));
 	draw(rectangle);
-	display();
+	//display();
 }

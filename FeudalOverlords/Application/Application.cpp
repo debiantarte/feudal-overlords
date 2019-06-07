@@ -15,10 +15,13 @@ int main()
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(800, 600);
 	GameManager gameManager = GameManager(0, players, window);
+	
+	gameManager.board.display();
 	window.showUI();
+	window.display();
 	while (window.isOpen())
 	{
-		gameManager.board.display();
+		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 			window.close();
 		}

@@ -2,6 +2,7 @@
 #include "Territory.h"
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 using namespace std;
 
@@ -28,10 +29,15 @@ void Territory::resetResources()
 
 TerritoryType Territory::getType() const
 {
+	if (type == capital)
+	{
+		std::cout << "That's a capital !" << std::endl;
+	}
 	return type;
 }
 
 void Territory::display(Window& win, const sf::RenderStates& states)
 {
+	shape.setPrimitiveType(sf::TriangleFan);
 	win.draw(shape, states);
 }

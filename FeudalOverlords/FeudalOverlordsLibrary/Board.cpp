@@ -4,6 +4,7 @@
 #include "Resource.h"
 #include <random>
 #include <cassert>
+#include <iostream> // for debug
 
 /*
  * helper function to generate random territories
@@ -32,10 +33,10 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 	{
 		for (int j = 0; j < BOARD_HEIGHT; j++)
 		{
-			TerritoryType type = countryside;
-			if (i == capital_x && j == capital_y)
+			TerritoryType type = (i == capital_x && j == capital_y) ? capital : countryside;
+			if (type == capital)
 			{
-				type = capital;
+				std::cout << "Found the capital! x: " << i << "; y: " << j << std::endl;
 			}
 			int troops = rng(0, BOARD_HEIGHT + j + BOARD_WIDTH + i) * 1000;
 			int money = rng(0, BOARD_HEIGHT - j + BOARD_WIDTH - i) * 1000;
@@ -45,8 +46,13 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 				troops /= 2;
 				money *= 2;
 				owner = players[0]; // make_shared<Player>(players[0]);
+				std::cout << "Hello !" << std::endl;
 			}
 			territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner)));
+			if (territories[i + j].get()->getType() == capital)
+			{
+				std::cout << "Yolo !" << std::endl;
+			}
 		}
 	}
 }
@@ -61,41 +67,56 @@ unique_ptr<sf::Drawable> Board::display()
 {
 	// resize the vertex array to fit the level size
 	board_vertices.setPrimitiveType(sf::TriangleFan);
-	for (auto& tile : territories)
+	std::cout << "number of territories :" << territories.size() << std::endl;
+	int debug = 0;
+	for (int i = 0; i < BOARD_WIDTH; i++)
 	{
-		// get the current tile number
-		int textureNumber = (tile->getType() == countryside) ? rand() % 3 : 3;
-		// find its position in the tileset texture
-		//int texturePos = textureNumber * 64;
-
-		for (int i = 0; i < BOARD_WIDTH; i++)
+		for (int j = 0; j < BOARD_HEIGHT; j++)
 		{
-			for (int j = 0; j < BOARD_HEIGHT; j++)
+			/*
+			int textureNumber;
+			if (territories[i + j]->getType() == capital)
 			{
-				sf::RenderStates states;
-				states.transform.translate(i*TILE_SIZE, j*TILE_SIZE);
-				states.transform.scale(TILE_SIZE, TILE_SIZE);
-				switch (textureNumber)
-				{
-				case 0:
-					states.texture = &dirtTex;
-					break;
-				case 1:
-					states.texture = &grassTex;
-					break;
-				case 2:
-					states.texture = &mountainTex;
-					break;
-				case 3:
-					states.texture = &cityTex;
-					break;
-				default:
-					break;
-				}
-				territories[i + j * BOARD_WIDTH]->display(win, states);
+				textureNumber = 3;
+				std::cout << "The capital ! finally !" << std::endl;
 			}
+			else
+			{
+				textureNumber = 2;
+			}
+			*/
+			int textureNumber = (territories[i + j]->getType() == countryside) ? rand() % 3 : 3;
+			
+			sf::RenderStates states;
+			sf::Transform trans;
+			trans = trans.Identity;
+			trans.translate(i*(win.dimensions.first / TILE_SIZE), j*(win.dimensions.second / TILE_SIZE));
+			trans.scale((win.dimensions.first / TILE_SIZE), (win.dimensions.second / TILE_SIZE));
+			states.transform = trans;
+			debug++;
+			switch (textureNumber)
+			{
+			case 0:
+				states.texture = &dirtTex;
+				break;
+			case 1:
+				states.texture = &grassTex;
+				break;
+			case 2:
+				states.texture = &mountainTex;
+				break;
+			case 3:
+				states.texture = &cityTex;
+				std::cout << "I'm a capital !" << std::endl;
+				break;
+			default:
+				abort();
+				break;
+			}
+			territories[i + j * BOARD_WIDTH]->display(win, states);
 		}
 	}
-
+	//win.display();
+	std::cout << debug << std::endl;
 	return make_unique<sf::VertexArray>(board_vertices);
 }
