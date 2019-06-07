@@ -36,6 +36,16 @@ TerritoryType Territory::getType() const
 	return type;
 }
 
+shared_ptr<Lord> Territory::getOwner()
+{
+	return owner;
+}
+
+void Territory::setOwner(shared_ptr<Lord> owner_)
+{
+	owner = owner_;
+}
+
 void Territory::display(Window& win, const sf::RenderStates& states)
 {
 	shape.setPrimitiveType(sf::TriangleFan);

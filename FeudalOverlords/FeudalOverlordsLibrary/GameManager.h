@@ -8,6 +8,12 @@
 
 using namespace std;
 
+enum endingCondition { // for now (milestone 1), we assume we are in turnLimit condition
+	conquest,
+	turnLimit,
+	endEndingConditions
+};
+
 /**
 	GameManager object
 	It is instanciated when clicking on New Game
@@ -21,10 +27,18 @@ public:
 	vector<shared_ptr<Player>> players;
 	Board board;
 
-	GameManager(int nbrAIs, vector<shared_ptr<Player>>, Window&);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, int);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, int, int, int);
 
 	void nextTurn(); // TODO
-	bool isGameWon(); // TODO
+	shared_ptr<Lord> winner();
+	bool isGameFinished();
+	map<shared_ptr<Lord>, int> territoryCount();
+	void setTurn(int);
+	
 private:
+	int finishTurn; // the last turn of the game.
+	int turn; // the current turn
+	endingCondition endingCond;
 };
 
