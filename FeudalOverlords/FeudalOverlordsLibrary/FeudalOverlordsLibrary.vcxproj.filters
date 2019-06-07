@@ -85,5 +85,17 @@
     <Image Include="..\..\Assets\Textures\TestSpriteSheet.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\Assets\Textures\CityTex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\DirtTex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\GrassTex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\MountainTex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
