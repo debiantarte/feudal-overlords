@@ -7,14 +7,30 @@
 #include "../FeudalOverlordsLibrary/GameManager.h"
 #include <SFML/Graphics.hpp>
 
+#include <libqhullcpp/Qhull.h>
+#include <libqhullcpp/QhullFacetList.h>
+#include <libqhullcpp/RboxPoints.h>
+
 using namespace std;
 
 int main()
 {
+	/* WIP : draft to use qhull and voronoi !
+	*/
+	
+	/*
+	RboxPoints rbox;
+	rbox.appendRandomPoints("100");
+	Qhull qhull;
+	qhull.runQhull("", rbox);
+	QhullFacetList facets(qhull);
+	cout << facets;
+	*/
+
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	GameManager gameManager = GameManager(0, players);
-	Window window(800, 600);
+	Window window(1280, 720);
 	window.showUI();
 	while (window.isOpen())
 	{
