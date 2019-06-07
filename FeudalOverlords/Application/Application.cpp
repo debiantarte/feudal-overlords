@@ -3,29 +3,27 @@
 
 #include "pch.h"
 #include <iostream>
-#include "../FeudalOverlordsLibrary/Window.h"
-#include "../FeudalOverlordsLibrary/GameManager.h"
-#include <SFML/Graphics.hpp>
 
+#include <SFML/Graphics.hpp>
 #include <libqhullcpp/Qhull.h>
 #include <libqhullcpp/QhullFacetList.h>
 #include <libqhullcpp/RboxPoints.h>
 
+#include "../FeudalOverlordsLibrary/Window.h"
+#include "../FeudalOverlordsLibrary/GameManager.h"
+
 using namespace std;
+using namespace orgQhull;
 
 int main()
 {
-	/* WIP : draft to use qhull and voronoi !
-	*/
+	/* WIP : draft to use qhull and voronoi !*/
 	
-	/*
-	RboxPoints rbox;
-	rbox.appendRandomPoints("100");
-	Qhull qhull;
-	qhull.runQhull("", rbox);
-	QhullFacetList facets(qhull);
+	RboxPoints rbox("100");
+	Qhull q(rbox, "qvoronoi s o");
+	QhullFacetList facets = q.facetList();
 	cout << facets;
-	*/
+	
 
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
