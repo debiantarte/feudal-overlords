@@ -13,8 +13,8 @@ int main()
 {
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
-	GameManager gameManager = GameManager(0, players);
 	Window window(800, 600);
+	GameManager gameManager = GameManager(0, players, window);
 	window.showUI();
 	while (window.isOpen())
 	{

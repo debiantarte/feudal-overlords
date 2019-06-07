@@ -4,6 +4,7 @@
 #include "Displayable.h"
 #include "Player.h"
 #include "Board.h"
+#include "Window.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ public:
 	vector<shared_ptr<Player>> players;
 	Board board;
 
-	GameManager(int nbrAIs, vector<shared_ptr<Player>>);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, Window&);
 
 	void nextTurn(); // TODO
 	bool isGameWon(); // TODO
