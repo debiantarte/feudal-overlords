@@ -71,7 +71,7 @@ unique_ptr<sf::Drawable> Board::display()
 			for (int j = 0; j < BOARD_HEIGHT; j++)
 			{
 				sf::RenderStates states;
-				states.transform.translate(i, j);
+				states.transform.translate(i*TILE_SIZE, j*TILE_SIZE);
 				states.transform.scale(TILE_SIZE, TILE_SIZE);
 				switch (textureNumber)
 				{
