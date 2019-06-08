@@ -96,17 +96,20 @@ unique_ptr<sf::Drawable> Board::display()
 
 void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 {
-	//std::cout << "Check" << std::endl;
 	int width = (win.dimensions.first / TILE_SIZE);
-	int mouseRelativeX = posX;// *width;
-	int mouseRelativeY = posY;// *width;
+	int mouseRelativeX = posX;
+	int mouseRelativeY = posY;
 	std::cout << "mouse position : X = " << mouseRelativeX << "; Y = " << mouseRelativeY << std::endl;
-	for (int j = 0; j < BOARD_HEIGHT; j++)
+	bool found = false;
+	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" will be used)
+
+	for (int j = 0; j < BOARD_HEIGHT && !found; j++)
 	{
-		for (int i = 0; i < BOARD_WIDTH; i++)
+		for (int i = 0; i < BOARD_WIDTH && !found; i++)
 		{
 			// the parentheses with TILE_SIZE are placeholder until voronoi (and globally positionned vertices in each territory, which is not yet the case)
-			territories[i + j *BOARD_WIDTH]->onClick(sf::Vector2f((float) i*width, (float) j*width), width, mouseRelativeX, mouseRelativeY, mb);
+			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*width), width, mouseRelativeX, mouseRelativeY, mb);
+			target = territories[i + j * BOARD_WIDTH].get();
 		}
 	}
 }

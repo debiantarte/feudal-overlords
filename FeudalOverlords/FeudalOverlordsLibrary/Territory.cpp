@@ -39,16 +39,13 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 }
 
 // This is a pseudo-observer
-void Territory::onClick(sf::Vector2f tilePos, int width, int posX, int posY, sf::Mouse::Button button)
-{	
+bool Territory::isOver(sf::Vector2f tilePos, int width, int posX, int posY, sf::Mouse::Button button)
+{
 	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing
-	if (!shape.getBounds().contains(sf::Vector2f((float)(posX - tilePos.x)/width, (float)(posY - tilePos.y)/width)))
+	if (!shape.getBounds().contains(sf::Vector2f((float)(posX - tilePos.x) / width, (float)(posY - tilePos.y) / width)))
 	{
-		//std::cout << "Territory check #1" << std::endl;
-		//std::cout << (float)(posX - tilePos.x) / pow(width,2)  << ", " << (float)(posY - tilePos.y) / pow(width,2) << std::endl;
-		return;
+		return false;
 	}
-	//std::cout << "Territory check #2" << std::endl;
 	// second check : it was near me, but maybe in the part of the bounding rectangle outside of the real polygon. Let's check that
 	// the method comes from there : https://algorithmtutor.com/Computational-Geometry/Check-if-a-point-is-inside-a-polygon/
 	vector<float> y_diffs;
@@ -80,9 +77,13 @@ void Territory::onClick(sf::Vector2f tilePos, int width, int posX, int posY, sf:
 
 	if (!isAlwaysLeft && !isAlwaysRight)
 	{
-		std::cout << "Territory check #3" << std::endl;
-		return;
+		return false;
 	}
+	return true;
+}
+
+void Territory::onClick(int posX, int posY, sf::Mouse::Button button)
+{
 	// now, depending on the input, we'll call the right function to handle it
 	std::cout << "Territory clicked on : " << posX << ", " << posY << std::endl;
 	switch (button)
