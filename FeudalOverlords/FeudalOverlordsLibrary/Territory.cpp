@@ -39,49 +39,62 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 }
 
 // This is a pseudo-observer
-void Territory::onClick(int posX, int posY, sf::Mouse::Button button)
-{
-	// check if mouse click was on this territory
-	vector<int> y_diffs;
-	vector<int> x_diffs;
-	vector<int> diag_diffs;
-
-	for (int i = 0; i < shape.getVertexCount(); i++)
+void Territory::onClick(sf::Vector2f tilePos, int width, int posX, int posY, sf::Mouse::Button button)
+{	
+	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing
+	if (!shape.getBounds().contains(sf::Vector2f((float)(posX - tilePos.x)/width, (float)(posY - tilePos.y)/width)))
 	{
-		sf::Vector2f p1 = shape[i].position;
-		sf::Vector2f p2 = shape[(i + 1) % shape.getVertexCount()].position; // selects the next point, with a % to loop back to the first point when needed
-		int y_diff = -(p2.y - p1.y);
-		int x_diff = p2.x - p1.x;
-		int diag_diff = -(y_diff * p1.x + x_diff * p1.y);
+		//std::cout << "Territory check #1" << std::endl;
+		//std::cout << (float)(posX - tilePos.x) / pow(width,2)  << ", " << (float)(posY - tilePos.y) / pow(width,2) << std::endl;
+		return;
+	}
+	//std::cout << "Territory check #2" << std::endl;
+	// second check : it was near me, but maybe in the part of the bounding rectangle outside of the real polygon. Let's check that
+	// the method comes from there : https://algorithmtutor.com/Computational-Geometry/Check-if-a-point-is-inside-a-polygon/
+	vector<float> y_diffs;
+	vector<float> x_diffs;
+	vector<float> diag_diffs;
+
+	for (size_t i = 0; i < shape.getVertexCount(); i++)
+	{
+		sf::Vector2f p1 = sf::Vector2f(shape[i].position.x * width + tilePos.x, shape[i].position.y * width + tilePos.y);
+		sf::Vector2f p2 = sf::Vector2f(shape[(i + 1) % shape.getVertexCount()].position.x * width + tilePos.x, shape[(i + 1) % shape.getVertexCount()].position.y * width + tilePos.y); // selects the next point, with a % to loop back to the first point when needed
+		float y_diff = -(p2.y - p1.y);
+		float x_diff = p2.x - p1.x;
+		float diag_diff = -(y_diff * p1.x + x_diff * p1.y);
 		y_diffs.push_back(y_diff);
 		x_diffs.push_back(x_diff);
 		diag_diffs.push_back(diag_diff);
 	}
 
-	vector<int> discriminers; // discriminers determine whether the point is left, on, or right of the polygon's side
+	vector<float> discriminers; // discriminers determine whether the point is left, on, or right of the polygon's side
 
-	for (int i = 0; i < y_diffs.size(); i++)
+	for (size_t i = 0; i < y_diffs.size(); i++)
 	{
-		int discriminer = y_diffs[i] * posX + x_diffs[i] * posY + diag_diffs[i];
+		float discriminer = y_diffs[i] * posX + x_diffs[i] * posY + diag_diffs[i];
 		discriminers.push_back(discriminer);
 	}
 
-	bool isAlwaysLeft = std::all_of(discriminers.begin(), discriminers.end(), [](int d) {return d >= 0; });
-	bool isAlwaysRight = std::all_of(discriminers.begin(), discriminers.end(), [](int d) {return d <= 0; });
+	bool isAlwaysLeft = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {return (d > 0 || d < FLT_EPSILON); });
+	bool isAlwaysRight = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {return (d < 0 || d < FLT_EPSILON); });
 
 	if (!isAlwaysLeft && !isAlwaysRight)
 	{
+		std::cout << "Territory check #3" << std::endl;
 		return;
 	}
-
+	// now, depending on the input, we'll call the right function to handle it
+	std::cout << "Territory clicked on : " << posX << ", " << posY << std::endl;
 	switch (button)
 	{
 	case sf::Mouse::Button::Left:
+		std::cout << "Left clicked !" << std::endl;
 		// check if owner is an AI or a player
 		// if AI : display AI info in a tooltip that will handle further actions
 		// if player : display vassal info in a tooltip
 		break;
 	case sf::Mouse::Button::Right:
+		std::cout << "Right clicked !" << std::endl;
 		// todo ?
 		break;
 	default:

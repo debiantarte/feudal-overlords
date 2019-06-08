@@ -67,8 +67,8 @@ unique_ptr<sf::Drawable> Board::display()
 			sf::RenderStates states;
 			sf::Transform trans;
 			trans = trans.Identity;
-			trans.translate(i*(win.dimensions.first / TILE_SIZE), j*(win.dimensions.second / TILE_SIZE));
-			trans.scale((win.dimensions.first / TILE_SIZE), (win.dimensions.second / TILE_SIZE));
+			trans.translate((float)i*(win.dimensions.first / TILE_SIZE), (float)j*(win.dimensions.second / TILE_SIZE));
+			trans.scale((float)(win.dimensions.first / TILE_SIZE), (float)(win.dimensions.second / TILE_SIZE));
 			states.transform = trans;
 			switch (textureNumber)
 			{
@@ -94,10 +94,19 @@ unique_ptr<sf::Drawable> Board::display()
 	return make_unique<sf::VertexArray>(board_vertices);
 }
 
-void Board::onClick(sf::Mouse::Button)
+void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 {
-	for (auto& tile : territories)
+	//std::cout << "Check" << std::endl;
+	int width = (win.dimensions.first / TILE_SIZE);
+	int mouseRelativeX = posX;// *width;
+	int mouseRelativeY = posY;// *width;
+	std::cout << "mouse position : X = " << mouseRelativeX << "; Y = " << mouseRelativeY << std::endl;
+	for (int j = 0; j < BOARD_HEIGHT; j++)
 	{
-
+		for (int i = 0; i < BOARD_WIDTH; i++)
+		{
+			// the parentheses with TILE_SIZE are placeholder until voronoi (and globally positionned vertices in each territory, which is not yet the case)
+			territories[i + j *BOARD_WIDTH]->onClick(sf::Vector2f((float) i*width, (float) j*width), width, mouseRelativeX, mouseRelativeY, mb);
+		}
 	}
 }

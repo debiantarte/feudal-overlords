@@ -48,6 +48,8 @@ int main()
 				window.close();
 			if (event.type == sf::Event::Resized)
 				window.display();
+			if (event.type == sf::Event::MouseButtonPressed)
+				gameManager.board.onClick(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y, event.mouseButton.button);
 		}
 	}
 }

@@ -19,7 +19,7 @@ public:
 	Board(vector<shared_ptr<Player>>, Window&);
 	//~Board();
 	virtual unique_ptr<sf::Drawable> display();
-	void onClick(sf::Mouse::Button);
+	void onClick(int, int, sf::Mouse::Button);
 private:
 	vector<unique_ptr<Territory>> territories;
 	sf::VertexArray board_vertices;
