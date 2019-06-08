@@ -12,6 +12,8 @@ using namespace std;
 enum TerritoryType {
 	capital,
 	countryside,
+	grasslands,
+	highlands,
 	endTerritoryType
 };
 

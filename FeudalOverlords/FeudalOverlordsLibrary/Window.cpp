@@ -13,8 +13,10 @@ Window::~Window()
 {
 }
 
-void Window::showUI()
+void Window::buildGUI(tgui::Gui& gui)
 {
+	
+	/*
 	sf::RectangleShape rectangle(sf::Vector2f(40, 20)); // Shape
 	rectangle.setPosition(sf::Vector2f(10, 20)); // Position
 	rectangle.setFillColor(sf::Color::Red);
@@ -22,4 +24,5 @@ void Window::showUI()
 	rectangle.setOutlineColor(sf::Color(0, 0, 0));
 	draw(rectangle);
 	//display();
+	*/
 }

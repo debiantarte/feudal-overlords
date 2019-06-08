@@ -33,7 +33,7 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 	{
 		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
-			TerritoryType type = (i == capital_x && j == capital_y) ? capital : countryside;
+			TerritoryType type = (i == capital_x && j == capital_y) ? capital : (TerritoryType)((rand() % (endTerritoryType -1)) + 1);
 			int troops = rng(0, BOARD_HEIGHT + j + BOARD_WIDTH + i) * 1000;
 			int money = rng(0, BOARD_HEIGHT - j + BOARD_WIDTH - i) * 1000;
 			shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
@@ -62,33 +62,33 @@ unique_ptr<sf::Drawable> Board::display()
 	{
 		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
-			int textureNumber = (territories[i + j * BOARD_WIDTH]->getType() == countryside) ? rand() % 3 : 3;
-			
+			//int textureNumber = (territories[i + j * BOARD_WIDTH]->getType() == countryside) ? rand() % 3 : 3;
+			Territory* tile = territories[i + j * BOARD_WIDTH].get();
 			sf::RenderStates states;
 			sf::Transform trans;
 			trans = trans.Identity;
 			trans.translate((float)i*(win.dimensions.first / TILE_SIZE), (float)j*(win.dimensions.second / TILE_SIZE));
 			trans.scale((float)(win.dimensions.first / TILE_SIZE), (float)(win.dimensions.second / TILE_SIZE));
 			states.transform = trans;
-			switch (textureNumber)
+			switch (tile->getType())
 			{
-			case 0:
+			case capital:
+				states.texture = &cityTex;
+				break;
+			case countryside:
 				states.texture = &dirtTex;
 				break;
-			case 1:
+			case grasslands:
 				states.texture = &grassTex;
 				break;
-			case 2:
+			case highlands:
 				states.texture = &mountainTex;
-				break;
-			case 3:
-				states.texture = &cityTex;
 				break;
 			default:
 				abort();
 				break;
 			}
-			territories[i + j * BOARD_WIDTH]->display(win, states);
+			tile->display(win, states);
 		}
 	}
 	return make_unique<sf::VertexArray>(board_vertices);

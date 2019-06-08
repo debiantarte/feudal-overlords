@@ -10,6 +10,7 @@
 #include <libqhullcpp/Qhull.h>
 #include <libqhullcpp/QhullFacetList.h>
 #include <libqhullcpp/RboxPoints.h>
+#include <TGUI/TGUI.hpp>
 
 using namespace std;
 
@@ -31,13 +32,21 @@ int main()
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(800, 600);
 	GameManager gameManager = GameManager(0, players, window);
+	tgui::Gui gui{ window };
 	
-	gameManager.board.display();
-	window.showUI();
-	window.display();
+	try 
+	{
+		window.buildGUI(gui);
+	}
+	catch (const tgui::Exception& except)
+	{
+		std::cerr << "Failed to load TGUI widgets : " << except.what() << std::endl;
+		return EXIT_FAILURE;
+	}
+
 	while (window.isOpen())
 	{
-		
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 			window.close();
 		}
@@ -50,6 +59,13 @@ int main()
 				window.display();
 			if (event.type == sf::Event::MouseButtonPressed)
 				gameManager.board.onClick(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y, event.mouseButton.button);
+
+			gui.handleEvent(event); // tell all tgui widgets about events happening
 		}
+		
+		window.clear();
+		gameManager.board.display();
+		gui.draw(); // Draw all widgets
+		window.display();
 	}
 }
