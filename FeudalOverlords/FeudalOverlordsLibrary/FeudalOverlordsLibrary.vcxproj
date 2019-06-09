@@ -183,6 +183,9 @@
     <Image Include="..\..\Assets\Textures\MountainTex.png" />
     <Image Include="..\..\Assets\Textures\TestSpriteSheet.png" />
   </ItemGroup>
+  <ItemGroup>
+	<Content Include="*" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

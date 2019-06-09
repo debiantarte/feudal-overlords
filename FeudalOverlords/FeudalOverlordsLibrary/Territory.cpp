@@ -6,8 +6,9 @@
 
 using namespace std;
 
-Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner) : money(money), military(military),
-type(type), owner(owner)
+Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape) :
+	money(money), military(military),
+type(type), owner(owner), shape(shape)
 {
 	assert(money.getType() == ResourceType::money);
 	assert(military.getType() == ResourceType::military);

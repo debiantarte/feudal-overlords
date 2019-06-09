@@ -9,7 +9,7 @@ GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, int fin
 {
 }
 
-GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, int finishTurn=5, int boardWidth=10, int boardHeight=10) :
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, int finishTurn=5, int boardWidth=800, int boardHeight=600) :
 	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players), board(players, boardWidth, boardHeight),
 	endingCond(turnLimit), turn(0), finishTurn(finishTurn)
 {

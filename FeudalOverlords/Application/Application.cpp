@@ -5,30 +5,22 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
-#include <libqhullcpp/Qhull.h>
-#include <libqhullcpp/QhullFacetList.h>
-#include <libqhullcpp/RboxPoints.h>
 
 #include "../FeudalOverlordsLibrary/Window.h"
 #include "../FeudalOverlordsLibrary/GameManager.h"
 
 using namespace std;
-using namespace orgQhull;
 
 int main()
 {
-	/* WIP : draft to use qhull and voronoi !*/
+	/* WIP : draft to use MyGAL and voronoi !*/
 	
-	RboxPoints rbox("100");
-	Qhull q(rbox, "qvoronoi s o");
-	QhullFacetList facets = q.facetList();
-	cout << facets;
 	
 
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(1280, 720);
-	GameManager gameManager = GameManager(0, players, 5);
+	GameManager gameManager = GameManager(0, players, 5, 1280, 720);
 	
 	gameManager.board.display(window);
 	window.showUI();

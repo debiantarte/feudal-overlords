@@ -18,7 +18,7 @@ enum TerritoryType {
 class Territory
 {
 public:
-	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner);
+	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray);
 	~Territory();
 	void resetResources();
 	void display(Window&, const sf::RenderStates&);
