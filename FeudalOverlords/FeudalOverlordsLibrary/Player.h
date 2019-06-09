@@ -17,7 +17,7 @@ public:
 	void threaten(Lord&);
 	void raiseTroops(Territory);
 	
-	virtual unique_ptr<sf::Drawable> display(Window&);
+	virtual void display(Window&);
 
 private:
 	string name;

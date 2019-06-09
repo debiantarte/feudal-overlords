@@ -11,10 +11,10 @@ type(type), owner(owner)
 {
 	assert(money.getType() == ResourceType::money);
 	assert(military.getType() == ResourceType::military);
-	shape.append(sf::Vertex(sf::Vector2f(0.0, 0.0)));
-	shape.append(sf::Vertex(sf::Vector2f(0.0, 1.0)));
-	shape.append(sf::Vertex(sf::Vector2f(1.0, 1.0)));
-	shape.append(sf::Vertex(sf::Vector2f(1.0, 0.0)));
+	shape.append(sf::Vertex(sf::Vector2f(0.0, 0.0), sf::Vector2f(0.0,0.0)));
+	shape.append(sf::Vertex(sf::Vector2f(0.0, 1.0), sf::Vector2f(0.0, 64.0)));
+	shape.append(sf::Vertex(sf::Vector2f(1.0, 1.0), sf::Vector2f(64.0, 64.0)));
+	shape.append(sf::Vertex(sf::Vector2f(1.0, 0.0), sf::Vector2f(64.0, 0.0)));
 }
 
 Territory::~Territory()
@@ -49,10 +49,11 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 }
 
 // This is a pseudo-observer
-bool Territory::isOver(sf::Vector2f tilePos, int width, int posX, int posY, sf::Mouse::Button button)
+bool Territory::isOver(sf::Vector2f tilePos, int width, int height, int posX, int posY, sf::Mouse::Button button)
 {
+	
 	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing
-	if (!shape.getBounds().contains(sf::Vector2f((float)(posX - tilePos.x) / width, (float)(posY - tilePos.y) / width)))
+	if (!shape.getBounds().contains(sf::Vector2f((float)(posX - tilePos.x) / width, (float)(posY - tilePos.y) / height)))
 	{
 		return false;
 	}
@@ -64,8 +65,8 @@ bool Territory::isOver(sf::Vector2f tilePos, int width, int posX, int posY, sf::
 
 	for (size_t i = 0; i < shape.getVertexCount(); i++)
 	{
-		sf::Vector2f p1 = sf::Vector2f(shape[i].position.x * width + tilePos.x, shape[i].position.y * width + tilePos.y);
-		sf::Vector2f p2 = sf::Vector2f(shape[(i + 1) % shape.getVertexCount()].position.x * width + tilePos.x, shape[(i + 1) % shape.getVertexCount()].position.y * width + tilePos.y); // selects the next point, with a % to loop back to the first point when needed
+		sf::Vector2f p1 = sf::Vector2f(shape[i].position.x * width + tilePos.x, shape[i].position.y * height + tilePos.y);
+		sf::Vector2f p2 = sf::Vector2f(shape[(i + 1) % shape.getVertexCount()].position.x * width + tilePos.x, shape[(i + 1) % shape.getVertexCount()].position.y * height + tilePos.y); // selects the next point, with a % to loop back to the first point when needed
 		float y_diff = -(p2.y - p1.y);
 		float x_diff = p2.x - p1.x;
 		float diag_diff = -(y_diff * p1.x + x_diff * p1.y);
@@ -89,6 +90,7 @@ bool Territory::isOver(sf::Vector2f tilePos, int width, int posX, int posY, sf::
 	{
 		return false;
 	}
+	std::cout << "tile position : X = " << tilePos.x << "; Y = " << tilePos.y << std::endl;
 	return true;
 }
 
@@ -110,5 +112,13 @@ void Territory::onClick(int posX, int posY, sf::Mouse::Button button)
 		break;
 	default:
 		break;
+	}
+}
+
+void Territory::setColor(sf::Color col)
+{
+	for (size_t i = 0; i < shape.getVertexCount(); i++)
+	{
+		shape[i].color = col;
 	}
 }

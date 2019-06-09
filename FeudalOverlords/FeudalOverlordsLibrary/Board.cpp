@@ -22,10 +22,10 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	board_vertices(sf::VertexArray())
 {
 	/* TODO : check if paths are right */
-	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png"));
-	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex.png"));
-	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png"));
-	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png"));
+	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png", sf::IntRect(0, 0, 64, 64)));
+	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex.png", sf::IntRect(0, 0, 64, 64)));
+	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png", sf::IntRect(0, 0, 64, 64)));
+	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png", sf::IntRect(0, 0, 64, 64)));
 	// we want to place the capital somewhere in the middle
 	int capital_x = boardWidth / 2 + rng(-1, 1) -1;
 	int capital_y = boardHeight / 2 + rng(-1, 1) -1;
@@ -59,7 +59,7 @@ Board::~Board()
 }
 */
 
-unique_ptr<sf::Drawable> Board::display(Window& window)
+void Board::display(Window& window)
 {
 	// resize the vertex array to fit the level size
 	board_vertices.setPrimitiveType(sf::TriangleFan);
@@ -72,8 +72,8 @@ unique_ptr<sf::Drawable> Board::display(Window& window)
 			sf::RenderStates states;
 			sf::Transform trans;
 			trans = trans.Identity;
-			trans.translate((float)i*(win.dimensions.first / TILE_SIZE), (float)j*(win.dimensions.second / TILE_SIZE));
-			trans.scale((float)(win.dimensions.first / TILE_SIZE), (float)(win.dimensions.second / TILE_SIZE));
+			trans.translate((float)i*(window.dimensions.first / TILE_SIZE), (float)j*((window.dimensions.second - 100) / TILE_SIZE));
+			trans.scale((float)(window.dimensions.first / TILE_SIZE), (float)((window.dimensions.second - 100) / TILE_SIZE));
 			states.transform = trans;
 			switch (tile->getType())
 			{
@@ -93,28 +93,43 @@ unique_ptr<sf::Drawable> Board::display(Window& window)
 				abort();
 				break;
 			}
-			tile->display(win, states);
+			tile->display(window, states);
 		}
 	}
-	return make_unique<sf::VertexArray>(board_vertices);
 }
 
-void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
+void Board::onClick(int posX, int posY, sf::Mouse::Button mb, Window& window)
 {
-	int width = (win.dimensions.first / TILE_SIZE);
-	int mouseRelativeX = posX;
-	int mouseRelativeY = posY;
-	std::cout << "mouse position : X = " << mouseRelativeX << "; Y = " << mouseRelativeY << std::endl;
+	int width = (window.dimensions.first / TILE_SIZE);
+	int height = (window.dimensions.second - 100) / TILE_SIZE;
+	
+	std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
 	bool found = false;
-	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" will be used)
+	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" is used)
 
-	for (int j = 0; j < BOARD_HEIGHT && !found; j++)
+	for (int j = 0; j < BOARD_HEIGHT || found; j++)
 	{
-		for (int i = 0; i < BOARD_WIDTH && !found; i++)
+		for (int i = 0; i < BOARD_WIDTH || found; i++)
 		{
-			// the parentheses with TILE_SIZE are placeholder until voronoi (and globally positionned vertices in each territory, which is not yet the case)
-			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*width), width, mouseRelativeX, mouseRelativeY, mb);
-			target = territories[i + j * BOARD_WIDTH].get();
+			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*height), width, height, posX, posY, mb);
+			if (found)
+			{
+				target = territories[i + j * BOARD_WIDTH].get();
+			}
 		}
 	}
+	if (target == nullptr)
+	{
+		return;
+	}
+	if (mb == sf::Mouse::Left)
+	{
+		if (selected != nullptr)
+		{
+			selected->setColor(sf::Color::White); // reset old selected's color
+		}
+		selected = target;
+		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
+	}
+	std::cout << "Selected a territory of type : " << selected->getType() << std::endl;
 }
