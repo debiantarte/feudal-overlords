@@ -27,6 +27,8 @@ public:
 	TerritoryType getType() const;
 	bool isOver(sf::Vector2f, int, int, int, sf::Mouse::Button);
 	void onClick(int, int, sf::Mouse::Button);
+	shared_ptr<Lord> getOwner();
+	void setOwner(shared_ptr<Lord>);
 private:
 	Resource money;
 	Resource military;

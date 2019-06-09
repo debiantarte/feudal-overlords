@@ -18,8 +18,8 @@ int rng(int const min, int const max)
 	return distribution(engine);
 }
 
-Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
-	board_vertices(sf::VertexArray()), win(win_)
+Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight) :
+	board_vertices(sf::VertexArray())
 {
 	/* TODO : check if paths are right */
 	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png"));
@@ -27,15 +27,15 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png"));
 	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png"));
 	// we want to place the capital somewhere in the middle
-	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1) -1;
-	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1) -1;
-	for (int j = 0; j < BOARD_HEIGHT; j++)
+	int capital_x = boardWidth / 2 + rng(-1, 1) -1;
+	int capital_y = boardHeight / 2 + rng(-1, 1) -1;
+	for (int j = 0; j < boardHeight; j++)
 	{
-		for (int i = 0; i < BOARD_WIDTH; i++)
+		for (int i = 0; i < boardWidth; i++)
 		{
-			TerritoryType type = (i == capital_x && j == capital_y) ? capital : (TerritoryType)((rand() % (endTerritoryType -1)) + 1);
-			int troops = rng(0, BOARD_HEIGHT + j + BOARD_WIDTH + i) * 1000;
-			int money = rng(0, BOARD_HEIGHT - j + BOARD_WIDTH - i) * 1000;
+			TerritoryType type = (i == capital_x && j == capital_y) ? capital : countryside;
+			int troops = rng(0, boardHeight + j + boardWidth + i) * 1000;
+			int money = rng(0, boardHeight - j + boardWidth - i) * 1000;
 			shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
 			if (type == capital)
 			{
@@ -47,6 +47,11 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 		}
 	}
 }
+Board::Board(vector<shared_ptr<Player>> players) :
+	Board(players, BOARD_WIDTH, BOARD_HEIGHT)
+{
+	
+}
 
 /*
 Board::~Board()
@@ -54,7 +59,7 @@ Board::~Board()
 }
 */
 
-unique_ptr<sf::Drawable> Board::display()
+unique_ptr<sf::Drawable> Board::display(Window& window)
 {
 	// resize the vertex array to fit the level size
 	board_vertices.setPrimitiveType(sf::TriangleFan);

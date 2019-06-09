@@ -1,7 +1,9 @@
 #pragma once
-#include "Lord.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
+
+#include "Lord.h"
+#include "Window.h"
 
 using namespace std;
 
@@ -26,7 +28,7 @@ public:
 	AI(AIGoal, vector<int>);
 	double approve();
 	bool rebel(double approval); // TODO
-	virtual unique_ptr<sf::Drawable> display(); // TODO, placeholder state
+	virtual unique_ptr<sf::Drawable> display(Window&); // TODO, placeholder state
 	//~AI();
 	vector<int> getPsychology();
 	AIGoal getGoal();
