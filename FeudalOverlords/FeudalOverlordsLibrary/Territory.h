@@ -27,6 +27,7 @@ public:
 	TerritoryType getType() const;
 	bool isOver(sf::Vector2f, int, int, int, int, sf::Mouse::Button);
 	void onClick(int, int, sf::Mouse::Button);
+	void setColor(sf::Color);
 private:
 	Resource money;
 	Resource military;

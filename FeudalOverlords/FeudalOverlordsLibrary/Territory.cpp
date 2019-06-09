@@ -104,3 +104,11 @@ void Territory::onClick(int posX, int posY, sf::Mouse::Button button)
 		break;
 	}
 }
+
+void Territory::setColor(sf::Color col)
+{
+	for (size_t i = 0; i < shape.getVertexCount(); i++)
+	{
+		shape[i].color = col;
+	}
+}

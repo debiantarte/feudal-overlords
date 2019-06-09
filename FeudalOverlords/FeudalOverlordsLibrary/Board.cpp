@@ -107,7 +107,10 @@ void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 		for (int i = 0; i < BOARD_WIDTH || found; i++)
 		{
 			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*height), width, height, posX, posY, mb);
-			if (found) target = territories[i + j * BOARD_WIDTH].get();
+			if (found)
+			{
+				target = territories[i + j * BOARD_WIDTH].get();
+			}
 		}
 	}
 	if (target == nullptr)
@@ -116,7 +119,12 @@ void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 	}
 	if (mb == sf::Mouse::Left)
 	{
+		if (selected != nullptr)
+		{
+			selected->setColor(sf::Color::White); // reset old selected's color
+		}
 		selected = target;
+		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
 	}
 	std::cout << "Selected a territory of type : " << selected->getType() << std::endl;
 }
