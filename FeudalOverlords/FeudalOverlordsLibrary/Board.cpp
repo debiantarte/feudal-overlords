@@ -22,10 +22,10 @@ Board::Board(vector<shared_ptr<Player>> players, Window& win_) :
 	board_vertices(sf::VertexArray()), win(win_)
 {
 	/* TODO : check if paths are right */
-	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png"));
-	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex.png"));
-	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png"));
-	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png"));
+	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png", sf::IntRect(0, 0, 64, 64)));
+	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex.png", sf::IntRect(0, 0, 64, 64)));
+	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png", sf::IntRect(0, 0, 64, 64)));
+	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex.png", sf::IntRect(0, 0, 64, 64)));
 	// we want to place the capital somewhere in the middle
 	int capital_x = BOARD_WIDTH / 2 + rng(-1, 1) -1;
 	int capital_y = BOARD_HEIGHT / 2 + rng(-1, 1) -1;

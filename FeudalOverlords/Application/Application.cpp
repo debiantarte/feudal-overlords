@@ -44,6 +44,8 @@ int main()
 		return EXIT_FAILURE;
 	}
 	sf::CircleShape c(3);
+	c.setFillColor(sf::Color::Red);
+	
 	while (window.isOpen())
 	{
 
@@ -62,7 +64,7 @@ int main()
 				gameManager.board.onClick(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y, event.mouseButton.button);
 				
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
-				c.setFillColor(sf::Color::Red);
+				
 			}
 
 			gui.handleEvent(event); // tell all tgui widgets about events happening
