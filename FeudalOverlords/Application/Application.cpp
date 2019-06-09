@@ -18,7 +18,7 @@ int main()
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(800, 600);
-	GameManager gameManager(0, players, window.dimensions);
+	GameManager gameManager(0, players, pair<int, int>(800, 500));
 	tgui::Gui gui{ window };
 	
 	try 
@@ -48,7 +48,8 @@ int main()
 			if (event.type == sf::Event::Resized)
 				window.display();
 			if (event.type == sf::Event::MouseButtonPressed) {
-				//gameManager.board.onClick(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y, event.mouseButton.button);
+				gameManager.board.onClick(pair<int, int>(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y),
+					event.mouseButton.button, window);
 				
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
 				

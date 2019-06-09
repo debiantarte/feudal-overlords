@@ -110,40 +110,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape)));
 
 	}
-
-	/*
-	// we want to place the capital somewhere in the middle
-	int capital_x = boardWidth / 2 + rng(-1, 1) -1;
-	int capital_y = boardHeight / 2 + rng(-1, 1) -1;
-	for (int j = 0; j < boardHeight; j++)
-	{
-		for (int i = 0; i < boardWidth; i++)
-		{
-			TerritoryType type = (i == capital_x && j == capital_y) ? capital : countryside;
-			int troops = rng(0, boardHeight + j + boardWidth + i) * 1000;
-			int money = rng(0, boardHeight - j + boardWidth - i) * 1000;
-			shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
-			if (type == capital)
-			{
-				troops /= 2;
-				money *= 2;
-				owner = players[0]; // make_shared<Player>(players[0]);
-			}
-			territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner)));
-		}
-	}*/
 }
-/*Board::Board(vector<shared_ptr<Player>> players) :
-	Board(players, BOARD_WIDTH, BOARD_HEIGHT)
-{
-	
-}*/
-
-/*
-Board::~Board()
-{
-}
-*/
 
 void Board::display(Window& window)
 {
@@ -172,38 +139,30 @@ void Board::display(Window& window)
 	}
 }
 
-void Board::onClick(int posX, int posY, sf::Mouse::Button mb, Window& window)
+void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& window)
 {
-	int width = (window.dimensions.first / TILE_SIZE);
+	int posX = mousePos.first;
+	int posY = mousePos.second;
+	/*int width = (window.dimensions.first / TILE_SIZE);
 	int height = (window.dimensions.second - 100) / TILE_SIZE;
+	*/
 	
 	std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
-	bool found = false;
-	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" is used)
 
-	for (int j = 0; j < BOARD_HEIGHT || found; j++)
+	for (auto& tile : territories)
 	{
-		for (int i = 0; i < BOARD_WIDTH || found; i++)
+		if (tile->isOver(pair<int, int>(posX, posY), mb))
 		{
-			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*height), width, height, posX, posY, mb);
-			if (found)
+			if (mb == sf::Mouse::Left)
 			{
-				target = territories[i + j * BOARD_WIDTH].get();
+				if (selected != nullptr)
+				{
+					selected->setColor(sf::Color::White); // reset old selected's color
+				}
+				selected = &*tile;
+				selected->setColor(sf::Color::Blue + sf::Color::Cyan);
 			}
 		}
-	}
-	if (target == nullptr)
-	{
-		return;
-	}
-	if (mb == sf::Mouse::Left)
-	{
-		if (selected != nullptr)
-		{
-			selected->setColor(sf::Color::White); // reset old selected's color
-		}
-		selected = target;
-		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
 	}
 }
 

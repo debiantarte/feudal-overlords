@@ -71,6 +71,56 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 }
 
 // This is a pseudo-observer
+bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
+{
+
+	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing
+	/*if (!shape.getBounds().contains(mousePos.first, mousePos.second))
+	{
+		return false;
+	}*/
+
+	// second check : it was near me, but maybe in the part of the bounding rectangle outside of the real polygon. Let's check that
+	// the method comes from there : https://algorithmtutor.com/Computational-Geometry/Check-if-a-point-is-inside-a-polygon/
+	// TODO : this always return True
+	vector<float> y_diffs;
+	vector<float> x_diffs;
+	vector<float> diag_diffs;
+
+	for (size_t i = 0; i < shape.getVertexCount(); i++)
+	{
+		sf::Vector2f p1 = sf::Vector2f(shape[i].position.x, shape[i].position.y);
+		sf::Vector2f p2 = sf::Vector2f(shape[(i + 1) % shape.getVertexCount()].position.x,
+			shape[(i + 1) % shape.getVertexCount()].position.y); // selects the next point, with a % to loop back to the first point when needed
+		float y_diff = -(p2.y - p1.y);
+		float x_diff = p2.x - p1.x;
+		float diag_diff = -(y_diff * p1.x + x_diff * p1.y);
+		y_diffs.push_back(y_diff);
+		x_diffs.push_back(x_diff);
+		diag_diffs.push_back(diag_diff);
+	}
+
+	vector<float> discriminers; // discriminers determine whether the point is left, on, or right of the polygon's side
+
+	for (size_t i = 0; i < y_diffs.size(); i++)
+	{
+		float discriminer = y_diffs[i] * mousePos.first + x_diffs[i] * mousePos.second + diag_diffs[i];
+		discriminers.push_back(discriminer);
+	}
+
+	bool isAlwaysLeft = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {
+		return d > 0;// || (-d < FLT_EPSILON);
+	});
+	bool isAlwaysRight = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {
+		return d < 0;// || (d < FLT_EPSILON || -d < FLT_EPSILON);
+	});
+
+	return isAlwaysLeft || isAlwaysRight;
+	//std::cout << "tile position : X = " << tilePos.x << "; Y = " << tilePos.y << std::endl;
+	//std::cout << "Tile found !" << endl;
+}
+
+// This is a pseudo-observer
 bool Territory::isOver(sf::Vector2f tilePos, int width, int height, int posX, int posY, sf::Mouse::Button button)
 {
 	

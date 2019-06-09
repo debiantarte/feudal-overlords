@@ -3,6 +3,13 @@
 #include "../FeudalOverlordsLibrary/GameManager.h"
 
 
+TEST(TestTerritory, TestIsOver)
+{
+	AI lord();
+	Territory territory(Resource(100, money), Resource(100, military), countryside, shared_ptr<Lord> owner, sf::VertexArray shape);
+	bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
+}
+
 TEST(TestAI, TestRebel) {
 	AI ai = AI();
 	vector<int> psychology = ai.getPsychology();
@@ -29,9 +36,9 @@ TEST(TestAI, TestRebel) {
 TEST(TestGameManager, TestTerritoryCount) {
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
-	GameManager gameManager(8, players, 3, 3, 3);
+	GameManager gameManager(99, players, pair<int, int>(300, 200), 3);
 	map<shared_ptr<Lord>, int> res_map = gameManager.territoryCount();
-	EXPECT_EQ(res_map.size(), 9);
+	EXPECT_EQ(res_map.size(), 100);
 	for (auto count_pair : res_map)
 	{
 		EXPECT_EQ(count_pair.second, 1);
@@ -42,7 +49,7 @@ TEST(TestGameManager, TestGameFinishedConquest)
 {
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
-	GameManager gameManager(8, players, 3);
+	GameManager gameManager(99, players, pair<int, int>(300, 200), 3);
 	EXPECT_FALSE(gameManager.isGameFinished());
 	for (auto& territory : gameManager.board.territories)
 	{
@@ -54,8 +61,8 @@ TEST(TestGameManager, TestGameFinishedConquest)
 TEST(TestGameManager, TestGameFinishedTurns)
 {
 	vector<shared_ptr<Player>> players;
-	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
-	GameManager gameManager(8, players, 3);
+	players.push_back(make_shared<Player>((string) "Elizabeth"));
+	GameManager gameManager(99, players, pair<int, int>(300, 200), 3);
 	EXPECT_FALSE(gameManager.isGameFinished());
 	gameManager.setTurn(3);
 	EXPECT_TRUE(gameManager.isGameFinished());
@@ -65,7 +72,7 @@ TEST(TestGameManager, TestWinner)
 {
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
-	GameManager gameManager(8, players, 3);
+	GameManager gameManager(99, players, pair<int, int>(300, 200), 3);
 	EXPECT_EQ(gameManager.winner(), nullptr);
 	for (int i=0; i<2; i++)
 	{
