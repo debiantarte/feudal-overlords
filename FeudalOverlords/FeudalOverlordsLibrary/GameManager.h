@@ -27,8 +27,9 @@ public:
 	vector<shared_ptr<Player>> players;
 	Board board;
 
-	GameManager(int nbrAIs, vector<shared_ptr<Player>>, int);
-	GameManager(int nbrAIs, vector<shared_ptr<Player>>, int, int, int);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, Window&);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, Window&, int);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, Window&, int, int, int);
 
 	void nextTurn(); // TODO
 	shared_ptr<Lord> winner();

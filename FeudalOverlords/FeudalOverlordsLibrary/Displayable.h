@@ -9,7 +9,7 @@ class Displayable
 {
 public:
 	Displayable();
-	virtual unique_ptr<sf::Drawable> display(Window&) = 0;
+	virtual void display(Window&) = 0;
 	~Displayable();
 };
 

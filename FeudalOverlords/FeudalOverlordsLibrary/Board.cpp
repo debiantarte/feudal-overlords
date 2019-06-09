@@ -115,7 +115,7 @@ Board::~Board()
 }
 */
 
-unique_ptr<sf::Drawable> Board::display(Window& window)
+void Board::display(Window& window)
 {
 	// resize the vertex array to fit the level size
 	board_vertices.setPrimitiveType(sf::TriangleFan);
@@ -123,44 +123,69 @@ unique_ptr<sf::Drawable> Board::display(Window& window)
 	{
 		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
-			int textureNumber = (territories[i + j * BOARD_WIDTH]->getType() == countryside) ? rand() % 3 : 3;
-			
+			//int textureNumber = (territories[i + j * BOARD_WIDTH]->getType() == countryside) ? rand() % 3 : 3;
+			Territory* tile = territories[i + j * BOARD_WIDTH].get();
 			sf::RenderStates states;
 			sf::Transform trans;
 			trans = trans.Identity;
-			trans.translate(i*(window.dimensions.first / TILE_SIZE), j*(window.dimensions.second / TILE_SIZE));
-			trans.scale((window.dimensions.first / TILE_SIZE), (window.dimensions.second / TILE_SIZE));
+			trans.translate((float)i*(window.dimensions.first / TILE_SIZE), (float)j*((window.dimensions.second - 100) / TILE_SIZE));
+			trans.scale((float)(window.dimensions.first / TILE_SIZE), (float)((window.dimensions.second - 100) / TILE_SIZE));
 			states.transform = trans;
-			switch (textureNumber)
+			switch (tile->getType())
 			{
-			case 0:
+			case capital:
+				states.texture = &cityTex;
+				break;
+			case countryside:
 				states.texture = &dirtTex;
 				break;
-			case 1:
+			case grasslands:
 				states.texture = &grassTex;
 				break;
-			case 2:
+			case highlands:
 				states.texture = &mountainTex;
-				break;
-			case 3:
-				states.texture = &cityTex;
 				break;
 			default:
 				abort();
 				break;
 			}
-			territories[i + j * BOARD_WIDTH]->display(window, states);
+			tile->display(window, states);
 		}
 	}
-	return make_unique<sf::VertexArray>(board_vertices);
 }
 
-map<shared_ptr<Lord>, int> Board::territoryCount()
+void Board::onClick(int posX, int posY, sf::Mouse::Button mb, Window& window)
 {
-	map<shared_ptr<Lord>, int> res_map;
-	for (auto& territory : territories)
+	int width = (window.dimensions.first / TILE_SIZE);
+	int height = (window.dimensions.second - 100) / TILE_SIZE;
+	
+	std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
+	bool found = false;
+	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" is used)
+
+	for (int j = 0; j < BOARD_HEIGHT || found; j++)
 	{
-		res_map[territory->getOwner()] ++;
+		for (int i = 0; i < BOARD_WIDTH || found; i++)
+		{
+			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*height), width, height, posX, posY, mb);
+			if (found)
+			{
+				target = territories[i + j * BOARD_WIDTH].get();
+			}
+		}
+	}
+	if (target == nullptr)
+	{
+		return;
+	}
+	if (mb == sf::Mouse::Left)
+	{
+		if (selected != nullptr)
+		{
+			selected->setColor(sf::Color::White); // reset old selected's color
+		}
+		selected = target;
+		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
 	}
 		return res_map;
 }
