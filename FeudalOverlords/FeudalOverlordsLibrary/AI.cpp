@@ -74,7 +74,7 @@ bool AI::rebel(double approval)
 	return true;
 }
 
-unique_ptr<sf::Drawable> AI::display()
+unique_ptr<sf::Drawable> AI::display(Window& window)
 {
 	// placeholder
 	unique_ptr<sf::Drawable> shape = make_unique<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(120.F, 50.F)));

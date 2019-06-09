@@ -16,16 +16,17 @@ class Board :
 	public Displayable
 {
 public:
-	Board(vector<shared_ptr<Player>>, Window&);
+	Board(vector<shared_ptr<Player>>);
+	Board(vector<shared_ptr<Player>>, int, int);
 	//~Board();
-	virtual unique_ptr<sf::Drawable> display();
-private:
+	virtual unique_ptr<sf::Drawable> display(Window&) override;
+	map<shared_ptr<Lord>, int> territoryCount();
 	vector<unique_ptr<Territory>> territories;
+private:
 	sf::VertexArray board_vertices;
 	sf::Texture cityTex;
 	sf::Texture dirtTex;
 	sf::Texture grassTex;
 	sf::Texture mountainTex;
-	Window& win;
 };
 

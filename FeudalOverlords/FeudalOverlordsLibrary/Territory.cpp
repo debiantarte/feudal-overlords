@@ -29,11 +29,17 @@ void Territory::resetResources()
 
 TerritoryType Territory::getType() const
 {
-	if (type == capital)
-	{
-		std::cout << "That's a capital !" << std::endl;
-	}
 	return type;
+}
+
+shared_ptr<Lord> Territory::getOwner()
+{
+	return owner;
+}
+
+void Territory::setOwner(shared_ptr<Lord> owner_)
+{
+	owner = owner_;
 }
 
 void Territory::display(Window& win, const sf::RenderStates& states)

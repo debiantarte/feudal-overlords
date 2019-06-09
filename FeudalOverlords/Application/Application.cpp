@@ -28,9 +28,9 @@ int main()
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(1280, 720);
-	GameManager gameManager = GameManager(0, players, window);
+	GameManager gameManager = GameManager(0, players, 5);
 	
-	gameManager.board.display();
+	gameManager.board.display(window);
 	window.showUI();
 	window.display();
 	while (window.isOpen())
@@ -44,6 +44,8 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			if (event.type == sf::Event::Resized)
+				window.display();
 		}
 	}
 }
