@@ -67,8 +67,8 @@ void Board::display()
 			sf::RenderStates states;
 			sf::Transform trans;
 			trans = trans.Identity;
-			trans.translate((float)i*(win.dimensions.first / TILE_SIZE), (float)j*(win.dimensions.second / TILE_SIZE));
-			trans.scale((float)(win.dimensions.first / TILE_SIZE), (float)(win.dimensions.second / TILE_SIZE));
+			trans.translate((float)i*(win.dimensions.first / TILE_SIZE), (float)j*((win.dimensions.second - 100) / TILE_SIZE));
+			trans.scale((float)(win.dimensions.first / TILE_SIZE), (float)((win.dimensions.second - 100) / TILE_SIZE));
 			states.transform = trans;
 			switch (tile->getType())
 			{
@@ -96,20 +96,23 @@ void Board::display()
 void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 {
 	int width = (win.dimensions.first / TILE_SIZE);
-	int mouseRelativeX = posX;
-	int mouseRelativeY = posY;
-	std::cout << "mouse position : X = " << mouseRelativeX << "; Y = " << mouseRelativeY << std::endl;
+	int height = (win.dimensions.second - 100) / TILE_SIZE;
+	
+	std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
 	bool found = false;
 	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" is used)
 
-	for (int j = 0; j < BOARD_HEIGHT && !found; j++)
+	for (int j = 0; j < BOARD_HEIGHT || found; j++)
 	{
-		for (int i = 0; i < BOARD_WIDTH && !found; i++)
+		for (int i = 0; i < BOARD_WIDTH || found; i++)
 		{
-			// the parentheses with TILE_SIZE are placeholder until voronoi (and globally positionned vertices in each territory, which is not yet the case)
-			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*width), width, mouseRelativeX, mouseRelativeY, mb);
-			target = territories[i + j * BOARD_WIDTH].get();
+			found = territories[i + j * BOARD_WIDTH]->isOver(sf::Vector2f((float)i*width, (float)j*height), width, height, posX, posY, mb);
+			if (found) target = territories[i + j * BOARD_WIDTH].get();
 		}
+	}
+	if (target == nullptr)
+	{
+		return;
 	}
 	if (mb == sf::Mouse::Left)
 	{

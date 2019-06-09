@@ -43,7 +43,7 @@ int main()
 		std::cerr << "Failed to load TGUI widgets : " << except.what() << std::endl;
 		return EXIT_FAILURE;
 	}
-
+	sf::CircleShape c(3);
 	while (window.isOpen())
 	{
 
@@ -51,14 +51,19 @@ int main()
 			window.close();
 		}
 		sf::Event event;
+
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
 			if (event.type == sf::Event::Resized)
 				window.display();
-			if (event.type == sf::Event::MouseButtonPressed)
+			if (event.type == sf::Event::MouseButtonPressed) {
 				gameManager.board.onClick(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y, event.mouseButton.button);
+				
+				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
+				c.setFillColor(sf::Color::Red);
+			}
 
 			gui.handleEvent(event); // tell all tgui widgets about events happening
 		}
@@ -66,6 +71,7 @@ int main()
 		window.clear();
 		gameManager.board.display();
 		gui.draw(); // Draw all widgets
+		window.draw(c);
 		window.display();
 	}
 }

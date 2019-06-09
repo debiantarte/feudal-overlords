@@ -25,7 +25,7 @@ public:
 	void resetResources();
 	void display(Window&, const sf::RenderStates&);
 	TerritoryType getType() const;
-	bool isOver(sf::Vector2f, int, int, int, sf::Mouse::Button);
+	bool isOver(sf::Vector2f, int, int, int, int, sf::Mouse::Button);
 	void onClick(int, int, sf::Mouse::Button);
 private:
 	Resource money;
