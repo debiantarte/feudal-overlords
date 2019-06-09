@@ -37,7 +37,7 @@ void Player::raiseTroops(Territory)
 
 }
 
-unique_ptr<sf::Drawable> Player::display()
+void Player::display()
 {
-	return make_unique<sf::RectangleShape>(sf::RectangleShape());
+	
 }

@@ -26,7 +26,7 @@ public:
 	AI(AIGoal, vector<int>);
 	double approve();
 	bool rebel(double approval); // TODO
-	virtual unique_ptr<sf::Drawable> display(); // TODO, placeholder state
+	virtual void display(); // TODO, placeholder state
 	//~AI();
 	vector<int> getPsychology();
 	AIGoal getGoal();

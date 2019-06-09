@@ -18,7 +18,7 @@ class Board :
 public:
 	Board(vector<shared_ptr<Player>>, Window&);
 	//~Board();
-	virtual unique_ptr<sf::Drawable> display();
+	virtual void display();
 	void onClick(int, int, sf::Mouse::Button);
 private:
 	vector<unique_ptr<Territory>> territories;
@@ -28,5 +28,6 @@ private:
 	sf::Texture grassTex;
 	sf::Texture mountainTex;
 	Window& win;
+	Territory* selected;
 };
 

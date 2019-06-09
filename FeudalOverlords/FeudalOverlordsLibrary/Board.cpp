@@ -54,7 +54,7 @@ Board::~Board()
 }
 */
 
-unique_ptr<sf::Drawable> Board::display()
+void Board::display()
 {
 	// resize the vertex array to fit the level size
 	board_vertices.setPrimitiveType(sf::TriangleFan);
@@ -91,7 +91,6 @@ unique_ptr<sf::Drawable> Board::display()
 			tile->display(win, states);
 		}
 	}
-	return make_unique<sf::VertexArray>(board_vertices);
 }
 
 void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
@@ -101,7 +100,7 @@ void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 	int mouseRelativeY = posY;
 	std::cout << "mouse position : X = " << mouseRelativeX << "; Y = " << mouseRelativeY << std::endl;
 	bool found = false;
-	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" will be used)
+	Territory* target = nullptr; // just to be used as a reference, so no need to delete it (no "new" is used)
 
 	for (int j = 0; j < BOARD_HEIGHT && !found; j++)
 	{
@@ -112,4 +111,9 @@ void Board::onClick(int posX, int posY, sf::Mouse::Button mb)
 			target = territories[i + j * BOARD_WIDTH].get();
 		}
 	}
+	if (mb == sf::Mouse::Left)
+	{
+		selected = target;
+	}
+	std::cout << "Selected a territory of type : " << selected->getType() << std::endl;
 }
