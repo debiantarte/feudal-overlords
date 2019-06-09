@@ -29,7 +29,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 
 	int maxTroops = 1000;
 	int maxMoney = 1000;
-	int nbrPoints = 40;
+	int nbrPoints = 100;
 	vector<int> indexCapitals(players.size());
 	for (int i = 0; i < players.size(); i++)
 	{
@@ -60,22 +60,24 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		vector<sf::Vector2f> points;
 		auto halfedge = face.outerComponent;
 		auto startedge = face.outerComponent;
-		while (halfedge != nullptr && halfedge != startedge)
+		int tmp = 0;
+		while (halfedge != nullptr && (tmp == 0 || halfedge != startedge))
 		{
 			auto x = halfedge->origin->point.x;
 			auto y = halfedge->origin->point.y;
 			sf::Vector2f coord(x, y);
-			if (find(points.begin(), points.end(), coord) == points.end())
-			{
+			//if (points.size() > 0 && find(points.begin(), points.end(), coord) == points.end())
+			//{
 				points.push_back(coord);
-			}
+			//}
 			halfedge = halfedge->next;
+			tmp++;
 		}
-
-		auto shape = sf::VertexArray();
+		// we need to compute texture coords
+		auto shape = sf::VertexArray(sf::TriangleFan, points.size());
 		for (auto p : points)
 		{
-			shape.append(sf::Vertex(p));
+			shape.append(sf::Vertex(p, sf::Vector2f(0.0, 0.0)));
 		}
 		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape)));
 
@@ -117,40 +119,28 @@ Board::~Board()
 
 void Board::display(Window& window)
 {
-	// resize the vertex array to fit the level size
-	board_vertices.setPrimitiveType(sf::TriangleFan);
-	for (int j = 0; j < BOARD_HEIGHT; j++)
+	for (auto& tile: territories)
 	{
-		for (int i = 0; i < BOARD_WIDTH; i++)
+		sf::RenderStates states;
+		switch (tile->getType())
 		{
-			//int textureNumber = (territories[i + j * BOARD_WIDTH]->getType() == countryside) ? rand() % 3 : 3;
-			Territory* tile = territories[i + j * BOARD_WIDTH].get();
-			sf::RenderStates states;
-			sf::Transform trans;
-			trans = trans.Identity;
-			trans.translate((float)i*(window.dimensions.first / TILE_SIZE), (float)j*((window.dimensions.second - 100) / TILE_SIZE));
-			trans.scale((float)(window.dimensions.first / TILE_SIZE), (float)((window.dimensions.second - 100) / TILE_SIZE));
-			states.transform = trans;
-			switch (tile->getType())
-			{
-			case capital:
-				states.texture = &cityTex;
-				break;
-			case countryside:
-				states.texture = &dirtTex;
-				break;
-			case grasslands:
-				states.texture = &grassTex;
-				break;
-			case highlands:
-				states.texture = &mountainTex;
-				break;
-			default:
-				abort();
-				break;
-			}
-			tile->display(window, states);
+		case capital:
+			states.texture = &cityTex;
+			break;
+		case countryside:
+			states.texture = &dirtTex;
+			break;
+		case grasslands:
+			states.texture = &grassTex;
+			break;
+		case highlands:
+			states.texture = &mountainTex;
+			break;
+		default:
+			abort();
+			break;
 		}
+		tile->display(window, states);
 	}
 }
 
@@ -187,7 +177,16 @@ void Board::onClick(int posX, int posY, sf::Mouse::Button mb, Window& window)
 		selected = target;
 		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
 	}
-		return res_map;
+}
+
+map<shared_ptr<Lord>, int> Board::territoryCount()
+{
+	map<shared_ptr<Lord>, int> res_map;
+	for (auto& territory : territories)
+	{
+		res_map[territory->getOwner()] ++;
+	}
+	return res_map;
 }
 
 mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int> dimensions)
@@ -204,12 +203,12 @@ mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int
 	auto algorithm = mygal::FortuneAlgorithm<double>(points);
 	// Construct the diagram
 	algorithm.construct();
-	// computeLloydRelaxation()
 	// Bound the diagram
 	algorithm.bound(mygal::Box<double>{margin, margin,
 		(double) dimensions.first - margin, (double) dimensions.second - margin});
 	// Get the constructed diagram
 	auto diagram = algorithm.getDiagram();
+	diagram.computeLloydRelaxation();
 	// Compute the intersection between the diagram and a box
 	diagram.intersect(mygal::Box<double>{0.0, 0.0, (double) dimensions.first, (double) dimensions.second});
 	// we return the list of Face

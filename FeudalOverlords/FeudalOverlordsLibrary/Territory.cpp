@@ -12,10 +12,12 @@ type(type), owner(owner), shape(shape)
 {
 	assert(money.getType() == ResourceType::money);
 	assert(military.getType() == ResourceType::military);
+	/*
 	shape.append(sf::Vertex(sf::Vector2f(0.0, 0.0), sf::Vector2f(0.0,0.0)));
 	shape.append(sf::Vertex(sf::Vector2f(0.0, 1.0), sf::Vector2f(0.0, 64.0)));
 	shape.append(sf::Vertex(sf::Vector2f(1.0, 1.0), sf::Vector2f(64.0, 64.0)));
 	shape.append(sf::Vertex(sf::Vector2f(1.0, 0.0), sf::Vector2f(64.0, 0.0)));
+	*/
 }
 
 Territory::~Territory()

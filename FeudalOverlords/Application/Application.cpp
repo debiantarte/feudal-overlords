@@ -22,7 +22,7 @@ int main()
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(800, 600);
-	GameManager gameManager(0, players, window);
+	GameManager gameManager(0, players, window.dimensions);
 	tgui::Gui gui{ window };
 	
 	try 
