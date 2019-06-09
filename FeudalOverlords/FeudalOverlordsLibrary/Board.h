@@ -19,7 +19,7 @@ class Board :
 {
 public:
 	Board(vector<shared_ptr<Player>>);
-	Board(vector<shared_ptr<Player>>, int, int);
+	Board(vector<shared_ptr<Player>>, int, int, int);
 	//~Board();
 	virtual void display(Window& window);
 	void onClick(int, int, sf::Mouse::Button, Window&);

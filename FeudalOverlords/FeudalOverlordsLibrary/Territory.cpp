@@ -49,6 +49,25 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 {
 	shape.setPrimitiveType(sf::TriangleFan);
 	win.draw(shape, states);
+	unique_ptr<sf::Vertex> firstVertex;
+	unique_ptr<sf::Vertex> secondVertex;
+	for (int i=0; i<shape.getVertexCount(); i++)
+	{
+		if (i != 0)
+		{
+			secondVertex = move(firstVertex);
+		}
+		firstVertex = make_unique<sf::Vertex>(shape[i]);
+		if (i != 0)
+		{
+			sf::VertexArray line(sf::Lines);
+			line.append(*firstVertex);
+			line.append(*secondVertex);
+			win.draw(line);
+		}
+	}
+	secondVertex = move(firstVertex);
+	firstVertex = make_unique<sf::Vertex>(shape[0]);
 }
 
 // This is a pseudo-observer

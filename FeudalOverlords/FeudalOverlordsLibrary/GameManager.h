@@ -6,6 +6,9 @@
 #include "Board.h"
 #include "Window.h"
 
+
+#define NBR_POINTS 100
+
 using namespace std;
 
 enum endingCondition { // for now (milestone 1), we assume we are in turnLimit condition

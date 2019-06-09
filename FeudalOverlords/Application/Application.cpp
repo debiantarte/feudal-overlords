@@ -15,10 +15,6 @@ using namespace std;
 
 int main()
 {
-	/* WIP : draft to use MyGAL and voronoi !*/
-	
-	
-
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
 	Window window(800, 600);

@@ -18,7 +18,7 @@ int rng(int const min, int const max)
 	return distribution(engine);
 }
 
-Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight) :
+Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight, int nbrPoints) :
 	board_vertices(sf::VertexArray())
 {
 	/* TODO : check if paths are right */
@@ -29,8 +29,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 
 	int maxTroops = 1000;
 	int maxMoney = 1000;
-	int nbrPoints = 100;
-	vector<int> indexCapitals(players.size());
+	vector<int> indexCapitals;
 	for (int i = 0; i < players.size(); i++)
 	{
 		indexCapitals.push_back(rng(0, nbrPoints));
@@ -39,6 +38,21 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	for (int i = 0; i < diagram.getFaces().size(); i++)
 	{
 		TerritoryType type = countryside;
+		int intTerritory = rng(1, endTerritoryType);
+		switch (intTerritory)
+		{
+		case 1:
+			type = countryside;
+			break;
+		case 2:
+			type = grasslands;
+			break;
+		case 3:
+			type = highlands;
+			break;
+		default:
+			break;
+		}
 		for (auto indexCap : indexCapitals)
 		{
 			if (i == indexCap)
@@ -58,6 +72,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];
 		vector<sf::Vector2f> points;
+		double minx, maxx, miny, maxy;
 		auto halfedge = face.outerComponent;
 		auto startedge = face.outerComponent;
 		int tmp = 0;
@@ -65,6 +80,18 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		{
 			auto x = halfedge->origin->point.x;
 			auto y = halfedge->origin->point.y;
+			if (tmp == 0)
+			{
+				minx = x;
+				maxx = x;
+				miny = y;
+				maxy = y;
+
+			}
+			if (x > maxx) maxx = x;
+			if (x < minx) minx = x;
+			if (y > maxy) maxy = y;
+			if (y < miny) miny = y;
 			sf::Vector2f coord(x, y);
 			//if (points.size() > 0 && find(points.begin(), points.end(), coord) == points.end())
 			//{
@@ -74,10 +101,11 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 			tmp++;
 		}
 		// we need to compute texture coords
-		auto shape = sf::VertexArray(sf::TriangleFan, points.size());
+
+		auto shape = sf::VertexArray(sf::TriangleFan);
 		for (auto p : points)
 		{
-			shape.append(sf::Vertex(p, sf::Vector2f(0.0, 0.0)));
+			shape.append(sf::Vertex(p, sf::Vector2f(64*(p.x - minx) / (maxx - minx), 64*(p.y - miny) / (maxy - miny))));
 		}
 		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape)));
 
@@ -105,11 +133,11 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		}
 	}*/
 }
-Board::Board(vector<shared_ptr<Player>> players) :
+/*Board::Board(vector<shared_ptr<Player>> players) :
 	Board(players, BOARD_WIDTH, BOARD_HEIGHT)
 {
 	
-}
+}*/
 
 /*
 Board::~Board()
@@ -208,7 +236,9 @@ mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int
 		(double) dimensions.first - margin, (double) dimensions.second - margin});
 	// Get the constructed diagram
 	auto diagram = algorithm.getDiagram();
-	diagram.computeLloydRelaxation();
+	for (int i = 0; i < 10; i++) {
+		diagram.computeLloydRelaxation();
+	}
 	// Compute the intersection between the diagram and a box
 	diagram.intersect(mygal::Box<double>{0.0, 0.0, (double) dimensions.first, (double) dimensions.second});
 	// we return the list of Face
