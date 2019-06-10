@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <iostream>
 #include "Displayable.h"
 #include "Player.h"
 #include "Board.h"
@@ -29,6 +30,7 @@ public:
 	vector<Displayable> displayableObjects;
 	vector<shared_ptr<Player>> players;
 	Board board;
+	int currentPlayerId; // the index of the current player in the vector players
 
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>);
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, int);
@@ -41,7 +43,6 @@ public:
 	void playerTurn();	
 	void moveTroops(Territory*, Territory*);
 private:
-	int currentPlayerId; // the index of the current player in the vector players
 	int finishTurn; // the last turn of the game.
 	int turn; // the current turn
 	endingCondition endingCond;

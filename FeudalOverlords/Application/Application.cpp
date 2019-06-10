@@ -36,7 +36,7 @@ int main()
 	string targetText;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex, "", ""/*, nullptr, nullptr*//*, &gameManager*/);
+		window.buildGUI(gui, selectTex, targetTex, "", "", gameManager.players[gameManager.currentPlayerId]->getName());
 	}
 	catch (const tgui::Exception& except)
 	{
@@ -70,7 +70,7 @@ int main()
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
 				
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+			if (event.type == sf::Event::KeyReleased && sf::Keyboard::Key::Space) {
 				gameManager.nextTurn();
 			}
 
@@ -125,7 +125,7 @@ int main()
 		
 		try
 		{
-			window.buildGUI(gui, selectTex, targetTex, selectText, targetText/*, gameManager.board.selected, gameManager.board.target*//*, &gameManager*/);
+			window.buildGUI(gui, selectTex, targetTex, selectText, targetText, gameManager.players[gameManager.currentPlayerId]->getName());
 		}
 		catch (const tgui::Exception& except)
 		{

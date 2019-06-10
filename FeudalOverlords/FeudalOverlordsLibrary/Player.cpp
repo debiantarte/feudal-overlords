@@ -41,3 +41,8 @@ void Player::display(Window& window)
 {
 	
 }
+
+string Player::getName()
+{
+	return name;
+}
