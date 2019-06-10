@@ -5,6 +5,7 @@
 #include <random>
 #include <cassert>
 #include <iostream> // for debug
+#include <SFML/Audio.hpp>
 
 /*
  * helper function to generate random territories
@@ -164,6 +165,14 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 				}
 				selected = &*tile;
 				selected->setColor(sf::Color::Blue + sf::Color::Cyan);
+				sf::SoundBuffer buffer;
+				if (!buffer.loadFromFile("../../Assets/Sounds/boop.ogg")) {
+					cout << "trux" << endl; return;
+				};
+				sf::Sound sound;
+				sound.setBuffer(buffer);
+				sound.setPitch(2.f);
+				sound.play();
 			}
 			else if (mb == sf::Mouse::Right)
 			{

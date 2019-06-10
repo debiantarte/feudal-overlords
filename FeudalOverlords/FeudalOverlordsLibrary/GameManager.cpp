@@ -12,7 +12,7 @@ GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<in
 GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, int finishTurn=5) :
 	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players),
 	board(players, dimensions.first, dimensions.second, NBR_POINTS),
-	endingCond(turnLimit), turn(0), finishTurn(finishTurn)
+	endingCond(turnLimit), turn(0), finishTurn(finishTurn), currentPlayerId(0)
 {
 	assert(nbrAIs >= 0);
 }
@@ -21,15 +21,23 @@ void GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
-	for (auto& player: players)
+	for (int i = 0; i < players.size(); i++)
 	{
-		// it's player's turn
-		// we should display that it's their turn
-		// then act depending on their input
-		// select territory : left click
-		// to move troop or resources to another territory : right click on the destination territory
+		currentPlayerId = i;
+		playerTurn();
 	}
 }
+
+void GameManager::playerTurn()
+{
+	// it's player's turn
+	// we should display that it's their turn
+	// then act depending on their input
+	// select territory : left click
+	// to move troop or resources to another territory : right click on the destination territory
+	auto player = players[currentPlayerId];
+}
+
 
 shared_ptr<Lord> GameManager::winner()
 {

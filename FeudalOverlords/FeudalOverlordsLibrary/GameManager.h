@@ -38,8 +38,10 @@ public:
 	bool isGameFinished();
 	map<shared_ptr<Lord>, int> territoryCount();
 	void setTurn(int);
+	void playerTurn();	
 	void attack(Territory*, Territory*);
 private:
+	int currentPlayerId; // the index of the current player in the vector players
 	int finishTurn; // the last turn of the game.
 	int turn; // the current turn
 	endingCondition endingCond;
