@@ -1,341 +1,111 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>10</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>690</x>
-      <y>290</y>
-      <w>210</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>Territory
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>910</x><y>250</y><w>210</w><h>150</h></coordinates><panel_attributes>Territory
 --
-int remainingMoney
-int baseMoney
-int remainingTroops
-int baseTroops
-TerritoryType type
-Lord&amp; owner
---</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>20</x>
-      <y>50</y>
-      <w>360</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>GameManager
+- Resource money
+- Resource military
+- TerritoryType type
+- sf::VertexArray shape
+--
+void resetResources()
+TerritoryType getType()
+bool isOver(sf::Vector2f, int, int, int, int, sf::Mouse::Button);
+bool isOver(pair&lt;int, int&gt;, sf::Mouse::Button);
+void onClick(int, int, sf::Mouse::Button);
+void setColor(sf::Color);
+shared_ptr&lt;Lord&gt; getOwner();
+void setOwner(shared_ptr&lt;Lord&gt;);
+void setTroops(int);
+Resource getTroops() const;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>0</y><w>360</w><h>290</h></coordinates><panel_attributes>GameManager
 --
 int nbrPlayers
 int nbrIAs
+int currentPlayerId;
+
+- int finishTurn; // the last turn of the game.
+- int turn; // the current turn
+- endingCondition endingCond;
 --
 void nextTurn()
-bool isGameWon()
-void launchNewGame(int nbr_players; int nbr_ais)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>20</x>
-      <y>370</y>
-      <w>210</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>InputManager
+shared_ptr&lt;Lord&gt; winner();
+bool isGameFinished();
+map&lt;shared_ptr&lt;Lord&gt;, int&gt; territoryCount();
+void setTurn(int);
+void playerTurn();	
+void moveTroops(Territory*, Territory*);
+void attack();
+string getSelectedOwner();
+string getTargetOwner();</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>110</y><w>210</w><h>110</h></coordinates><panel_attributes>/Lord/
 --
 --
-getInput()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>430</x>
-      <y>150</y>
-      <w>210</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>/Lord/
+string getName()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>260</y><w>150</w><h>160</h></coordinates><panel_attributes>AI
 --
-vector&lt;double&gt; preferences
-shared_ptr&lt;Lord&gt; overlord
-int totalAvailableTroops
-int totalAvailableFunds
-vector&lt;Territory&gt; territories
---</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>260</x>
-      <y>300</y>
-      <w>150</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>AI
---
-AIGoal goal
-int psychology
+- AIGoal goal
+- int psychology
 --
 double approve()
-void rebel()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>690</x>
-      <y>150</y>
-      <w>210</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>Board
+bool rebel(double approval)
+void display(Window&amp;)
+vector&lt;int&gt; getPsychology()
+AIGoal getGoal()
+string getName()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>110</y><w>210</w><h>70</h></coordinates><panel_attributes>Board
 --
-vector&lt;Territory&gt; territories
+sf::Texture cityTex;
+sf::Texture dirtTex;
+sf::Texture grassTex;
+sf::Texture mountainTex;
 --
-void generate()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>20</x>
-      <y>280</y>
-      <w>210</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>Window
+void generate()
+void onClick(pair&lt;int, int&gt;, sf::Mouse::Button, Window&amp;)
+map&lt;shared_ptr&lt;Lord&gt;, int&gt; territoryCount()
+vector&lt;unique_ptr&lt;Territory&gt;&gt; territories
+mygal::Diagram&lt;double&gt; generateTerrainDiagram(int, pair&lt;int, int&gt;)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>410</y><w>280</w><h>90</h></coordinates><panel_attributes>Window (sf::RenderWindow)
 --
-showUI()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>20</x>
-      <y>190</y>
-      <w>210</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>Menu
+pair&lt;int, int&gt; dimensions
 --
-newGame()
-quit()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>590</x>
-      <y>540</y>
-      <w>210</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>Resources
+void buildGUI(tgui::Gui&amp;, sf::Texture&amp;, sf::Texture&amp;,
+string, string, string, string, string)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>740</x><y>500</y><w>210</w><h>160</h></coordinates><panel_attributes>Resources
 --
 ResourceType type
-int current
-int max</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>580</x>
-      <y>250</y>
-      <w>30</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>360</x>
-      <y>250</y>
-      <w>110</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>90.0;10.0;90.0;30.0;10.0;30.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>750</x>
-      <y>450</y>
-      <w>150</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enum&gt;&gt;
+int currentAmount
+int maxAmount
+--
+void setCurrentAmount(int amount)
+void resetAmount()
+ResourceType getType()
+void setAmount(int)
+int getAmount() const</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>210</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>210</y><w>110</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>90;10;90;30;10;30;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>970</x><y>410</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 TerritoryType
 --
 capital
-countryside</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>610</x>
-      <y>40</y>
-      <w>140</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>/DisplayableObjects/
+countryside
+grasslands
+highlands
+endTerritoryType</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>830</x><y>10</y><w>140</w><h>50</h></coordinates><panel_attributes>/Displayable/
 --
 --
-display()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>90</y>
-      <w>30</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>580</x>
-      <y>90</y>
-      <w>80</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>60.0;10.0;60.0;40.0;10.0;40.0;10.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>630</x>
-      <y>230</y>
-      <w>70</w>
-      <h>330</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-</panel_attributes>
-    <additional_attributes>10.0;20.0;50.0;20.0;50.0;310.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>780</x>
-      <y>210</y>
-      <w>30</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>370</x>
-      <y>70</y>
-      <w>260</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;240.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>430</x>
-      <y>530</y>
-      <w>150</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enum&gt;&gt;
+display()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>940</x><y>50</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>50</y><w>80</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>60;10;60;40;10;40;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>170</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>20</y><w>490</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;470;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>670</y><w>150</w><h>80</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 ResourceType
 --
 military
-economy</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>430</y>
-      <w>30</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>430</x>
-      <y>300</y>
-      <w>210</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>Player
+economy</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>870</x><y>390</y><w>100</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>80;10;80;70;10;70;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>260</y><w>210</w><h>150</h></coordinates><panel_attributes>Player
 --
+- string name
 --
 void attack(Territory)
 void buy(Territory)
-void negociateWith(Lord)
-void threaten(Lord)
-void raiseTroops(Territory)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>260</x>
-      <y>410</y>
-      <w>150</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enum&gt;&gt;
+void negociateWith(Lord&amp;)
+void threaten(Lord&amp;)
+void raiseTroops(Territory)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>430</y><w>150</w><h>90</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 AIGoal
 --
 independance
-winWithOverlord</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>630</x>
-      <y>220</y>
-      <w>100</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;10.0;80.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>80</x>
-      <y>450</y>
-      <w>150</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enum&gt;&gt;
-InputEvent
+winWithOverlord
+endAIGoal</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>180</y><w>100</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;80;10;80;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>300</y><w>130</w><h>90</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+endingCondition
 --
-leftClick
-rightClick
-escape
-enter</panel_attributes>
-    <additional_attributes/>
-  </element>
-</diagram>
+conquest,
+turnLimit,
+endEndingCondition</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>530</y><w>150</w><h>90</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+PsyTraits
+--
+test,
+endPsyTraits</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>90</y><w>590</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;570;10;570;20</additional_attributes></element></diagram>
