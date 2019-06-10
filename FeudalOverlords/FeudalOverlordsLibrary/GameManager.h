@@ -42,6 +42,9 @@ public:
 	void setTurn(int);
 	void playerTurn();	
 	void moveTroops(Territory*, Territory*);
+	void attack();
+	string getSelectedOwner();
+	string getTargetOwner();
 private:
 	int finishTurn; // the last turn of the game.
 	int turn; // the current turn

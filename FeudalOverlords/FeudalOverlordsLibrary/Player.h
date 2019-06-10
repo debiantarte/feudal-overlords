@@ -18,7 +18,7 @@ public:
 	void raiseTroops(Territory);
 	
 	virtual void display(Window&);
-	string getName();
+	virtual string getName() override;
 
 private:
 	string name;

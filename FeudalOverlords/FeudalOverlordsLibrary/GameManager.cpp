@@ -120,3 +120,30 @@ void GameManager::moveTroops(Territory* attacker, Territory* defender)
 		}
 	}
 }
+
+void GameManager::attack()
+{
+	if (board.selected != nullptr && board.target != nullptr && board.selected->getOwner() == players[currentPlayerId])
+	{
+		moveTroops(board.selected, board.target);
+		nextTurn();
+	}
+}
+
+string GameManager::getSelectedOwner()
+{
+	if (board.selected == nullptr)
+	{
+		return "";
+	}
+	return board.selected->getOwner()->getName();
+}
+
+string GameManager::getTargetOwner()
+{
+	if (board.target == nullptr)
+	{
+		return "";
+	}
+	return board.target->getOwner()->getName();
+}

@@ -8,5 +8,6 @@ class Lord :
 public:
 	Lord();
 	~Lord();
+	virtual string getName() = 0;
 };
 

@@ -39,7 +39,9 @@ int main()
 	string targetText;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex, "", "", gameManager.players[gameManager.currentPlayerId]->getName());
+		window.buildGUI(gui, selectTex, targetTex, selectText, targetText,
+			gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
+			gameManager.players[gameManager.currentPlayerId]->getName());
 	}
 	catch (const tgui::Exception& except)
 	{
@@ -76,7 +78,10 @@ int main()
 			if (event.type == sf::Event::KeyReleased && sf::Keyboard::Key::Space) {
 				gameManager.nextTurn();
 			}
-
+			if (event.type == sf::Event::KeyReleased && sf::Keyboard::Key::Enter)
+			{
+				gameManager.attack();
+			}
 			gui.handleEvent(event); // tell all tgui widgets about events happening
 		}
 		if (gameManager.board.selected != nullptr)
@@ -101,6 +106,7 @@ int main()
 		else
 		{
 			selectTex = sf::Texture();
+			selectText = "";
 		}
 		if (gameManager.board.target != nullptr)
 		{
@@ -124,11 +130,14 @@ int main()
 		else
 		{
 			targetTex = sf::Texture();
+			targetText = "";
 		}
 		
 		try
 		{
-			window.buildGUI(gui, selectTex, targetTex, selectText, targetText, gameManager.players[gameManager.currentPlayerId]->getName());
+			window.buildGUI(gui, selectTex, targetTex, selectText, targetText,
+				gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
+				gameManager.players[gameManager.currentPlayerId]->getName());
 		}
 		catch (const tgui::Exception& except)
 		{

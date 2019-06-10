@@ -13,7 +13,8 @@ Window::~Window()
 {
 }
 
-void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex, string selTrp, string tgtTrp, string currentPlayer)
+void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex,
+	string selTrp, string tgtTrp, string selOwner, string tgtOwner, string currentPlayer)
 {
 	sf::Texture uitex;
 	assert(uitex.loadFromFile("../../Assets/Textures/UItex.png"));
@@ -34,6 +35,14 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 	auto tgtLabel = tgui::Label::create(tgtTrp);
 	tgtLabel->setPosition((float)dimensions.first * 0.530, (float)dimensions.second * 0.88);
 	gui.add(tgtLabel, "target label");
+
+	auto selOwnerLabel = tgui::Label::create(selOwner);
+	selOwnerLabel->setPosition((float)dimensions.first * 0.177, (float)dimensions.second * 0.9);
+	gui.add(selOwnerLabel, "selection owner label");
+
+	auto tgtOwnerLabel = tgui::Label::create(tgtOwner);
+	tgtOwnerLabel->setPosition((float)dimensions.first * 0.530, (float)dimensions.second * 0.9);
+	gui.add(tgtOwnerLabel, "target owner label");
 
 	sf::Sprite selection(selectTex);
 	selection.setScale(1.07 * (float)dimensions.first / 600, 1.04 * (float)dimensions.second / 699);

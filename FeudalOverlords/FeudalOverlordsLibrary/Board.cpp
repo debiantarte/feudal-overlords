@@ -29,6 +29,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 
 	int maxTroops = 1000;
 	int maxMoney = 1000;
+	int playerNbr = 0;
 	vector<int> indexCapitals;
 	for (size_t i = 0; i < players.size(); i++)
 	{
@@ -67,7 +68,8 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		{
 			troops /= 2;
 			money *= 2;
-			owner = players[0];
+			owner = players[playerNbr];
+			playerNbr++;
 		}
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];

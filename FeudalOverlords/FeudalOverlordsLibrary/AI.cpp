@@ -94,3 +94,8 @@ AIGoal AI::getGoal()
 {
 	return goal;
 }
+
+string AI::getName()
+{
+	return "AI";
+}
