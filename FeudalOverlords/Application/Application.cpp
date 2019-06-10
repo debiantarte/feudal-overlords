@@ -17,7 +17,8 @@ using namespace std;
 int main()
 {
 	vector<shared_ptr<Player>> players;
-	players.push_back(make_shared<Player>((string) "xXXTesterXXx"));
+	players.push_back(make_shared<Player>((string) "Princess Celestia"));
+	players.push_back(make_shared<Player>((string) "Princess Luna"));
 	Window window(800, 700);
 	GameManager gameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second* 6/7));
 	tgui::Gui gui{ window };
@@ -65,6 +66,9 @@ int main()
 				
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
 				
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+				gameManager.nextTurn();
 			}
 
 			gui.handleEvent(event); // tell all tgui widgets about events happening

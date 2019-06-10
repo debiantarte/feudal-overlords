@@ -21,10 +21,24 @@ void GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
-	for (int i = 0; i < players.size(); i++)
+	if (board.selected != nullptr)
 	{
-		currentPlayerId = i;
-		playerTurn();
+		board.selected->setColor(sf::Color::White);
+		board.selected = nullptr;
+	}
+	if (board.target != nullptr)
+	{
+		board.target->setColor(sf::Color::White);
+		board.target = nullptr;
+	}
+	if (currentPlayerId < players.size() - 1)
+	{
+		currentPlayerId++;
+	}
+	else
+	{
+		turn++;
+		currentPlayerId = 0;
 	}
 }
 
