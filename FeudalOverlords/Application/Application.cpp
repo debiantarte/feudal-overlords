@@ -14,12 +14,15 @@
 
 using namespace std;
 
+#define WINDOW_WIDTH	800
+#define WINDOW_HEIGHT	700
+
 int main()
 {
 	vector<shared_ptr<Player>> players;
 	players.push_back(make_shared<Player>((string) "Princess Celestia"));
 	players.push_back(make_shared<Player>((string) "Princess Luna"));
-	Window window(800, 700);
+	Window window(WINDOW_WIDTH, WINDOW_HEIGHT);
 	GameManager gameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second* 6/7));
 	tgui::Gui gui{ window };
 	sf::Music music;
