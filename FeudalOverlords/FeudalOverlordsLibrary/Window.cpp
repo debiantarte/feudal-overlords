@@ -13,17 +13,27 @@ Window::~Window()
 {
 }
 
-void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex/*, Territory* selected, Territory* target*//*, GameManager* gm*/)
+void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex, string selTrp, string tgtTrp/*, Territory* selected, Territory* target*//*, GameManager* gm*/)
 {
 	sf::Texture uitex;
 	assert(uitex.loadFromFile("../../Assets/Textures/UItex.png"));
 	sf::Sprite background(uitex);
 	background.setScale((float)dimensions.first / uitex.getSize().x, ((float)dimensions.second / 7) / uitex.getSize().y);
 
+	sf::Text selectText{ selTrp, *gui.getFont(), 12};
+	selectText.setPosition(142, 20);
+	selectText.setFillColor({ 200, 200, 200 });
+
+	sf::Text targetText{ selTrp, *gui.getFont(), 12 };
+	targetText.setPosition(420, 20);
+	selectText.setFillColor({ 200, 200, 200 });
+
 	auto back_canvas = tgui::Canvas::create({ (float)dimensions.first, (float)dimensions.second / 7 });
 	back_canvas->setPosition(0.0, (float)dimensions.second * 6 / 7);
 	back_canvas->clear();
 	back_canvas->draw(background);
+	back_canvas->draw(selectText);
+	back_canvas->draw(targetText);
 	back_canvas->display();
 	gui.add(back_canvas);
 

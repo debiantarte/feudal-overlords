@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <TGUI/TGUI.hpp>
+#include <string>
 //#include "Territory.h"
 //#include "GameManager.h"
 
@@ -15,6 +16,6 @@ public:
 	//unique_ptr<sf::RenderWindow> sfWindow;
 	Window(int width, int height);
 	~Window();
-	void buildGUI(tgui::Gui&, sf::Texture&, sf::Texture&/*, Territory*, Territory**//*, GameManager*/);
+	void buildGUI(tgui::Gui&, sf::Texture&, sf::Texture&, string, string/*, Territory*, Territory**//*, GameManager*/);
 };
 

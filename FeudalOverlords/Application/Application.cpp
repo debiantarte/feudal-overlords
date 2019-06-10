@@ -11,6 +11,7 @@
 #include "../FeudalOverlordsLibrary/GameManager.h"
 
 #include <TGUI/TGUI.hpp>
+#include <string>
 
 using namespace std;
 
@@ -31,9 +32,11 @@ int main()
 	}
 	sf::Texture selectTex;
 	sf::Texture targetTex;
+	string selectText;
+	string targetText;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex/*, nullptr, nullptr*//*, &gameManager*/);
+		window.buildGUI(gui, selectTex, targetTex, "", ""/*, nullptr, nullptr*//*, &gameManager*/);
 	}
 	catch (const tgui::Exception& except)
 	{
@@ -90,6 +93,7 @@ int main()
 				selectTex = gameManager.board.mountainTex;
 				break;
 			}
+			selectText = to_string(gameManager.board.selected->getTroops().getAmount());
 		}
 		else
 		{
@@ -112,6 +116,7 @@ int main()
 				targetTex = gameManager.board.mountainTex;
 				break;
 			}
+			targetText = to_string(gameManager.board.target->getTroops().getAmount());
 		}
 		else
 		{
@@ -120,7 +125,7 @@ int main()
 		
 		try
 		{
-			window.buildGUI(gui, selectTex, targetTex/*, gameManager.board.selected, gameManager.board.target*//*, &gameManager*/);
+			window.buildGUI(gui, selectTex, targetTex, selectText, targetText/*, gameManager.board.selected, gameManager.board.target*//*, &gameManager*/);
 		}
 		catch (const tgui::Exception& except)
 		{
