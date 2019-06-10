@@ -85,7 +85,23 @@ void GameManager::setTurn(int turn_)
 	turn = turn_;
 }
 
-void GameManager::attack(Territory* attacker, Territory* defender)
+void GameManager::moveTroops(Territory* attacker, Territory* defender)
 {
-	
+	if (attacker->getOwner() == players[currentPlayerId])
+	{
+		int defendingTroops = defender->getTroops().getAmount();
+		int attackingTroops = attacker->getTroops().getAmount();
+		if (defender->getOwner() != players[currentPlayerId])
+		{
+			int defenseMargin = (defendingTroops - attackingTroops < 0) ? 0 : defendingTroops - attackingTroops;
+			int attackingMargin = (attackingTroops - defendingTroops < 0) ? 0 : attackingTroops - defendingTroops;
+			defender->setTroops(defenseMargin);
+			attacker->setTroops(attackingMargin);
+		}
+		else
+		{
+			defender->setTroops(defendingTroops + attackingTroops);
+			attacker->setTroops(0);
+		}
+	}
 }

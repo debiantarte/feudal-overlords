@@ -32,7 +32,7 @@ int main()
 	sf::Texture targetTex;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex);
+		window.buildGUI(gui, selectTex, targetTex/*, nullptr, nullptr*//*, &gameManager*/);
 	}
 	catch (const tgui::Exception& except)
 	{
@@ -116,7 +116,7 @@ int main()
 		
 		try
 		{
-			window.buildGUI(gui, selectTex, targetTex);
+			window.buildGUI(gui, selectTex, targetTex/*, gameManager.board.selected, gameManager.board.target*//*, &gameManager*/);
 		}
 		catch (const tgui::Exception& except)
 		{

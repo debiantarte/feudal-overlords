@@ -14,6 +14,8 @@ public:
 	void setCurrentAmount(int amount);
 	void resetAmount();
 	ResourceType getType();
+	void setAmount(int);
+	int getAmount() const;
 private:
 	int maxAmount;
 	int currentAmount;
