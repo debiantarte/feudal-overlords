@@ -184,7 +184,11 @@
     <Image Include="..\..\Assets\Textures\TestSpriteSheet.png" />
   </ItemGroup>
   <ItemGroup>
-	<Content Include="*" />
+    <Content Include="*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Assets\Musics\lunar_dawn_1_0.ogg" />
+    <None Include="..\..\Assets\Sounds\boop.ogg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
