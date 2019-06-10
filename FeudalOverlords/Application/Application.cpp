@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "../FeudalOverlordsLibrary/Window.h"
 #include "../FeudalOverlordsLibrary/GameManager.h"
@@ -20,6 +21,13 @@ int main()
 	Window window(800, 700);
 	GameManager gameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second* 6/7));
 	tgui::Gui gui{ window };
+	sf::Music music;
+	if (music.openFromFile("../../Assets/Musics/lunar_dawn_1_0.ogg"))
+		//return -1; // error
+	{
+		music.setLoop(true);
+		music.play();
+	}
 	sf::Texture selectTex;
 	sf::Texture targetTex;
 	try 

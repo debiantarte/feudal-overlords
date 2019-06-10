@@ -101,4 +101,12 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Assets\Sounds\boop.ogg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\Assets\Musics\lunar_dawn_1_0.ogg">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
