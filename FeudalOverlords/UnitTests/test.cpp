@@ -2,14 +2,6 @@
 #include "../FeudalOverlordsLibrary/AI.h"
 #include "../FeudalOverlordsLibrary/GameManager.h"
 
-
-TEST(TestTerritory, TestIsOver)
-{
-	AI lord();
-	Territory territory(Resource(100, money), Resource(100, military), countryside, shared_ptr<Lord> owner, sf::VertexArray shape);
-	bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
-}
-
 TEST(TestAI, TestRebel) {
 	AI ai = AI();
 	vector<int> psychology = ai.getPsychology();

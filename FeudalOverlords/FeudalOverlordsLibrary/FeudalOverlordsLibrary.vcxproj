@@ -182,9 +182,10 @@
     <Image Include="..\..\Assets\Textures\GrassTex.png" />
     <Image Include="..\..\Assets\Textures\MountainTex.png" />
     <Image Include="..\..\Assets\Textures\TestSpriteSheet.png" />
+    <Image Include="..\..\Assets\Textures\UItex.png" />
   </ItemGroup>
   <ItemGroup>
-	<Content Include="*" />
+    <Content Include="*" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

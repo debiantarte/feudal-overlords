@@ -21,7 +21,6 @@ int rng(int const min, int const max)
 Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight, int nbrPoints) :
 	board_vertices(sf::VertexArray())
 {
-	/* TODO : check if paths are right */
 	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex.png"));
 	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex.png"));
 	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex.png"));
@@ -30,12 +29,12 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	int maxTroops = 1000;
 	int maxMoney = 1000;
 	vector<int> indexCapitals;
-	for (int i = 0; i < players.size(); i++)
+	for (size_t i = 0; i < players.size(); i++)
 	{
 		indexCapitals.push_back(rng(0, nbrPoints));
 	}
 	auto diagram = generateTerrainDiagram(nbrPoints, pair<int, int>(boardWidth, boardHeight));
-	for (int i = 0; i < diagram.getFaces().size(); i++)
+	for (size_t i = 0; i < diagram.getFaces().size(); i++)
 	{
 		TerritoryType type = countryside;
 		int intTerritory = rng(1, endTerritoryType);
@@ -67,7 +66,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		{
 			troops /= 2;
 			money *= 2;
-			owner = players[0]; // make_shared<Player>(players[0]);
+			owner = players[0];
 		}
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];
@@ -92,7 +91,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 			if (x < minx) minx = x;
 			if (y > maxy) maxy = y;
 			if (y < miny) miny = y;
-			sf::Vector2f coord(x, y);
+			sf::Vector2f coord((float)x, (float)y);
 			//if (points.size() > 0 && find(points.begin(), points.end(), coord) == points.end())
 			//{
 				points.push_back(coord);
@@ -159,8 +158,25 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 				{
 					selected->setColor(sf::Color::White); // reset old selected's color
 				}
+				if (target != nullptr && target == tile.get())
+				{
+					target = nullptr;
+				}
 				selected = &*tile;
 				selected->setColor(sf::Color::Blue + sf::Color::Cyan);
+			}
+			else if (mb == sf::Mouse::Right)
+			{
+				if (target != nullptr)
+				{
+					target->setColor(sf::Color::White); // reset old selected's color
+				}
+				if (selected != nullptr && selected == tile.get())
+				{
+					selected = nullptr;
+				}
+				target = &*tile;
+				target->setColor(sf::Color::Red + sf::Color::Magenta);
 			}
 		}
 	}

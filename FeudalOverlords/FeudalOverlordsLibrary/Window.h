@@ -13,6 +13,6 @@ public:
 	//unique_ptr<sf::RenderWindow> sfWindow;
 	Window(int width, int height);
 	~Window();
-	void buildGUI(tgui::Gui&);
+	void buildGUI(tgui::Gui&, sf::Texture&, sf::Texture&);
 };
 

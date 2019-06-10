@@ -97,5 +97,8 @@
     <Image Include="..\..\Assets\Textures\MountainTex.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\Assets\Textures\UItex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
