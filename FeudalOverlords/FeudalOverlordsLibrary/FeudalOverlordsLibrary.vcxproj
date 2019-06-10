@@ -178,10 +178,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Assets\Textures\CityTex.png" />
+    <Image Include="..\..\Assets\Textures\CityTex2.png" />
     <Image Include="..\..\Assets\Textures\DirtTex.png" />
+    <Image Include="..\..\Assets\Textures\DirtTex2.png" />
     <Image Include="..\..\Assets\Textures\GrassTex.png" />
+    <Image Include="..\..\Assets\Textures\GrassTex2.png" />
     <Image Include="..\..\Assets\Textures\MountainTex.png" />
+    <Image Include="..\..\Assets\Textures\MountainTex2.png" />
     <Image Include="..\..\Assets\Textures\TestSpriteSheet.png" />
+    <Image Include="..\..\Assets\Textures\UItex.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="*" />

@@ -32,6 +32,7 @@ public:
 	//~AI();
 	vector<int> getPsychology();
 	AIGoal getGoal();
+	virtual string getName() override;
 private:
 	AIGoal goal;
 	vector<int> psychology;

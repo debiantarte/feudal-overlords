@@ -194,3 +194,13 @@ void Territory::setColor(sf::Color col)
 		shape[i].color = col;
 	}
 }
+
+void Territory::setTroops(int amount)
+{
+	military.setCurrentAmount(amount);
+}
+
+Resource Territory::getTroops() const
+{
+	return military;
+}

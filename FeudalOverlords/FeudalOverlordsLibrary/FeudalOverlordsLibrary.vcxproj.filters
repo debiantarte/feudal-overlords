@@ -97,6 +97,21 @@
     <Image Include="..\..\Assets\Textures\MountainTex.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\Assets\Textures\UItex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\CityTex2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\DirtTex2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\GrassTex2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Assets\Textures\MountainTex2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Assets\Sounds\boop.ogg">

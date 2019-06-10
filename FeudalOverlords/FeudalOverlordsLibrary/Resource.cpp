@@ -27,3 +27,13 @@ ResourceType Resource::getType()
 {
 	return type;
 }
+
+void Resource::setAmount(int amount)
+{
+	currentAmount = amount;
+}
+
+int Resource::getAmount() const
+{
+	return currentAmount;
+}

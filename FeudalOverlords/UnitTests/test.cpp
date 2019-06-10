@@ -2,7 +2,6 @@
 #include "../FeudalOverlordsLibrary/AI.h"
 #include "../FeudalOverlordsLibrary/GameManager.h"
 
-
 TEST(TestAI, TestRebel) {
 	AI ai = AI();
 	vector<int> psychology = ai.getPsychology();

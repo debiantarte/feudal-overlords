@@ -27,12 +27,15 @@ public:
 	map<shared_ptr<Lord>, int> territoryCount();
 	vector<unique_ptr<Territory>> territories;
 	mygal::Diagram<double> generateTerrainDiagram(int, pair<int, int>);
-private:
+	//Territory* getSelected() const;
+	//Territory* getTarget() const;
+//private:
 	sf::VertexArray board_vertices;
 	sf::Texture cityTex;
 	sf::Texture dirtTex;
 	sf::Texture grassTex;
 	sf::Texture mountainTex;
 	Territory* selected;
+	Territory* target;
 };
 

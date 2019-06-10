@@ -12,7 +12,7 @@ GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<in
 GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, int finishTurn=5) :
 	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players),
 	board(players, dimensions.first, dimensions.second, NBR_POINTS),
-	endingCond(turnLimit), turn(0), finishTurn(finishTurn)
+	endingCond(turnLimit), turn(0), finishTurn(finishTurn), currentPlayerId(0)
 {
 	assert(nbrAIs >= 0);
 }
@@ -21,15 +21,38 @@ void GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
-	for (auto& player: players)
+	if (board.selected != nullptr)
 	{
-		// it's player's turn
-		// we should display that it's their turn
-		// then act depending on their input
-		// select territory : left click
-		// to move troop or resources to another territory : right click on the destination territory
+		board.selected->setColor(sf::Color::White);
+		board.selected = nullptr;
 	}
+	if (board.target != nullptr)
+	{
+		board.target->setColor(sf::Color::White);
+		board.target = nullptr;
+	}
+	if (currentPlayerId < players.size() - 1)
+	{
+		currentPlayerId++;
+	}
+	else
+	{
+		turn++;
+		currentPlayerId = 0;
+	}
+	cout << "Turn : " << players[currentPlayerId]->getName() << endl;
 }
+
+void GameManager::playerTurn()
+{
+	// it's player's turn
+	// we should display that it's their turn
+	// then act depending on their input
+	// select territory : left click
+	// to move troop or resources to another territory : right click on the destination territory
+	auto player = players[currentPlayerId];
+}
+
 
 shared_ptr<Lord> GameManager::winner()
 {
@@ -77,3 +100,50 @@ void GameManager::setTurn(int turn_)
 	turn = turn_;
 }
 
+void GameManager::moveTroops(Territory* attacker, Territory* defender)
+{
+	if (attacker->getOwner() == players[currentPlayerId])
+	{
+		int defendingTroops = defender->getTroops().getAmount();
+		int attackingTroops = attacker->getTroops().getAmount();
+		if (defender->getOwner() != players[currentPlayerId])
+		{
+			int defenseMargin = (defendingTroops - attackingTroops < 0) ? 0 : defendingTroops - attackingTroops;
+			int attackingMargin = (attackingTroops - defendingTroops < 0) ? 0 : attackingTroops - defendingTroops;
+			defender->setTroops(defenseMargin);
+			attacker->setTroops(attackingMargin);
+		}
+		else
+		{
+			defender->setTroops(defendingTroops + attackingTroops);
+			attacker->setTroops(0);
+		}
+	}
+}
+
+void GameManager::attack()
+{
+	if (board.selected != nullptr && board.target != nullptr && board.selected->getOwner() == players[currentPlayerId])
+	{
+		moveTroops(board.selected, board.target);
+		nextTurn();
+	}
+}
+
+string GameManager::getSelectedOwner()
+{
+	if (board.selected == nullptr)
+	{
+		return "";
+	}
+	return board.selected->getOwner()->getName();
+}
+
+string GameManager::getTargetOwner()
+{
+	if (board.target == nullptr)
+	{
+		return "";
+	}
+	return board.target->getOwner()->getName();
+}
