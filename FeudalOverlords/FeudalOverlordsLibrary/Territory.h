@@ -31,6 +31,8 @@ public:
 	void setColor(sf::Color);
 	shared_ptr<Lord> getOwner();
 	void setOwner(shared_ptr<Lord>);
+	void setTroops(int);
+	Resource getTroops() const;
 private:
 	Resource money;
 	Resource military;

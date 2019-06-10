@@ -33,7 +33,7 @@ int main()
 	sf::Texture targetTex;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex, gameManager.players[gameManager.currentPlayerId]->getName());
+		window.buildGUI(gui, selectTex, targetTex/*, nullptr, nullptr*//*, &gameManager*/, gameManager.players[gameManager.currentPlayerId]->getName());
 	}
 	catch (const tgui::Exception& except)
 	{
@@ -120,7 +120,7 @@ int main()
 		
 		try
 		{
-			window.buildGUI(gui, selectTex, targetTex, gameManager.players[gameManager.currentPlayerId]->getName());
+			window.buildGUI(gui, selectTex, targetTex/*, gameManager.board.selected, gameManager.board.target*//*, &gameManager*/, gameManager.players[gameManager.currentPlayerId]->getName());
 		}
 		catch (const tgui::Exception& except)
 		{

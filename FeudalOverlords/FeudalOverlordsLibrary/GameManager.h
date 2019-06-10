@@ -40,8 +40,8 @@ public:
 	bool isGameFinished();
 	map<shared_ptr<Lord>, int> territoryCount();
 	void setTurn(int);
-	void playerTurn();
-	
+	void playerTurn();	
+	void moveTroops(Territory*, Territory*);
 private:
 	int finishTurn; // the last turn of the game.
 	int turn; // the current turn
