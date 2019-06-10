@@ -40,6 +40,7 @@ void GameManager::nextTurn()
 		turn++;
 		currentPlayerId = 0;
 	}
+	cout << "Turn : " << players[currentPlayerId]->getName() << endl;
 }
 
 void GameManager::playerTurn()

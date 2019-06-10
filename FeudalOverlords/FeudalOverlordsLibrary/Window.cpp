@@ -13,7 +13,8 @@ Window::~Window()
 {
 }
 
-void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex)
+void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex,
+	string currentPlayer)
 {
 	sf::Texture uitex;
 	assert(uitex.loadFromFile("../../Assets/Textures/UItex.png"));
@@ -39,6 +40,11 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 
 	sf::Sprite target(targetTex);
 	target.setScale(1.07 * (float)dimensions.first / 600, 1.04 * (float)dimensions.second / 699);
+
+	auto currentPlayerLabel = tgui::Label::create(currentPlayer + " turn");
+	currentPlayerLabel->setPosition((float)dimensions.first * 0.175, (float)dimensions.second * 0.88);
+	//currentPlayerLabel->draw();
+	gui.add(currentPlayerLabel, "currentPlayer");
 
 	auto target_canvas = tgui::Canvas::create({ 64 * 1.07 * (float)dimensions.first / 600, 65 * 1.04 * (float)dimensions.second / 699 });
 	target_canvas->setPosition(687.0, (float)dimensions.second * 6 / 7 + 17.0);

@@ -33,7 +33,7 @@ int main()
 	sf::Texture targetTex;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex);
+		window.buildGUI(gui, selectTex, targetTex, gameManager.players[gameManager.currentPlayerId]->getName());
 	}
 	catch (const tgui::Exception& except)
 	{
@@ -67,7 +67,7 @@ int main()
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
 				
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+			if (event.type == sf::Event::KeyReleased && sf::Keyboard::Key::Space) {
 				gameManager.nextTurn();
 			}
 
@@ -120,7 +120,7 @@ int main()
 		
 		try
 		{
-			window.buildGUI(gui, selectTex, targetTex);
+			window.buildGUI(gui, selectTex, targetTex, gameManager.players[gameManager.currentPlayerId]->getName());
 		}
 		catch (const tgui::Exception& except)
 		{
