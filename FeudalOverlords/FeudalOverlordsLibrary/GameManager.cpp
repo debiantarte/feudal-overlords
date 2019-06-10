@@ -77,3 +77,7 @@ void GameManager::setTurn(int turn_)
 	turn = turn_;
 }
 
+void GameManager::attack(Territory* attacker, Territory* defender)
+{
+	
+}

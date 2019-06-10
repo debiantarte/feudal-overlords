@@ -46,4 +46,10 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 	target_canvas->draw(target);
 	target_canvas->display();
 	gui.add(target_canvas, "targetCanvas");
+
+	auto button = tgui::Button::create();
+	button->setPosition(75, 70);
+	button->setText("OK");
+	button->setSize(100, 30);
+	button->connect("pressed", [=]() { child->setVisible(false); });
 }
