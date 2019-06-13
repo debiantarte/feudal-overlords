@@ -207,15 +207,19 @@ Resource Territory::getTroops() const
 
 bool Territory::isAdjacent(sf::VertexArray otherShape)
 {
+	/*
 	int maxIter = (shape.getVertexCount() <= otherShape.getVertexCount()) ? shape.getVertexCount() : otherShape.getVertexCount();
-	vector<bool> commonVertices;
+	vector<int> commonVertices;
 	commonVertices.resize(maxIter);
 
 	for (int i = 0; i < maxIter; i++)
 	{
-		if (shape[i].position == otherShape[i].position)
+		for (int j = 0; j < maxIter; j++)
 		{
-			commonVertices[i] = true;
+			if (shape[i].position == otherShape[j].position)
+			{
+				commonVertices[i] = 1;
+			}
 		}
 		if (i > 0 && commonVertices[i - 1] && commonVertices[i])
 		{
@@ -223,6 +227,8 @@ bool Territory::isAdjacent(sf::VertexArray otherShape)
 		}
 	}
 	return false;
+	*/
+	return shape.getBounds().intersects(otherShape.getBounds());
 }
 
 sf::VertexArray Territory::getShape() const

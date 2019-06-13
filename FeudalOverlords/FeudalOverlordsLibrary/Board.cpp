@@ -137,7 +137,26 @@ void Board::display(Window& window)
 			abort();
 			break;
 		}
-		
+		if (tile.get() != selected && tile.get() != target && selected != nullptr)
+		{
+			if (tile->isAdjacent(selected->getShape()))
+			{
+				//std::cout << "I'm next to the selected !" << std::endl;
+				if (tile->getOwner() == selected->getOwner())
+				{
+					tile->setColor(sf::Color::Cyan);
+				}
+				else
+				{
+					tile->setColor(sf::Color::Magenta);
+				}
+			}
+			else
+			{
+				tile->setColor(sf::Color::White);
+			}
+		}
+
 		tile->display(window, states);
 	}
 }
@@ -191,7 +210,8 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 				target->setColor(sf::Color::Red + sf::Color::Magenta);
 			}
 		}
-		if (tile.get() != selected && selected != nullptr)
+		/*
+		if (tile.get() != selected && tile.get() != target && selected != nullptr)
 		{
 			if (tile->isAdjacent(selected->getShape()))
 			{
@@ -205,7 +225,12 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 					tile->setColor(sf::Color::Cyan);
 				}
 			}
+			else
+			{
+				tile->setColor(sf::Color::White);
+			}
 		}
+		*/
 	}
 }
 
