@@ -75,10 +75,10 @@ int main()
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
 				
 			}
-			if (event.type == sf::Event::KeyReleased && sf::Keyboard::Key::Space) {
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space) {
 				gameManager.nextTurn();
 			}
-			if (event.type == sf::Event::KeyReleased && sf::Keyboard::Key::Enter)
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Enter)
 			{
 				gameManager.attack();
 			}

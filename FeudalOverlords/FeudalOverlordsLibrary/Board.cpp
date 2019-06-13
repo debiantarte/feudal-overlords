@@ -149,7 +149,7 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 	int height = (window.dimensions.second - 100) / TILE_SIZE;
 	*/
 	
-	std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
+	//std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
 
 	for (auto& tile : territories)
 	{

@@ -36,6 +36,7 @@ public:
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, int);
 
 	void nextTurn(); // TODO
+	void regenTerritories();
 	shared_ptr<Lord> winner();
 	bool isGameFinished();
 	map<shared_ptr<Lord>, int> territoryCount();

@@ -39,8 +39,18 @@ void GameManager::nextTurn()
 	{
 		turn++;
 		currentPlayerId = 0;
+		regenTerritories();
 	}
-	cout << "Turn : " << players[currentPlayerId]->getName() << endl;
+	cout << "Turn [" << turn << "] Current player : " << players[currentPlayerId]->getName() << endl;
+}
+
+void GameManager::regenTerritories()
+{
+	for (auto& territory : board.territories)
+	{
+		int resetValue = territory->getTroops().getMaxAmount();
+		territory->setTroops(resetValue);
+	}
 }
 
 void GameManager::playerTurn()
@@ -112,6 +122,13 @@ void GameManager::moveTroops(Territory* attacker, Territory* defender)
 			int attackingMargin = (attackingTroops - defendingTroops < 0) ? 0 : attackingTroops - defendingTroops;
 			defender->setTroops(defenseMargin);
 			attacker->setTroops(attackingMargin);
+			std::cout << "Attacker's troops reduced to : " << attacker->getTroops().getAmount() << std::endl;
+			std::cout << "Defender's troops reduced to : " << defender->getTroops().getAmount() << std::endl;
+			if (attackingMargin > 0 && defenseMargin == 0)
+			{
+				defender->setOwner(attacker->getOwner());
+				std::cout << "Defender's owner becomes : " << getTargetOwner() << std::endl;
+			}
 		}
 		else
 		{
@@ -126,7 +143,7 @@ void GameManager::attack()
 	if (board.selected != nullptr && board.target != nullptr && board.selected->getOwner() == players[currentPlayerId])
 	{
 		moveTroops(board.selected, board.target);
-		nextTurn();
+		//nextTurn();
 	}
 }
 
