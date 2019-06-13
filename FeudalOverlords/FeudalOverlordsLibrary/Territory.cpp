@@ -204,3 +204,28 @@ Resource Territory::getTroops() const
 {
 	return military;
 }
+
+bool Territory::isAdjacent(sf::VertexArray otherShape)
+{
+	int maxIter = (shape.getVertexCount() <= otherShape.getVertexCount()) ? shape.getVertexCount() : otherShape.getVertexCount();
+	vector<bool> commonVertices;
+	commonVertices.resize(maxIter);
+
+	for (int i = 0; i < maxIter; i++)
+	{
+		if (shape[i].position == otherShape[i].position)
+		{
+			commonVertices[i] = true;
+		}
+		if (i > 0 && commonVertices[i - 1] && commonVertices[i])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+sf::VertexArray Territory::getShape() const
+{
+	return shape;
+}

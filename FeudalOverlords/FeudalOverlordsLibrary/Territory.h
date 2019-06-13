@@ -33,6 +33,8 @@ public:
 	void setOwner(shared_ptr<Lord>);
 	void setTroops(int);
 	Resource getTroops() const;
+	bool isAdjacent(sf::VertexArray);
+	sf::VertexArray getShape() const;
 private:
 	Resource money;
 	Resource military;
