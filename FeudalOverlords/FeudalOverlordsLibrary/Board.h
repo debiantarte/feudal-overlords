@@ -13,6 +13,10 @@
 #define BOARD_WIDTH		10
 #define TILE_SIZE		10
 */
+
+#define CAPITAL_TROOPS  400
+#define CAPITAL_MONEY	800
+
 using namespace std;
 
 class Board :

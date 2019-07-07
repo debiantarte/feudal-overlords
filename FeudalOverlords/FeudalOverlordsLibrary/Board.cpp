@@ -66,8 +66,8 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
 		if (type == capital)
 		{
-			troops /= 2;
-			money *= 2;
+			troops = CAPITAL_TROOPS;
+			money = CAPITAL_MONEY;
 			owner = players[playerNbr];
 			playerNbr++;
 		}
