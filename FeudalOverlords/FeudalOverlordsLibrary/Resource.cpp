@@ -14,7 +14,6 @@ Resource::~Resource()
 
 void Resource::setCurrentAmount(int amount)
 {
-	assert(amount <= this->maxAmount);
 	this->currentAmount = amount;
 }
 
