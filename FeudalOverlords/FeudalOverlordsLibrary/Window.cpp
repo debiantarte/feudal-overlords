@@ -66,6 +66,27 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 	currentPlayerLabel->setText(currentPlayer + " turn");
 	currentPlayerLabel->setPosition(600.0, 598.0);
 	gui.add(currentPlayerLabel, "currentPlayer");
+
+	// add a list box to display notifications
+	auto notifBox = tgui::ListBox::create();
+	notifBox->setAutoScroll(true);
+	notifBox->setSize(300.0, 75.0);
+	notifBox->setPosition(5.0, 5.0);
+	
+	// change every possible property ever about anything that's about items' colors to make the list box look like it can't be clicked on
+	notifBox->getRenderer()->setBackgroundColor(tgui::Color(uint8_t(0.0), uint8_t(0.0), uint8_t(0.0), uint8_t(125.0)));
+	notifBox->getRenderer()->setTextColor(tgui::Color(uint8_t(250.0), uint8_t(250.0), uint8_t(250.0), uint8_t(100.0)));
+	notifBox->getRenderer()->setSelectedBackgroundColorHover(tgui::Color(uint8_t(0.0), uint8_t(0.0), uint8_t(0.0), uint8_t(0.0)));
+	notifBox->getRenderer()->setBackgroundColorHover(tgui::Color(uint8_t(0.0), uint8_t(0.0), uint8_t(0.0), uint8_t(0.0)));
+	notifBox->getRenderer()->setTextColorHover(tgui::Color(uint8_t(250.0), uint8_t(250.0), uint8_t(250.0), uint8_t(100.0)));
+
+	notifBox->getRenderer()->setSelectedBackgroundColor(tgui::Color(uint8_t(0.0), uint8_t(0.0), uint8_t(0.0), uint8_t(0.0)));
+	notifBox->getRenderer()->setSelectedTextColor(tgui::Color(uint8_t(250.0), uint8_t(250.0), uint8_t(250.0), uint8_t(100.0)));
+	notifBox->getRenderer()->setSelectedTextColorHover(tgui::Color(uint8_t(250.0), uint8_t(250.0), uint8_t(250.0), uint8_t(100.0)));
+
+	// render the scrollbar mostly invisible
+	notifBox->getRenderer()->setScrollbarWidth(0.001);
+	gui.add(notifBox, "notifBox");
 }
 
 void Window::updateGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex,

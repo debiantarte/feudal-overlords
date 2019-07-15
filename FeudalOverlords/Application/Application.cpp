@@ -37,6 +37,7 @@ int main()
 	sf::Texture emptyTex;
 	string selectTrp;
 	string targetTrp;
+	
 	try 
 	{
 		window.buildGUI(gui, selectTex, targetTex, selectTrp, targetTrp,
@@ -50,7 +51,7 @@ int main()
 	}
 	sf::CircleShape c(3);
 	c.setFillColor(sf::Color::Red);
-	
+	int notificationId = 0;
 	while (window.isOpen())
 	{
 
@@ -78,10 +79,19 @@ int main()
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space) {
 				gameManager.nextTurn();
+				gui.get("notifBox")->cast<tgui::ListBox>()->addItem("It's " + gameManager.players[gameManager.currentPlayerId]->getName() + "'s turn !", to_string(notificationId));
+				notificationId++;
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Enter)
 			{
+				string targetOwner = gameManager.getTargetOwner();
+				string selectOwner = gameManager.getSelectedOwner();
+				
 				gameManager.attack();
+				gui.get("notifBox")->cast<tgui::ListBox>()->addItem(selectOwner + " attacked !");
+				gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
+					+ " has been conquered", to_string(notificationId));
+				notificationId++;
 			}
 			gui.handleEvent(event); // tell all tgui widgets about events happening
 		}

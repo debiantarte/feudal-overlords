@@ -53,6 +53,28 @@ TerritoryType Territory::getType() const
 	return type;
 }
 
+string Territory::getTypeName() const
+{
+	switch (type)
+	{
+	case countryside:
+		return "countryside";
+		break;
+	case highlands:
+		return "highlands";
+		break;
+	case grasslands:
+		return "grasslands";
+		break;
+	case capital:
+		return "capital";
+		break;
+	default:
+		return "undefined";
+		break;
+	}
+}
+
 shared_ptr<Lord> Territory::getOwner()
 {
 	return owner;

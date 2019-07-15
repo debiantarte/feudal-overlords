@@ -25,6 +25,7 @@ public:
 	void resetResources();
 	void display(Window&, const sf::RenderStates&);
 	TerritoryType getType() const;
+	string getTypeName() const;
 	bool isOver(pair<int, int>, sf::Mouse::Button);
 	void setColor(sf::Color);
 	shared_ptr<Lord> getOwner();
