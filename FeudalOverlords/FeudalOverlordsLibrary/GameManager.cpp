@@ -140,10 +140,9 @@ void GameManager::moveTroops(Territory* attacker, Territory* defender)
 
 void GameManager::attack()
 {
-	if (board.selected != nullptr && board.target != nullptr && board.selected->getOwner() == players[currentPlayerId])
+	if (board.selected != nullptr && board.target != nullptr && board.selected->getOwner() == players[currentPlayerId] && board.target->isAdjacent(board.selected->getShape()))
 	{
 		moveTroops(board.selected, board.target);
-		//nextTurn();
 	}
 }
 

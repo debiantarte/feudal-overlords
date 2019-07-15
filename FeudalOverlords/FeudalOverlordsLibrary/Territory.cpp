@@ -6,6 +6,30 @@
 
 using namespace std;
 
+// utility to kind of override the shape's getBounds() function
+// we use the fact that all our shapes are convex by design
+sf::FloatRect getAccurateBounds(sf::VertexArray shape)
+{
+	float minx = shape[0].position.x;
+	float maxx = shape[0].position.x;
+	float miny = shape[0].position.y;
+	float maxy = shape[0].position.y;
+
+
+	for (size_t i = 0; i < shape.getVertexCount(); i++)
+	{
+		float x = shape[i].position.x;
+		float y = shape[i].position.y;
+		maxx =  (x > maxx) ? x : maxx;
+		minx =  (x < minx) ? x : minx;
+		maxy =  (y > maxy) ? y : maxy;
+		miny =  (y < miny) ? y : miny;
+	}
+
+	sf::FloatRect res(minx, miny, maxx - minx, maxy - miny);
+	return res;
+}
+
 Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape) :
 	money(money), military(military),
 type(type), owner(owner), shape(shape)
@@ -153,7 +177,7 @@ bool Territory::isAdjacent(sf::VertexArray otherShape)
 	}
 	return false;
 	*/
-	return shape.getBounds().intersects(otherShape.getBounds());
+	return getAccurateBounds(shape).intersects(getAccurateBounds(otherShape));
 }
 
 sf::VertexArray Territory::getShape() const

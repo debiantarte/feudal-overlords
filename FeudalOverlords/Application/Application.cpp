@@ -133,19 +133,7 @@ int main()
 			targetTex = emptyTex;
 			targetTrp = "";
 		}
-		/*
-		try
-		{
-			window.buildGUI(gui, selectTex, targetTex, selectText, targetText,
-				gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
-				gameManager.players[gameManager.currentPlayerId]->getName());
-		}
-		catch (const tgui::Exception& except)
-		{
-			std::cerr << "Failed to load TGUI widgets : " << except.what() << std::endl;
-			return EXIT_FAILURE;
-		}
-		*/
+
 		window.clear();
 		gameManager.board.display(window);
 		window.updateGUI(gui, selectTex, targetTex, selectTrp, targetTrp,
