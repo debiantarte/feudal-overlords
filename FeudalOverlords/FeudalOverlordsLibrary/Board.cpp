@@ -6,6 +6,7 @@
 #include <cassert>
 #include <iostream> // for debug
 #include <SFML/Audio.hpp>
+#include "delaunator.hpp"
 
 /*
  * helper function to generate random territories
@@ -35,6 +36,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	{
 		indexCapitals.push_back(rng(0, nbrPoints));
 	}
+	auto coords = std::vector<double>();
 	auto diagram = generateTerrainDiagram(nbrPoints, pair<int, int>(boardWidth, boardHeight));
 	for (size_t i = 0; i < diagram.getFaces().size(); i++)
 	{
@@ -105,13 +107,20 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		// we need to compute texture coords
 
 		auto shape = sf::VertexArray(sf::TriangleFan);
+		auto center = pair<double, double>();
 		for (auto p : points)
 		{
 			shape.append(sf::Vertex(p, sf::Vector2f(64*(p.x - minx) / (maxx - minx), 64*(p.y - miny) / (maxy - miny))));
+			center.first += p.x;
+			center.second += p.y;
 		}
-		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape)));
-
+		center.first /= points.size();
+		center.second /= points.size();
+		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center)));
+		coords.push_back(center.first);
+		coords.push_back(center.second);
 	}
+	delaunator::Delaunator d(coords);
 }
 
 void Board::display(Window& window)
@@ -263,7 +272,7 @@ mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int
 		(double) dimensions.first - margin, (double) dimensions.second - margin});
 	// Get the constructed diagram
 	auto diagram = algorithm.getDiagram();
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 100; i++) {
 		diagram.computeLloydRelaxation();
 	}
 	// Compute the intersection between the diagram and a box
