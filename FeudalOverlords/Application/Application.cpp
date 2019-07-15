@@ -28,18 +28,18 @@ int main()
 	tgui::Gui gui{ window };
 	sf::Music music;
 	if (music.openFromFile("../../Assets/Musics/lunar_dawn_1_0.ogg"))
-		//return -1; // error
 	{
 		music.setLoop(true);
 		music.play();
 	}
 	sf::Texture selectTex;
 	sf::Texture targetTex;
-	string selectText;
-	string targetText;
+	sf::Texture emptyTex;
+	string selectTrp;
+	string targetTrp;
 	try 
 	{
-		window.buildGUI(gui, selectTex, targetTex, selectText, targetText,
+		window.buildGUI(gui, selectTex, targetTex, selectTrp, targetTrp,
 			gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
 			gameManager.players[gameManager.currentPlayerId]->getName());
 	}
@@ -55,6 +55,7 @@ int main()
 	{
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+			music.stop();
 			window.close();
 		}
 		sf::Event event;
@@ -101,12 +102,12 @@ int main()
 				selectTex = gameManager.board.mountainTex;
 				break;
 			}
-			selectText = to_string(gameManager.board.selected->getTroops().getAmount());
+			selectTrp = to_string(gameManager.board.selected->getTroops().getAmount());
 		}
 		else
 		{
-			selectTex = sf::Texture();
-			selectText = "";
+			selectTex = emptyTex;
+			selectTrp = "";
 		}
 		if (gameManager.board.target != nullptr)
 		{
@@ -125,28 +126,19 @@ int main()
 				targetTex = gameManager.board.mountainTex;
 				break;
 			}
-			targetText = to_string(gameManager.board.target->getTroops().getAmount());
+			targetTrp = to_string(gameManager.board.target->getTroops().getAmount());
 		}
 		else
 		{
-			targetTex = sf::Texture();
-			targetText = "";
+			targetTex = emptyTex;
+			targetTrp = "";
 		}
-		
-		try
-		{
-			window.buildGUI(gui, selectTex, targetTex, selectText, targetText,
-				gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
-				gameManager.players[gameManager.currentPlayerId]->getName());
-		}
-		catch (const tgui::Exception& except)
-		{
-			std::cerr << "Failed to load TGUI widgets : " << except.what() << std::endl;
-			return EXIT_FAILURE;
-		}
-		
+
 		window.clear();
 		gameManager.board.display(window);
+		window.updateGUI(gui, selectTex, targetTex, selectTrp, targetTrp,
+			gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
+			gameManager.players[gameManager.currentPlayerId]->getName()); //update all widgets' infos
 		gui.draw(); // Draw all widgets
 		window.draw(c);
 		window.display();

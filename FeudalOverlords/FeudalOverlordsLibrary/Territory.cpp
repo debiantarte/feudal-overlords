@@ -6,18 +6,36 @@
 
 using namespace std;
 
+// utility to kind of override the shape's getBounds() function
+// we use the fact that all our shapes are convex by design
+sf::FloatRect getAccurateBounds(sf::VertexArray shape)
+{
+	float minx = shape[0].position.x;
+	float maxx = shape[0].position.x;
+	float miny = shape[0].position.y;
+	float maxy = shape[0].position.y;
+
+
+	for (size_t i = 0; i < shape.getVertexCount(); i++)
+	{
+		float x = shape[i].position.x;
+		float y = shape[i].position.y;
+		maxx =  (x > maxx) ? x : maxx;
+		minx =  (x < minx) ? x : minx;
+		maxy =  (y > maxy) ? y : maxy;
+		miny =  (y < miny) ? y : miny;
+	}
+
+	sf::FloatRect res(minx, miny, maxx - minx, maxy - miny);
+	return res;
+}
+
 Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape, pair<double, double> center) :
 	money(money), military(military),
 type(type), owner(owner), shape(shape), center(center)
 {
 	assert(money.getType() == ResourceType::money);
 	assert(military.getType() == ResourceType::military);
-	/*
-	shape.append(sf::Vertex(sf::Vector2f(0.0, 0.0), sf::Vector2f(0.0,0.0)));
-	shape.append(sf::Vertex(sf::Vector2f(0.0, 1.0), sf::Vector2f(0.0, 64.0)));
-	shape.append(sf::Vertex(sf::Vector2f(1.0, 1.0), sf::Vector2f(64.0, 64.0)));
-	shape.append(sf::Vertex(sf::Vector2f(1.0, 0.0), sf::Vector2f(64.0, 0.0)));
-	*/
 }
 
 Territory::~Territory()
@@ -51,7 +69,7 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 	win.draw(shape, states);
 	unique_ptr<sf::Vertex> firstVertex;
 	unique_ptr<sf::Vertex> secondVertex;
-	for (int i=0; i<shape.getVertexCount(); i++)
+	for (size_t i=0; i < shape.getVertexCount(); i++)
 	{
 		if (i != 0)
 		{
@@ -82,7 +100,6 @@ bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
 
 	// second check : it was near me, but maybe in the part of the bounding rectangle outside of the real polygon. Let's check that
 	// the method comes from there : https://algorithmtutor.com/Computational-Geometry/Check-if-a-point-is-inside-a-polygon/
-	// TODO : this always return True
 	vector<float> y_diffs;
 	vector<float> x_diffs;
 	vector<float> diag_diffs;
@@ -109,82 +126,13 @@ bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
 	}
 
 	bool isAlwaysLeft = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {
-		return d > 0;// || (-d < FLT_EPSILON);
+		return d > 0;
 	});
 	bool isAlwaysRight = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {
-		return d < 0;// || (d < FLT_EPSILON || -d < FLT_EPSILON);
+		return d < 0;
 	});
 
 	return isAlwaysLeft || isAlwaysRight;
-	//std::cout << "tile position : X = " << tilePos.x << "; Y = " << tilePos.y << std::endl;
-	//std::cout << "Tile found !" << endl;
-}
-
-// This is a pseudo-observer
-bool Territory::isOver(sf::Vector2f tilePos, int width, int height, int posX, int posY, sf::Mouse::Button button)
-{
-	
-	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing
-	if (!shape.getBounds().contains(sf::Vector2f((float)(posX - tilePos.x) / width, (float)(posY - tilePos.y) / height)))
-	{
-		return false;
-	}
-	// second check : it was near me, but maybe in the part of the bounding rectangle outside of the real polygon. Let's check that
-	// the method comes from there : https://algorithmtutor.com/Computational-Geometry/Check-if-a-point-is-inside-a-polygon/
-	vector<float> y_diffs;
-	vector<float> x_diffs;
-	vector<float> diag_diffs;
-
-	for (size_t i = 0; i < shape.getVertexCount(); i++)
-	{
-		sf::Vector2f p1 = sf::Vector2f(shape[i].position.x * width + tilePos.x, shape[i].position.y * height + tilePos.y);
-		sf::Vector2f p2 = sf::Vector2f(shape[(i + 1) % shape.getVertexCount()].position.x * width + tilePos.x, shape[(i + 1) % shape.getVertexCount()].position.y * height + tilePos.y); // selects the next point, with a % to loop back to the first point when needed
-		float y_diff = -(p2.y - p1.y);
-		float x_diff = p2.x - p1.x;
-		float diag_diff = -(y_diff * p1.x + x_diff * p1.y);
-		y_diffs.push_back(y_diff);
-		x_diffs.push_back(x_diff);
-		diag_diffs.push_back(diag_diff);
-	}
-
-	vector<float> discriminers; // discriminers determine whether the point is left, on, or right of the polygon's side
-
-	for (size_t i = 0; i < y_diffs.size(); i++)
-	{
-		float discriminer = y_diffs[i] * posX + x_diffs[i] * posY + diag_diffs[i];
-		discriminers.push_back(discriminer);
-	}
-
-	bool isAlwaysLeft = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {return (d > 0 || d < FLT_EPSILON); });
-	bool isAlwaysRight = std::all_of(discriminers.begin(), discriminers.end(), [](float d) {return (d < 0 || d < FLT_EPSILON); });
-
-	if (!isAlwaysLeft && !isAlwaysRight)
-	{
-		return false;
-	}
-	std::cout << "tile position : X = " << tilePos.x << "; Y = " << tilePos.y << std::endl;
-	return true;
-}
-
-void Territory::onClick(int posX, int posY, sf::Mouse::Button button)
-{
-	// now, depending on the input, we'll call the right function to handle it
-	std::cout << "Territory clicked on : " << posX << ", " << posY << std::endl;
-	switch (button)
-	{
-	case sf::Mouse::Button::Left:
-		std::cout << "Left clicked !" << std::endl;
-		// check if owner is an AI or a player
-		// if AI : display AI info in a tooltip that will handle further actions
-		// if player : display vassal info in a tooltip
-		break;
-	case sf::Mouse::Button::Right:
-		std::cout << "Right clicked !" << std::endl;
-		// todo ?
-		break;
-	default:
-		break;
-	}
 }
 
 void Territory::setColor(sf::Color col)
@@ -207,6 +155,7 @@ Resource Territory::getTroops() const
 
 bool Territory::isAdjacent(sf::VertexArray otherShape)
 {
+	// TODO : Keep it as comment until we can find a way to make it better
 	/*
 	int maxIter = (shape.getVertexCount() <= otherShape.getVertexCount()) ? shape.getVertexCount() : otherShape.getVertexCount();
 	vector<int> commonVertices;
@@ -228,7 +177,7 @@ bool Territory::isAdjacent(sf::VertexArray otherShape)
 	}
 	return false;
 	*/
-	return shape.getBounds().intersects(otherShape.getBounds());
+	return getAccurateBounds(shape).intersects(getAccurateBounds(otherShape));
 }
 
 sf::VertexArray Territory::getShape() const

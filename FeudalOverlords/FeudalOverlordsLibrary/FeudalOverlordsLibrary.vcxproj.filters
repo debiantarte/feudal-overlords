@@ -48,9 +48,6 @@
     <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Delaunator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="delaunator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

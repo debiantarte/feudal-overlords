@@ -17,5 +17,6 @@ public:
 	Window(int width, int height);
 	~Window();
 	void buildGUI(tgui::Gui&, sf::Texture&, sf::Texture&, string, string, string, string, string);
+	void updateGUI(tgui::Gui&, sf::Texture&, sf::Texture&, string, string, string, string, string);
 };
 

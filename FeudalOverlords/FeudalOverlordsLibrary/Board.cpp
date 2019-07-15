@@ -19,6 +19,14 @@ int rng(int const min, int const max)
 	std::uniform_int_distribution<> distribution(min, max);
 	return distribution(engine);
 }
+double rng(double const min, double const max)
+{
+	assert(min < max);
+	static std::random_device rd;
+	static std::default_random_engine engine(rd());
+	std::uniform_real_distribution<> distribution(min, max);
+	return distribution(engine);
+}
 
 Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight, int nbrPoints) :
 	board_vertices(sf::VertexArray())
@@ -97,10 +105,9 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 			if (y > maxy) maxy = y;
 			if (y < miny) miny = y;
 			sf::Vector2f coord((float)x, (float)y);
-			//if (points.size() > 0 && find(points.begin(), points.end(), coord) == points.end())
-			//{
-				points.push_back(coord);
-			//}
+			
+			points.push_back(coord);
+
 			halfedge = halfedge->next;
 			tmp++;
 		}
@@ -150,14 +157,17 @@ void Board::display(Window& window)
 		{
 			if (tile->isAdjacent(selected->getShape()))
 			{
-				//std::cout << "I'm next to the selected !" << std::endl;
-				if (tile->getOwner() == selected->getOwner())
+				if (tile->getOwner()->getName() == "AI")
 				{
-					tile->setColor(sf::Color::Cyan);
+					tile->setColor(sf::Color(sf::Uint8(100.0), sf::Uint8(100.0), sf::Uint8(100.0)));
+				}
+				else if (tile->getOwner() == selected->getOwner())
+				{
+					tile->setColor(sf::Color(sf::Uint8(35.0), sf::Uint8(200.0), sf::Uint8(200.0)));
 				}
 				else
 				{
-					tile->setColor(sf::Color::Magenta);
+					tile->setColor(sf::Color(sf::Uint8(200.0), sf::Uint8(35.0), sf::Uint8(150.0)));
 				}
 			}
 			else
@@ -165,7 +175,6 @@ void Board::display(Window& window)
 				tile->setColor(sf::Color::White);
 			}
 		}
-
 		tile->display(window, states);
 	}
 }
@@ -174,12 +183,7 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 {
 	int posX = mousePos.first;
 	int posY = mousePos.second;
-	/*int width = (window.dimensions.first / TILE_SIZE);
-	int height = (window.dimensions.second - 100) / TILE_SIZE;
-	*/
 	
-	//std::cout << "mouse position : X = " << posX << "; Y = " << posY << std::endl;
-
 	for (auto& tile : territories)
 	{
 		if (tile->isOver(pair<int, int>(posX, posY), mb))
@@ -219,27 +223,6 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 				target->setColor(sf::Color::Red + sf::Color::Magenta);
 			}
 		}
-		/*
-		if (tile.get() != selected && tile.get() != target && selected != nullptr)
-		{
-			if (tile->isAdjacent(selected->getShape()))
-			{
-				std::cout << "I'm next to the selected !" << std::endl;
-				if (tile->getOwner() == selected->getOwner())
-				{
-					tile->setColor(sf::Color::Magenta);
-				}
-				else
-				{
-					tile->setColor(sf::Color::Cyan);
-				}
-			}
-			else
-			{
-				tile->setColor(sf::Color::White);
-			}
-		}
-		*/
 	}
 }
 
