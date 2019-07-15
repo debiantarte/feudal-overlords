@@ -49,9 +49,14 @@ int main()
 		std::cerr << "Failed to load TGUI widgets : " << except.what() << std::endl;
 		return EXIT_FAILURE;
 	}
+
+#ifdef DEBUG
 	sf::CircleShape c(3);
 	c.setFillColor(sf::Color::Red);
+#endif // DEBUG
+	
 	int notificationId = 0;
+	
 	while (window.isOpen())
 	{
 
@@ -74,8 +79,9 @@ int main()
 				gameManager.board.onClick(pair<int, int>(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y),
 					event.mouseButton.button, window);
 				
+				#ifdef DEBUG
 				c.setPosition(sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
-				
+				#endif // DEBUG
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space) {
 				gameManager.nextTurn();
@@ -150,7 +156,11 @@ int main()
 			gameManager.getSelectedOwner(), gameManager.getTargetOwner(),
 			gameManager.players[gameManager.currentPlayerId]->getName()); //update all widgets' infos
 		gui.draw(); // Draw all widgets
+
+#ifdef DEBUG
 		window.draw(c);
+#endif // DEBUG
+		
 		window.display();
 	}
 }

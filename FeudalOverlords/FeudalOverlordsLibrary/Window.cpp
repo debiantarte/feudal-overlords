@@ -18,7 +18,8 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 {
 	// create background sprite
 	sf::Texture uitex;
-	assert(uitex.loadFromFile("../../Assets/Textures/UItex.png"));
+	bool texLoaded = uitex.loadFromFile("../../Assets/Textures/UItex.png");
+	assert(texLoaded);
 	sf::Sprite background(uitex);
 	background.setScale((float)dimensions.first / uitex.getSize().x, ((float)dimensions.second / 7) / uitex.getSize().y);
 	// apply it to a canvas and draw the canvas

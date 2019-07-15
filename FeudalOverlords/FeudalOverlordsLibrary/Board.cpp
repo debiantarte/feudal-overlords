@@ -30,10 +30,15 @@ double rng(double const min, double const max)
 Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight, int nbrPoints) :
 	board_vertices(sf::VertexArray())
 {
-	assert(cityTex.loadFromFile("../../Assets/Textures/CityTex2.png"));
-	assert(dirtTex.loadFromFile("../../Assets/Textures/DirtTex2.png"));
-	assert(grassTex.loadFromFile("../../Assets/Textures/GrassTex2.png"));
-	assert(mountainTex.loadFromFile("../../Assets/Textures/MountainTex2.png"));
+	bool texLoaded;
+	texLoaded = cityTex.loadFromFile("../../Assets/Textures/CityTex2.png");
+	assert(texLoaded);
+	texLoaded = dirtTex.loadFromFile("../../Assets/Textures/DirtTex2.png");
+	assert(texLoaded);
+	texLoaded = grassTex.loadFromFile("../../Assets/Textures/GrassTex2.png");
+	assert(texLoaded);
+	texLoaded = mountainTex.loadFromFile("../../Assets/Textures/MountainTex2.png");
+	assert(texLoaded);
 
 	int maxTroops = 1000;
 	int maxMoney = 1000;
