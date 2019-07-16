@@ -128,6 +128,51 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		coords.push_back(center.second);
 	}
 	delaunator::Delaunator d(coords);
+	adjacency_list = std::vector<std::vector<pair<double, double>>>(territories.size());
+	for (std::size_t i = 0; i < d.triangles.size(); i += 3) {
+		auto terr0_id = -1;
+		auto terr1_id = -1;
+		auto terr2_id = -1;
+		for (int j = 0; j < territories.size(); j++) {
+			if (d.coords[2 * d.triangles[i]] == territories[j]->getCenter().first
+				&& d.coords[2 * d.triangles[i] + 1] == territories[j]->getCenter().second) {
+				terr0_id = j;
+			} else if(d.coords[2 * d.triangles[i+1]] == territories[j]->getCenter().first
+				&& d.coords[2 * d.triangles[i+1] + 1] == territories[j]->getCenter().second) {
+				terr1_id = j;
+			} else if (d.coords[2 * d.triangles[i + 2]] == territories[j]->getCenter().first
+				&& d.coords[2 * d.triangles[i + 2] + 1] == territories[j]->getCenter().second) {
+				terr2_id = j;
+			}
+		}
+		assert(terr0_id != terr1_id
+		&& terr0_id != terr2_id
+		&& terr0_id != -1
+		&& terr1_id != terr2_id
+		&& terr1_id != -1
+		&& terr2_id != -1);
+		auto center_0 = territories[terr0_id]->getCenter();
+		auto center_1 = territories[terr1_id]->getCenter();
+		auto center_2 = territories[terr2_id]->getCenter();
+		if (std::find(adjacency_list[terr0_id].begin(),
+			adjacency_list[terr0_id].end(), center_1) == adjacency_list[terr0_id].end())
+			adjacency_list[terr0_id].push_back(center_1);
+		if (std::find(adjacency_list[terr0_id].begin(),
+			adjacency_list[terr0_id].end(), center_2) == adjacency_list[terr0_id].end())
+			adjacency_list[terr0_id].push_back(center_2);
+		if (std::find(adjacency_list[terr1_id].begin(),
+			adjacency_list[terr1_id].end(), center_0) == adjacency_list[terr1_id].end())
+			adjacency_list[terr1_id].push_back(center_0);
+		if (std::find(adjacency_list[terr1_id].begin(),
+			adjacency_list[terr1_id].end(), center_2) == adjacency_list[terr1_id].end())
+			adjacency_list[terr1_id].push_back(center_2);
+		if (std::find(adjacency_list[terr2_id].begin(),
+			adjacency_list[terr2_id].end(), center_0) == adjacency_list[terr2_id].end())
+			adjacency_list[terr2_id].push_back(center_0);
+		if (std::find(adjacency_list[terr2_id].begin(),
+			adjacency_list[terr2_id].end(), center_1) == adjacency_list[terr2_id].end())
+			adjacency_list[terr2_id].push_back(center_1);
+	}
 }
 
 void Board::display(Window& window)

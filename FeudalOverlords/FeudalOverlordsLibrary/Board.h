@@ -41,5 +41,6 @@ public:
 	sf::Texture mountainTex;
 	Territory* selected;
 	Territory* target;
+	std::vector<std::vector<pair<double, double>>>adjacency_list;
 };
 
