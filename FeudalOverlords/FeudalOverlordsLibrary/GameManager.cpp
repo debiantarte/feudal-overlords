@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "GameManager.h"
+#include "AI.h"
+#include <random>
 #include <cassert>
 
 
@@ -17,12 +19,26 @@ GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<in
 	assert(nbrAIs >= 0);
 }
 
-void GameManager::nextTurn()
+int GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
 	if (isGameFinished()) { // TODO : show this on the Window
 		auto winnerPlayer = winner();
+	}
+	// rebel !
+	int nbrRebels = 0;
+	for (auto &tile : board.territories) {
+		if (tile->getOwner() == players[currentPlayerId] && tile->getType() != capital) {
+			static std::random_device rd;
+			static std::default_random_engine engine(rd());
+			std::uniform_int_distribution<> distribution(0, 100);
+			if (distribution(engine) < PROBA_REBEL) {
+				tile->setOwner(make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 })));
+				tile->newOwnerColor(sf::Color(sf::Uint8(150.0), sf::Uint8(150.0), sf::Uint8(150.0)));
+				nbrRebels++;
+			}
+		}
 	}
 	if (board.selected != nullptr)
 	{
@@ -45,6 +61,7 @@ void GameManager::nextTurn()
 		regenTerritories();
 	}
 	cout << "Turn [" << turn << "] Current player : " << players[currentPlayerId]->getName() << endl;
+	return nbrRebels;
 }
 
 void GameManager::regenTerritories()

@@ -86,6 +86,16 @@ void Territory::setOwner(shared_ptr<Lord> owner_)
 	owner = owner_;
 }
 
+shared_ptr<Lord> Territory::getOverlord()
+{
+	return overlord;
+}
+
+void Territory::setOverlord(shared_ptr<Lord> overlord)
+{
+	this->overlord = overlord;
+}
+
 void Territory::display(Window& win, const sf::RenderStates& states)
 {
 	shape.setPrimitiveType(sf::TriangleFan);

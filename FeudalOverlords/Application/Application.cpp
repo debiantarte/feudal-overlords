@@ -95,7 +95,20 @@ int main()
 				#endif // DEBUG
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space) {
-				gameManager.nextTurn();
+				auto res = gameManager.nextTurn();
+				string message = "There have been ";
+				if (res == 0) {
+					message += "no rebel.";
+				}
+				else if (res = 1) {
+					message += "1 rebel.";
+				}
+				else {
+					message += res;
+					message += " rebels.";
+				}
+				gui.get("notifBox")->cast<tgui::ListBox>()->addItem(message, to_string(notificationId));
+				notificationId++;
 				gui.get("notifBox")->cast<tgui::ListBox>()->addItem("It's " + gameManager.players[gameManager.currentPlayerId]->getName() + "'s turn !", to_string(notificationId));
 				notificationId++;
 			}

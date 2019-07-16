@@ -30,6 +30,8 @@ public:
 	void setColor(sf::Color);
 	shared_ptr<Lord> getOwner();
 	void setOwner(shared_ptr<Lord>);
+	shared_ptr<Lord> getOverlord();
+	void setOverlord(shared_ptr<Lord>);
 	void setTroops(int);
 	Resource getTroops() const;
 	bool isAdjacent(sf::VertexArray);
@@ -43,6 +45,7 @@ private:
 	Resource military;
 	TerritoryType type;
 	shared_ptr<Lord> owner;
+	shared_ptr<Lord> overlord;
 	sf::VertexArray shape;
 	pair<double, double> center;
 	sf::Color ownerColor;

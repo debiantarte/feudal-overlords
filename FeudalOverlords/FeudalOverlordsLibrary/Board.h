@@ -8,7 +8,7 @@
 #include "include/MyGAL/FortuneAlgorithm.h"
 #include "include/MyGAL/Diagram.h"
 
-#define CAPITAL_TROOPS  400
+#define CAPITAL_TROOPS  500
 #define CAPITAL_MONEY	800
 #define NBR_LLOYD_RELAX	3
 

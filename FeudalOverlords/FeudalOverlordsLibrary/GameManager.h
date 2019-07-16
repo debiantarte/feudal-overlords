@@ -8,7 +8,8 @@
 #include "Window.h"
 
 
-#define NBR_POINTS 100
+#define NBR_POINTS	100
+#define PROBA_REBEL	10
 
 using namespace std;
 
@@ -43,7 +44,7 @@ public:
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, endingCondition);
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, endingCondition, int);
 
-	void nextTurn(); // TODO
+	int nextTurn(); // TODO
 	void regenTerritories();
 	shared_ptr<Lord> winner();
 	bool isGameFinished();
