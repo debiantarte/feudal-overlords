@@ -30,9 +30,9 @@ sf::FloatRect getAccurateBounds(sf::VertexArray shape)
 	return res;
 }
 
-Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape) :
+Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape, pair<double, double> center) :
 	money(money), military(military),
-type(type), owner(owner), shape(shape)
+type(type), owner(owner), shape(shape), center(center)
 {
 	assert(money.getType() == ResourceType::money);
 	assert(military.getType() == ResourceType::military);
@@ -205,4 +205,9 @@ bool Territory::isAdjacent(sf::VertexArray otherShape)
 sf::VertexArray Territory::getShape() const
 {
 	return shape;
+}
+
+pair<double, double> Territory::getCenter() const
+{
+	return center;
 }

@@ -20,7 +20,7 @@ enum TerritoryType {
 class Territory 
 {
 public:
-	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray);
+	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray, pair<double, double>);
 	~Territory();
 	void resetResources();
 	void display(Window&, const sf::RenderStates&);
@@ -34,10 +34,12 @@ public:
 	Resource getTroops() const;
 	bool isAdjacent(sf::VertexArray);
 	sf::VertexArray getShape() const;
+	pair<double, double> getCenter() const;
 private:
 	Resource money;
 	Resource military;
 	TerritoryType type;
 	shared_ptr<Lord> owner;
 	sf::VertexArray shape;
+	pair<double, double> center;
 };
