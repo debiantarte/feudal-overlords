@@ -4,15 +4,15 @@
 
 
 
-GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions) :
-	GameManager(nbrAIs, players, dimensions, 5)
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, endingCondition ec) :
+	GameManager(nbrAIs, players, dimensions, ec, 5)
 {
 }
 
-GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, int finishTurn=5) :
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, endingCondition ec, int finishTurn=5) :
 	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players),
 	board(players, dimensions.first, dimensions.second, NBR_POINTS),
-	endingCond(turnLimit), turn(0), finishTurn(finishTurn), currentPlayerId(0)
+	endingCond(ec), turn(0), finishTurn(finishTurn), currentPlayerId(0)
 {
 	assert(nbrAIs >= 0);
 }

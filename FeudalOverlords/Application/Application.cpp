@@ -24,7 +24,7 @@ int main()
 	players.push_back(make_shared<Player>((string) "Princess Celestia"));
 	players.push_back(make_shared<Player>((string) "Princess Luna"));
 	Window window(WINDOW_WIDTH, WINDOW_HEIGHT);
-	GameManager gameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second* 6/7));
+	GameManager gameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second* 6/7), conquest);
 	tgui::Gui gui{ window };
 	sf::Music music;
 	if (music.openFromFile("../../Assets/Musics/lunar_dawn_1_0.ogg"))
