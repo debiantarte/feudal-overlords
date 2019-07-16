@@ -218,7 +218,7 @@ void Board::display(Window& window)
 		}
 		if (territories[i].get() != selected && territories[i].get() != target && selected != nullptr)
 		{
-			if (std::find(adjacency_list[i].begin(), adjacency_list[i].end(), selected->getCenter()) != adjacency_list[i].end())
+			if (std::find(adjacency_list[i].begin(), adjacency_list[i].end(), selected->getCenter()) != adjacency_list[i].end() && territories[i]->isAdjacent(selected->getShape()))
 			{
 				if (territories[i]->getOwner()->getName() == "AI")
 				{
