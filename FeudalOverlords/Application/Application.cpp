@@ -69,16 +69,16 @@ int main()
 		}
 		sf::Event event;
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::M)) {
-			if (music.getStatus() == sf::SoundSource::Status::Playing) {
-				music.pause();
-			} elif (music.getStatus() == sf::SoundSource::Status::Stopped || music.getStatus() == sf::SoundSource::Status::Paused) {
-				music.play();
-			}
-		}
-
 		while (window.pollEvent(event))
 		{
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::M) {
+				if (music.getStatus() == sf::SoundSource::Status::Playing) {
+					music.pause();
+				}
+				else if (music.getStatus() == sf::SoundSource::Status::Stopped || music.getStatus() == sf::SoundSource::Status::Paused) {
+					music.play();
+				}
+			}
 			if (event.type == sf::Event::Closed)
 				window.close();
 			if (event.type == sf::Event::Resized)

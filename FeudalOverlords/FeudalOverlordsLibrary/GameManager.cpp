@@ -22,7 +22,7 @@ void GameManager::nextTurn()
 	// take all the players and iterate through them
 	// then the AIs
 	if (isGameFinished()) { // TODO : show this on the Window
-		Lord& winner = winner();
+		auto winnerPlayer = winner();
 	}
 	if (board.selected != nullptr)
 	{
@@ -87,11 +87,11 @@ shared_ptr<Lord> GameManager::winner()
 			}
 		}
 		return lord;
-	} elif (endingCond == conquest)
+	} else if (endingCond == conquest)
 	{
-		for (auto board.territories: &territory) {
+		for (auto &territory: board.territories) {
 			if (territory->getType() == capital) {
-				return territory->getOwner()
+				return territory->getOwner();
 			}
 		}
 
@@ -110,13 +110,13 @@ bool GameManager::isGameFinished()
 	|| (endingCond == turnLimit && turn >= finishTurn))
 	{
 		return true;
-	} elif (endingCond == conquest)
+	} else if (endingCond == conquest)
 	{
-	for (auto board.territories: &territory) {
-		string prevLordName = null;
+	for (auto &territory: board.territories) {
+		string prevLordName = "";
 		if (territory->getType() == capital) {
 			string name = territory->getOwner()->getName();
-			if (prevLordName == null) {
+			if (prevLordName == "") {
 				prevLordName = name;
 			} else if (prevLordName != name) {
 				return false;
