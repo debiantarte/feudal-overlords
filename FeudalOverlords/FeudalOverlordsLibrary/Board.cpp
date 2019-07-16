@@ -51,8 +51,20 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	{
 		indexCapitals.push_back(rng(0, nbrPoints));
 	}
+	// Generate some points
+	auto points = std::vector<mygal::Vector2<double>>();
+	double margin = 5; // is used to avoid generating points too close to the borders of the window
+	for (int i = 0; i < nbrPoints; i++)
+	{
+		points.push_back(mygal::Vector2<double>(rng(margin, boardWidth - margin),
+			rng(margin, boardHeight - margin)));
+	}
 	auto coords = std::vector<double>();
-	auto diagram = generateTerrainDiagram(nbrPoints, pair<int, int>(boardWidth, boardHeight));
+	auto diagram = generateTerrainDiagram(points, pair<int, int>(boardWidth, boardHeight), margin);
+	for (int i = 0; i < NBR_LLOYD_RELAX; i++) {
+		points = diagram.computeLloydRelaxation();
+		diagram = generateTerrainDiagram(points, pair<int, int>(boardWidth, boardHeight), margin);
+	}
 	for (size_t i = 0; i < diagram.getFaces().size(); i++)
 	{
 		TerritoryType type = countryside;
@@ -93,6 +105,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		}
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];
+		auto center = pair<double, double>(face.site->point.x, face.site->point.y);
 		vector<sf::Vector2f> points;
 		double minx, maxx, miny, maxy;
 		auto halfedge = face.outerComponent;
@@ -124,15 +137,10 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		// we need to compute texture coords
 
 		auto shape = sf::VertexArray(sf::TriangleFan);
-		auto center = pair<double, double>();
 		for (auto p : points)
 		{
 			shape.append(sf::Vertex(p, sf::Vector2f(64*(p.x - minx) / (maxx - minx), 64*(p.y - miny) / (maxy - miny))));
-			center.first += p.x;
-			center.second += p.y;
 		}
-		center.first /= points.size();
-		center.second /= points.size();
 		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center, color)));
 		coords.push_back(center.first);
 		coords.push_back(center.second);
@@ -301,16 +309,8 @@ map<shared_ptr<Lord>, int> Board::territoryCount()
 	return res_map;
 }
 
-mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int> dimensions)
+mygal::Diagram<double> Board::generateTerrainDiagram(std::vector<mygal::Vector2<double>> points, pair<int,int> dimensions, double margin)
 {
-	// Generate some points
-	auto points = std::vector<mygal::Vector2<double>>();
-	double margin = 5; // is used to avoid generating points too close to the borders of the window
-	for (int i = 0; i < nbrPoints; i++)
-	{
-		points.push_back(mygal::Vector2<double>(rng(margin, dimensions.first-margin),
-			rng(margin, dimensions.second-margin)));
-	}
 	// Initialize an instance of Fortune's algorithm
 	auto algorithm = mygal::FortuneAlgorithm<double>(points);
 	// Construct the diagram
@@ -320,9 +320,6 @@ mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int
 		(double) dimensions.first - margin, (double) dimensions.second - margin});
 	// Get the constructed diagram
 	auto diagram = algorithm.getDiagram();
-	for (int i = 0; i < 100; i++) {
-		diagram.computeLloydRelaxation();
-	}
 	// Compute the intersection between the diagram and a box
 	diagram.intersect(mygal::Box<double>{0.0, 0.0, (double) dimensions.first, (double) dimensions.second});
 	// we return the list of Face
