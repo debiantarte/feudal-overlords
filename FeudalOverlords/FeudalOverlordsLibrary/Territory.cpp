@@ -114,7 +114,7 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 }
 
 // This is a pseudo-observer
-bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
+bool Territory::isOver(pair<int, int> mousePos)
 {
 
 	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing

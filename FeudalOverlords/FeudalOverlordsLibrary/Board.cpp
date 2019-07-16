@@ -239,45 +239,54 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 	int posX = mousePos.first;
 	int posY = mousePos.second;
 	
+	float distance = 1000000000.0;
+	Territory* nearest = nullptr;
+
 	for (auto& tile : territories)
 	{
-		if (tile->isOver(pair<int, int>(posX, posY), mb))
+		float xDist = tile->getCenter().first - posX;
+		float yDist = tile->getCenter().second - posY;
+		float relDistance = std::sqrt(xDist * xDist + yDist * yDist);
+		if (relDistance <= distance && tile->isOver(pair<int, int>(posX, posY)))
 		{
-			if (mb == sf::Mouse::Left)
-			{
-				if (selected != nullptr)
-				{
-					selected->resetColor(); // reset old selected's color
-				}
-				if (target != nullptr && target == tile.get())
-				{
-					target = nullptr;
-				}
-				selected = &*tile;
-				selected->setColor(sf::Color::Blue + sf::Color::Cyan);
-				sf::SoundBuffer buffer;
-				if (!buffer.loadFromFile("../../Assets/Sounds/boop.ogg")) {
-					cout << "trux" << endl; return;
-				};
-				sf::Sound sound;
-				sound.setBuffer(buffer);
-				sound.setPitch(2.f);
-				sound.play();
-			}
-			else if (mb == sf::Mouse::Right)
-			{
-				if (target != nullptr)
-				{
-					target->resetColor(); // reset old selected's color
-				}
-				if (selected != nullptr && selected == tile.get())
-				{
-					selected = nullptr;
-				}
-				target = &*tile;
-				target->setColor(sf::Color::Red + sf::Color::Magenta);
-			}
+			distance = relDistance;
+			nearest = tile.get();
 		}
+	}
+
+	if (mb == sf::Mouse::Left)
+	{
+		if (selected != nullptr)
+		{
+			selected->resetColor(); // reset old selected's color
+		}
+		if (target != nullptr && target == nearest)
+		{
+			target = nullptr;
+		}
+		selected = nearest;
+		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
+		sf::SoundBuffer buffer;
+		if (!buffer.loadFromFile("../../Assets/Sounds/boop.ogg")) {
+			cout << "trux" << endl; return;
+		};
+		sf::Sound sound;
+		sound.setBuffer(buffer);
+		sound.setPitch(2.f);
+		sound.play();
+	}
+	else if (mb == sf::Mouse::Right)
+	{
+		if (target != nullptr)
+		{
+			target->resetColor(); // reset old selected's color
+		}
+		if (selected != nullptr && selected == nearest)
+		{
+			selected = nullptr;
+		}
+		target = nearest;
+		target->setColor(sf::Color::Red + sf::Color::Magenta);
 	}
 }
 
