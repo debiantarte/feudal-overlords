@@ -88,7 +88,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 			money = CAPITAL_MONEY;
 			owner = players[playerNbr];
 			playerNbr++;
-			color = playerColors[playerColors.size() - 1];
+			color = playerColors.back();
 			playerColors.pop_back(); 
 		}
 		// we have to convert the face to a VertexArray
@@ -187,10 +187,10 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 
 void Board::display(Window& window)
 {
-	for (auto& tile: territories)
+	for (size_t i = 0; i < territories.size(); i++)
 	{
 		sf::RenderStates states;
-		switch (tile->getType())
+		switch (territories[i]->getType())
 		{
 		case capital:
 			states.texture = &cityTex;
@@ -208,29 +208,29 @@ void Board::display(Window& window)
 			abort();
 			break;
 		}
-		if (tile.get() != selected && tile.get() != target && selected != nullptr)
+		if (territories[i].get() != selected && territories[i].get() != target && selected != nullptr)
 		{
-			if (tile->isAdjacent(selected->getShape()))
+			if (std::find(adjacency_list[i].begin(), adjacency_list[i].end(), territories[i].get()->getCenter()) != adjacency_list[i].end())
 			{
-				if (tile->getOwner()->getName() == "AI")
+				if (territories[i]->getOwner()->getName() == "AI")
 				{
-					tile->setColor(sf::Color::White);
+					territories[i]->setColor(sf::Color::White);
 				}
 				else
 				{
-					tile->setColor(tile->getColor() - sf::Color(sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(50.0)));
+					territories[i]->setColor(territories[i]->getColor() - sf::Color(sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(50.0)));
 				}
 			}
 			else
 			{
-				tile->resetColor();
+				territories[i]->resetColor();
 			}
 		}
 		else if (selected == nullptr)
 		{
-			tile->resetColor();
+			territories[i]->resetColor();
 		}
-		tile->display(window, states);
+		territories[i]->display(window, states);
 	}
 }
 
@@ -239,14 +239,15 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 	int posX = mousePos.first;
 	int posY = mousePos.second;
 	
-	float distance = 1000000000.0;
+	double distance = 1000000000.0;
 	Territory* nearest = nullptr;
+
 
 	for (auto& tile : territories)
 	{
-		float xDist = tile->getCenter().first - posX;
-		float yDist = tile->getCenter().second - posY;
-		float relDistance = std::sqrt(xDist * xDist + yDist * yDist);
+		double xDist = tile->getCenter().first - posX;
+		double yDist = tile->getCenter().second - posY;
+		double relDistance = std::sqrt(xDist * xDist + yDist * yDist);
 		if (relDistance <= distance && tile->isOver(pair<int, int>(posX, posY)))
 		{
 			distance = relDistance;
