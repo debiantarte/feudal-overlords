@@ -9,6 +9,7 @@ GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<in
 {
 }
 
+
 GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, endingCondition ec, int finishTurn=5) :
 	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players),
 	board(players, dimensions.first, dimensions.second, NBR_POINTS),
@@ -17,12 +18,13 @@ GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<in
 	assert(nbrAIs >= 0);
 }
 
-void GameManager::nextTurn()
+string GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
-	if (isGameFinished()) { // TODO : show this on the Window
+	if (isGameFinished()) {
 		auto winnerPlayer = winner();
+		return winnerPlayer->getName();
 	}
 	if (board.selected != nullptr)
 	{
@@ -45,6 +47,7 @@ void GameManager::nextTurn()
 		regenTerritories();
 	}
 	cout << "Turn [" << turn << "] Current player : " << players[currentPlayerId]->getName() << endl;
+	return "";
 }
 
 void GameManager::regenTerritories()
@@ -87,15 +90,18 @@ shared_ptr<Lord> GameManager::winner()
 			}
 		}
 		return lord;
-	} else if (endingCond == conquest)
+	}
+	else if (endingCond == conquest)
 	{
 		for (auto &territory: board.territories) {
 			if (territory->getType() == capital) {
 				return territory->getOwner();
 			}
 		}
-
 	}
+	// this section should not be reach or else there are no winner at all
+	std::cerr << "[ERROR] No winner found !" << std::endl;
+	return nullptr;
 }
 
 /**
@@ -110,20 +116,22 @@ bool GameManager::isGameFinished()
 	|| (endingCond == turnLimit && turn >= finishTurn))
 	{
 		return true;
-	} else if (endingCond == conquest)
+	} 
+	else if (endingCond == conquest)
 	{
-	for (auto &territory: board.territories) {
 		string prevLordName = "";
-		if (territory->getType() == capital) {
-			string name = territory->getOwner()->getName();
-			if (prevLordName == "") {
-				prevLordName = name;
-			} else if (prevLordName != name) {
-				return false;
+		for (auto &territory: board.territories) {
+			if (territory->getType() == capital) {
+				string name = territory->getOwner()->getName();
+				if (prevLordName == "") {
+					prevLordName = name;
+				}
+				else if (prevLordName != name) {
+					return false;
+				}
 			}
 		}
-	}
-	return true;
+		return true;
 	}
 	else
 	{

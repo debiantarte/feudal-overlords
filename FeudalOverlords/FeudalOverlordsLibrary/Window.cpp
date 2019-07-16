@@ -88,6 +88,13 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 	// render the scrollbar mostly invisible
 	notifBox->getRenderer()->setScrollbarWidth(0.001);
 	gui.add(notifBox, "notifBox");
+
+	auto winBox = tgui::MessageBox::create();
+	winBox->addButton("Glory !");
+	winBox->setTitle("The War Is Ended ! All Hail The Winner !");
+	winBox->setPosition(400.0, 300.0);
+	winBox->setVisible(false);
+	gui.add(winBox, "winBox");
 }
 
 void Window::updateGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex,

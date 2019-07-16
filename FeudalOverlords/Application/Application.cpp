@@ -95,9 +95,17 @@ int main()
 				#endif // DEBUG
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space) {
-				gameManager.nextTurn();
-				gui.get("notifBox")->cast<tgui::ListBox>()->addItem("It's " + gameManager.players[gameManager.currentPlayerId]->getName() + "'s turn !", to_string(notificationId));
-				notificationId++;
+				string winner = gameManager.nextTurn();
+				if (winner != "")
+				{
+					gui.get("winBox")->cast<tgui::MessageBox>()->setText(winner + " has won ! Hurray !");
+					gui.get("winBox")->cast<tgui::MessageBox>()->setVisible(true);
+				}
+				else
+				{
+					gui.get("notifBox")->cast<tgui::ListBox>()->addItem("It's " + gameManager.players[gameManager.currentPlayerId]->getName() + "'s turn !", to_string(notificationId));
+					notificationId++;
+				}
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Enter)
 			{
