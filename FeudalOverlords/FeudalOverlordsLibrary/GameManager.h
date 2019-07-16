@@ -18,6 +18,14 @@ enum endingCondition { // for now (milestone 1), we assume we are in turnLimit c
 	endEndingConditions
 };
 
+enum attackRes {
+	impossible,
+	victory,
+	defeat,
+	movement,
+	endAttackRes
+};
+
 /**
 	GameManager object
 	It is instanciated when clicking on New Game
@@ -42,8 +50,8 @@ public:
 	map<shared_ptr<Lord>, int> territoryCount();
 	void setTurn(int);
 	void playerTurn();	
-	void moveTroops(Territory*, Territory*);
-	void attack();
+	attackRes moveTroops(Territory*, Territory*);
+	attackRes attack();
 	string getSelectedOwner();
 	string getTargetOwner();
 private:

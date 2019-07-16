@@ -112,12 +112,20 @@ int main()
 				string targetOwner = gameManager.getTargetOwner();
 				string selectOwner = gameManager.getSelectedOwner();
 				
-				gameManager.attack();
-				if (selectOwner != "")
-					gui.get("notifBox")->cast<tgui::ListBox>()->addItem(selectOwner + " attacked !");
-				if (targetOwner != "")
-					gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
-						+ " has been conquered", to_string(notificationId));
+				auto res = gameManager.attack();
+				switch (res) {
+				case impossible: gui.get("notifBox")->cast<tgui::ListBox>()->addItem("This movement is impossible.");
+					break;
+				case victory: gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
+					+ " has been conquered", to_string(notificationId));
+					break;
+				case defeat: gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
+					+ " has succesfully defended !", to_string(notificationId)); 
+					break;
+				case movement: gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
+					+ " has been reinforced !", to_string(notificationId)); 
+					break;
+				}
 				notificationId++;
 			}
 			gui.handleEvent(event); // tell all tgui widgets about events happening

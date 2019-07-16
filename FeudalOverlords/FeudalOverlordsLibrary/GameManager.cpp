@@ -150,7 +150,7 @@ void GameManager::setTurn(int turn_)
 	turn = turn_;
 }
 
-void GameManager::moveTroops(Territory* attacker, Territory* defender)
+attackRes GameManager::moveTroops(Territory* attacker, Territory* defender)
 {
 	if (attacker->getOwner() == players[currentPlayerId])
 	{
@@ -169,21 +169,30 @@ void GameManager::moveTroops(Territory* attacker, Territory* defender)
 				defender->setOwner(attacker->getOwner());
 				std::cout << "Defender's owner becomes : " << getTargetOwner() << std::endl;
 				defender->newOwnerColor(attacker->getColor());
+				return victory;
 			}
+			return defeat;
 		}
 		else
 		{
 			defender->setTroops(defendingTroops + attackingTroops);
 			attacker->setTroops(0);
+			return movement;
 		}
+	}
+	else {
+		return impossible;
 	}
 }
 
-void GameManager::attack()
+attackRes GameManager::attack()
 {
 	if (board.selected != nullptr && board.target != nullptr && board.selected->getOwner() == players[currentPlayerId] && board.target->isAdjacent(board.selected->getShape()))
 	{
-		moveTroops(board.selected, board.target);
+		return moveTroops(board.selected, board.target);
+	}
+	else {
+		return impossible;
 	}
 }
 
