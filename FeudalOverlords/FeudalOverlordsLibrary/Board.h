@@ -8,12 +8,6 @@
 #include "include/MyGAL/FortuneAlgorithm.h"
 #include "include/MyGAL/Diagram.h"
 
-/*
-#define BOARD_HEIGHT	10
-#define BOARD_WIDTH		10
-#define TILE_SIZE		10
-*/
-
 #define CAPITAL_TROOPS  400
 #define CAPITAL_MONEY	800
 
@@ -23,7 +17,6 @@ class Board :
 	public Displayable
 {
 public:
-	Board(vector<shared_ptr<Player>>);
 	Board(vector<shared_ptr<Player>>, int, int, int);
 	//~Board();
 	virtual void display(Window& window);
@@ -41,6 +34,7 @@ public:
 	sf::Texture mountainTex;
 	Territory* selected;
 	Territory* target;
-	std::vector<std::vector<pair<double, double>>>adjacency_list;
+	std::vector<std::vector<pair<double, double>>> adjacency_list;
+	std::vector<pair<string, sf::Color>> playerColors;
 };
 

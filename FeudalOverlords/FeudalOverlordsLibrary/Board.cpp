@@ -44,6 +44,8 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	int maxTroops = 1000;
 	int maxMoney = 1000;
 	int playerNbr = 0;
+	vector<sf::Color> playerColors = { sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, sf::Color::Red };
+	std::random_shuffle(playerColors.begin(), playerColors.end());
 	vector<int> indexCapitals;
 	for (size_t i = 0; i < players.size(); i++)
 	{
@@ -79,12 +81,15 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		int troops = rng(0, maxTroops);
 		int money = rng(0, maxMoney) * 1000;
 		shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
+		sf::Color color = sf::Color(sf::Uint8(150.0), sf::Uint8(150.0), sf::Uint8(150.0));
 		if (type == capital)
 		{
 			troops = CAPITAL_TROOPS;
 			money = CAPITAL_MONEY;
 			owner = players[playerNbr];
 			playerNbr++;
+			color = playerColors[playerColors.size() - 1];
+			playerColors.pop_back(); 
 		}
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];
@@ -128,7 +133,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		}
 		center.first /= points.size();
 		center.second /= points.size();
-		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center)));
+		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center, color)));
 		coords.push_back(center.first);
 		coords.push_back(center.second);
 	}
@@ -138,7 +143,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		auto terr0_id = -1;
 		auto terr1_id = -1;
 		auto terr2_id = -1;
-		for (int j = 0; j < territories.size(); j++) {
+		for (size_t j = 0; j < territories.size(); j++) {
 			if (d.coords[2 * d.triangles[i]] == territories[j]->getCenter().first
 				&& d.coords[2 * d.triangles[i] + 1] == territories[j]->getCenter().second) {
 				terr0_id = j;
@@ -209,21 +214,21 @@ void Board::display(Window& window)
 			{
 				if (tile->getOwner()->getName() == "AI")
 				{
-					tile->setColor(sf::Color(sf::Uint8(100.0), sf::Uint8(100.0), sf::Uint8(100.0)));
-				}
-				else if (tile->getOwner() == selected->getOwner())
-				{
-					tile->setColor(sf::Color(sf::Uint8(35.0), sf::Uint8(200.0), sf::Uint8(200.0)));
+					tile->setColor(sf::Color::White);
 				}
 				else
 				{
-					tile->setColor(sf::Color(sf::Uint8(200.0), sf::Uint8(35.0), sf::Uint8(150.0)));
+					tile->setColor(tile->getColor() - sf::Color(sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(50.0)));
 				}
 			}
 			else
 			{
-				tile->setColor(sf::Color::White);
+				tile->resetColor();
 			}
+		}
+		else if (selected == nullptr)
+		{
+			tile->resetColor();
 		}
 		tile->display(window, states);
 	}
@@ -242,7 +247,7 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 			{
 				if (selected != nullptr)
 				{
-					selected->setColor(sf::Color::White); // reset old selected's color
+					selected->resetColor(); // reset old selected's color
 				}
 				if (target != nullptr && target == tile.get())
 				{
@@ -263,7 +268,7 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 			{
 				if (target != nullptr)
 				{
-					target->setColor(sf::Color::White); // reset old selected's color
+					target->resetColor(); // reset old selected's color
 				}
 				if (selected != nullptr && selected == tile.get())
 				{

@@ -16,17 +16,17 @@ Window::~Window()
 void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targetTex,
 	string selTrp, string tgtTrp, string selOwner, string tgtOwner, string currentPlayer)
 {
-	// create background sprite
+	// create UI background sprite
 	sf::Texture uitex;
 	bool texLoaded = uitex.loadFromFile("../../Assets/Textures/UItex.png");
 	assert(texLoaded);
-	sf::Sprite background(uitex);
-	background.setScale((float)dimensions.first / uitex.getSize().x, ((float)dimensions.second / 7) / uitex.getSize().y);
+	sf::Sprite uiBackground(uitex);
+	uiBackground.setScale((float)dimensions.first / uitex.getSize().x, ((float)dimensions.second / 7) / uitex.getSize().y);
 	// apply it to a canvas and draw the canvas
 	auto back_canvas = tgui::Canvas::create({ (float)dimensions.first, (float)dimensions.second / 7 });
 	back_canvas->setPosition(0.0, (float)dimensions.second * 6 / 7);
 	back_canvas->clear();
-	back_canvas->draw(background);
+	back_canvas->draw(uiBackground);
 	back_canvas->display();
 	gui.add(back_canvas);
 
