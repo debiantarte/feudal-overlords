@@ -44,7 +44,7 @@ public:
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, endingCondition);
 	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, endingCondition, int);
 
-	int nextTurn(); // TODO
+	pair<string, int> nextTurn();
 	void regenTerritories();
 	shared_ptr<Lord> winner();
 	bool isGameFinished();

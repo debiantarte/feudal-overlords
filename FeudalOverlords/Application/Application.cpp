@@ -60,6 +60,21 @@ int main()
 	
 	int notificationId = 0;
 	
+	// connect actions for the victory messageBox
+	gui.get("winBox")->cast<tgui::MessageBox>()->connect("ButtonPressed", [&](const std::string& button)
+	{
+		if (button == "Glory !")
+		{
+			window.close();
+		}
+		/*
+		else if (button == "Let's go again !")
+		{
+			// TODO : make it possible to play again // gameManager = GameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second * 6 / 7), conquest);
+		}
+		*/
+	});
+
 	while (window.isOpen())
 	{
 
@@ -95,22 +110,33 @@ int main()
 				#endif // DEBUG
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space) {
+//
 				auto res = gameManager.nextTurn();
+				auto nbrRebels = res.second;
+				auto winner = res.first;
 				string message = "There have been ";
-				if (res == 0) {
+				if (nbrRebels == 0) {
 					message += "no rebel.";
 				}
-				else if (res = 1) {
+				else if (nbrRebels = 1) {
 					message += "1 rebel.";
 				}
 				else {
-					message += res;
+					message += nbrRebels;
 					message += " rebels.";
 				}
 				gui.get("notifBox")->cast<tgui::ListBox>()->addItem(message, to_string(notificationId));
 				notificationId++;
-				gui.get("notifBox")->cast<tgui::ListBox>()->addItem("It's " + gameManager.players[gameManager.currentPlayerId]->getName() + "'s turn !", to_string(notificationId));
-				notificationId++;
+				if (winner != "")
+				{
+					gui.get("winBox")->cast<tgui::MessageBox>()->setText(winner + " has won ! Hurray !");
+					gui.get("winBox")->cast<tgui::MessageBox>()->setVisible(true);
+				}
+				else
+				{
+					gui.get("notifBox")->cast<tgui::ListBox>()->addItem("It's " + gameManager.players[gameManager.currentPlayerId]->getName() + "'s turn !", to_string(notificationId));
+					notificationId++;
+				}
 			}
 			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Enter)
 			{
