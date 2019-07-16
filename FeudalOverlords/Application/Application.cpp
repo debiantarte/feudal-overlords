@@ -60,6 +60,21 @@ int main()
 	
 	int notificationId = 0;
 	
+	// connect actions for the victory messageBox
+	gui.get("winBox")->cast<tgui::MessageBox>()->connect("ButtonPressed", [&](const std::string& button)
+	{
+		if (button == "Glory !")
+		{
+			window.close();
+		}
+		/*
+		else if (button == "Let's go again !")
+		{
+			// TODO : make it possible to play again // gameManager = GameManager(0, players, pair<int, int>(window.dimensions.first, window.dimensions.second * 6 / 7), conquest);
+		}
+		*/
+	});
+
 	while (window.isOpen())
 	{
 

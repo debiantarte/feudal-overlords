@@ -91,6 +91,7 @@ void Window::buildGUI(tgui::Gui& gui, sf::Texture& selectTex, sf::Texture& targe
 
 	auto winBox = tgui::MessageBox::create();
 	winBox->addButton("Glory !");
+	//winBox->addButton("Let's go again !");
 	winBox->setTitle("The War Is Ended ! All Hail The Winner !");
 	winBox->setPosition(400.0, 300.0);
 	winBox->setVisible(false);
