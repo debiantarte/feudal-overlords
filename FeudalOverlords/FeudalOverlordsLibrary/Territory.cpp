@@ -30,12 +30,13 @@ sf::FloatRect getAccurateBounds(sf::VertexArray shape)
 	return res;
 }
 
-Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape, pair<double, double> center) :
+Territory::Territory(Resource money, Resource military, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray shape, pair<double, double> center, sf::Color color) :
 	money(money), military(military),
-type(type), owner(owner), shape(shape), center(center)
+type(type), owner(owner), shape(shape), center(center), ownerColor(color)
 {
 	assert(money.getType() == ResourceType::money);
 	assert(military.getType() == ResourceType::military);
+	this->setColor(ownerColor);
 }
 
 Territory::~Territory()
@@ -103,6 +104,8 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 			sf::VertexArray line(sf::Lines);
 			line.append(*firstVertex);
 			line.append(*secondVertex);
+			line[0].color = sf::Color::Black;
+			line[1].color = sf::Color::Black;
 			win.draw(line);
 		}
 	}
@@ -111,7 +114,7 @@ void Territory::display(Window& win, const sf::RenderStates& states)
 }
 
 // This is a pseudo-observer
-bool Territory::isOver(pair<int, int> mousePos, sf::Mouse::Button button)
+bool Territory::isOver(pair<int, int> mousePos)
 {
 
 	// first check : is it in my global bounds ? if not, it isn't anywhere near me, so do nothing
@@ -210,4 +213,19 @@ sf::VertexArray Territory::getShape() const
 pair<double, double> Territory::getCenter() const
 {
 	return center;
+}
+
+sf::Color Territory::getColor() const
+{
+	return ownerColor;
+}
+
+void Territory::resetColor()
+{
+	this->setColor(ownerColor);
+}
+
+void Territory::newOwnerColor(sf::Color newColor)
+{
+	ownerColor = newColor;
 }

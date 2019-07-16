@@ -38,6 +38,9 @@ int main()
 	string selectTrp;
 	string targetTrp;
 	
+	sf::RectangleShape background(sf::Vector2f(1000.0, 800.0));
+	background.setFillColor(sf::Color::White);
+
 	try 
 	{
 		window.buildGUI(gui, selectTex, targetTex, selectTrp, targetTrp,
@@ -102,9 +105,11 @@ int main()
 				string selectOwner = gameManager.getSelectedOwner();
 				
 				gameManager.attack();
-				gui.get("notifBox")->cast<tgui::ListBox>()->addItem(selectOwner + " attacked !");
-				gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
-					+ " has been conquered", to_string(notificationId));
+				if (selectOwner != "")
+					gui.get("notifBox")->cast<tgui::ListBox>()->addItem(selectOwner + " attacked !");
+				if (targetOwner != "")
+					gui.get("notifBox")->cast<tgui::ListBox>()->addItem(targetOwner + "'s " + gameManager.board.target->getTypeName()
+						+ " has been conquered", to_string(notificationId));
 				notificationId++;
 			}
 			gui.handleEvent(event); // tell all tgui widgets about events happening
@@ -159,6 +164,7 @@ int main()
 		}
 
 		window.clear();
+		window.draw(background);
 		gameManager.board.display(window);
 		window.updateGUI(gui, selectTex, targetTex, selectTrp, targetTrp,
 			gameManager.getSelectedOwner(), gameManager.getTargetOwner(),

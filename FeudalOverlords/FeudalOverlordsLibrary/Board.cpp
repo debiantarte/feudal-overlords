@@ -44,13 +44,27 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 	int maxTroops = 1000;
 	int maxMoney = 1000;
 	int playerNbr = 0;
+	vector<sf::Color> playerColors = { sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, sf::Color::Red };
+	std::random_shuffle(playerColors.begin(), playerColors.end());
 	vector<int> indexCapitals;
 	for (size_t i = 0; i < players.size(); i++)
 	{
 		indexCapitals.push_back(rng(0, nbrPoints));
 	}
+	// Generate some points
+	auto points = std::vector<mygal::Vector2<double>>();
+	double margin = 5; // is used to avoid generating points too close to the borders of the window
+	for (int i = 0; i < nbrPoints; i++)
+	{
+		points.push_back(mygal::Vector2<double>(rng(margin, boardWidth - margin),
+			rng(margin, boardHeight - margin)));
+	}
 	auto coords = std::vector<double>();
-	auto diagram = generateTerrainDiagram(nbrPoints, pair<int, int>(boardWidth, boardHeight));
+	auto diagram = generateTerrainDiagram(points, pair<int, int>(boardWidth, boardHeight), margin);
+	for (int i = 0; i < NBR_LLOYD_RELAX; i++) {
+		points = diagram.computeLloydRelaxation();
+		diagram = generateTerrainDiagram(points, pair<int, int>(boardWidth, boardHeight), margin);
+	}
 	for (size_t i = 0; i < diagram.getFaces().size(); i++)
 	{
 		TerritoryType type = countryside;
@@ -79,15 +93,19 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		int troops = rng(0, maxTroops);
 		int money = rng(0, maxMoney) * 1000;
 		shared_ptr<Lord> owner = make_shared<AI>(AI((AIGoal)(rand() % endAIGoal), vector<int> { rand() % 100 }));
+		sf::Color color = sf::Color(sf::Uint8(150.0), sf::Uint8(150.0), sf::Uint8(150.0));
 		if (type == capital)
 		{
 			troops = CAPITAL_TROOPS;
 			money = CAPITAL_MONEY;
 			owner = players[playerNbr];
 			playerNbr++;
+			color = playerColors[playerColors.size() - 1];
+			playerColors.pop_back(); 
 		}
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];
+		auto center = pair<double, double>(face.site->point.x, face.site->point.y);
 		vector<sf::Vector2f> points;
 		double minx, maxx, miny, maxy;
 		auto halfedge = face.outerComponent;
@@ -119,16 +137,11 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		// we need to compute texture coords
 
 		auto shape = sf::VertexArray(sf::TriangleFan);
-		auto center = pair<double, double>();
 		for (auto p : points)
 		{
 			shape.append(sf::Vertex(p, sf::Vector2f(64*(p.x - minx) / (maxx - minx), 64*(p.y - miny) / (maxy - miny))));
-			center.first += p.x;
-			center.second += p.y;
 		}
-		center.first /= points.size();
-		center.second /= points.size();
-		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center)));
+		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center, color)));
 		coords.push_back(center.first);
 		coords.push_back(center.second);
 	}
@@ -138,7 +151,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		auto terr0_id = -1;
 		auto terr1_id = -1;
 		auto terr2_id = -1;
-		for (int j = 0; j < territories.size(); j++) {
+		for (size_t j = 0; j < territories.size(); j++) {
 			if (d.coords[2 * d.triangles[i]] == territories[j]->getCenter().first
 				&& d.coords[2 * d.triangles[i] + 1] == territories[j]->getCenter().second) {
 				terr0_id = j;
@@ -209,21 +222,21 @@ void Board::display(Window& window)
 			{
 				if (tile->getOwner()->getName() == "AI")
 				{
-					tile->setColor(sf::Color(sf::Uint8(100.0), sf::Uint8(100.0), sf::Uint8(100.0)));
-				}
-				else if (tile->getOwner() == selected->getOwner())
-				{
-					tile->setColor(sf::Color(sf::Uint8(35.0), sf::Uint8(200.0), sf::Uint8(200.0)));
+					tile->setColor(sf::Color::White);
 				}
 				else
 				{
-					tile->setColor(sf::Color(sf::Uint8(200.0), sf::Uint8(35.0), sf::Uint8(150.0)));
+					tile->setColor(tile->getColor() - sf::Color(sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(0.0), sf::Uint8(50.0)));
 				}
 			}
 			else
 			{
-				tile->setColor(sf::Color::White);
+				tile->resetColor();
 			}
+		}
+		else if (selected == nullptr)
+		{
+			tile->resetColor();
 		}
 		tile->display(window, states);
 	}
@@ -234,45 +247,54 @@ void Board::onClick(pair<int, int> mousePos, sf::Mouse::Button mb, Window& windo
 	int posX = mousePos.first;
 	int posY = mousePos.second;
 	
+	float distance = 1000000000.0;
+	Territory* nearest = nullptr;
+
 	for (auto& tile : territories)
 	{
-		if (tile->isOver(pair<int, int>(posX, posY), mb))
+		float xDist = tile->getCenter().first - posX;
+		float yDist = tile->getCenter().second - posY;
+		float relDistance = std::sqrt(xDist * xDist + yDist * yDist);
+		if (relDistance <= distance && tile->isOver(pair<int, int>(posX, posY)))
 		{
-			if (mb == sf::Mouse::Left)
-			{
-				if (selected != nullptr)
-				{
-					selected->setColor(sf::Color::White); // reset old selected's color
-				}
-				if (target != nullptr && target == tile.get())
-				{
-					target = nullptr;
-				}
-				selected = &*tile;
-				selected->setColor(sf::Color::Blue + sf::Color::Cyan);
-				sf::SoundBuffer buffer;
-				if (!buffer.loadFromFile("../../Assets/Sounds/boop.ogg")) {
-					cout << "trux" << endl; return;
-				};
-				sf::Sound sound;
-				sound.setBuffer(buffer);
-				sound.setPitch(2.f);
-				sound.play();
-			}
-			else if (mb == sf::Mouse::Right)
-			{
-				if (target != nullptr)
-				{
-					target->setColor(sf::Color::White); // reset old selected's color
-				}
-				if (selected != nullptr && selected == tile.get())
-				{
-					selected = nullptr;
-				}
-				target = &*tile;
-				target->setColor(sf::Color::Red + sf::Color::Magenta);
-			}
+			distance = relDistance;
+			nearest = tile.get();
 		}
+	}
+
+	if (mb == sf::Mouse::Left)
+	{
+		if (selected != nullptr)
+		{
+			selected->resetColor(); // reset old selected's color
+		}
+		if (target != nullptr && target == nearest)
+		{
+			target = nullptr;
+		}
+		selected = nearest;
+		selected->setColor(sf::Color::Blue + sf::Color::Cyan);
+		sf::SoundBuffer buffer;
+		if (!buffer.loadFromFile("../../Assets/Sounds/boop.ogg")) {
+			cout << "trux" << endl; return;
+		};
+		sf::Sound sound;
+		sound.setBuffer(buffer);
+		sound.setPitch(2.f);
+		sound.play();
+	}
+	else if (mb == sf::Mouse::Right)
+	{
+		if (target != nullptr)
+		{
+			target->resetColor(); // reset old selected's color
+		}
+		if (selected != nullptr && selected == nearest)
+		{
+			selected = nullptr;
+		}
+		target = nearest;
+		target->setColor(sf::Color::Red + sf::Color::Magenta);
 	}
 }
 
@@ -286,16 +308,8 @@ map<shared_ptr<Lord>, int> Board::territoryCount()
 	return res_map;
 }
 
-mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int> dimensions)
+mygal::Diagram<double> Board::generateTerrainDiagram(std::vector<mygal::Vector2<double>> points, pair<int,int> dimensions, double margin)
 {
-	// Generate some points
-	auto points = std::vector<mygal::Vector2<double>>();
-	double margin = 5; // is used to avoid generating points too close to the borders of the window
-	for (int i = 0; i < nbrPoints; i++)
-	{
-		points.push_back(mygal::Vector2<double>(rng(margin, dimensions.first-margin),
-			rng(margin, dimensions.second-margin)));
-	}
 	// Initialize an instance of Fortune's algorithm
 	auto algorithm = mygal::FortuneAlgorithm<double>(points);
 	// Construct the diagram
@@ -305,9 +319,6 @@ mygal::Diagram<double> Board::generateTerrainDiagram(int nbrPoints, pair<int,int
 		(double) dimensions.first - margin, (double) dimensions.second - margin});
 	// Get the constructed diagram
 	auto diagram = algorithm.getDiagram();
-	for (int i = 0; i < 100; i++) {
-		diagram.computeLloydRelaxation();
-	}
 	// Compute the intersection between the diagram and a box
 	diagram.intersect(mygal::Box<double>{0.0, 0.0, (double) dimensions.first, (double) dimensions.second});
 	// we return the list of Face

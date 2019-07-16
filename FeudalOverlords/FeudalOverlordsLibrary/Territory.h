@@ -20,13 +20,13 @@ enum TerritoryType {
 class Territory 
 {
 public:
-	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray, pair<double, double>);
+	Territory(Resource money, Resource miliary, TerritoryType type, shared_ptr<Lord> owner, sf::VertexArray, pair<double, double>, sf::Color);
 	~Territory();
 	void resetResources();
 	void display(Window&, const sf::RenderStates&);
 	TerritoryType getType() const;
 	string getTypeName() const;
-	bool isOver(pair<int, int>, sf::Mouse::Button);
+	bool isOver(pair<int, int>);
 	void setColor(sf::Color);
 	shared_ptr<Lord> getOwner();
 	void setOwner(shared_ptr<Lord>);
@@ -35,6 +35,9 @@ public:
 	bool isAdjacent(sf::VertexArray);
 	sf::VertexArray getShape() const;
 	pair<double, double> getCenter() const;
+	sf::Color getColor() const;
+	void resetColor();
+	void newOwnerColor(sf::Color);
 private:
 	Resource money;
 	Resource military;
@@ -42,4 +45,5 @@ private:
 	shared_ptr<Lord> owner;
 	sf::VertexArray shape;
 	pair<double, double> center;
+	sf::Color ownerColor;
 };

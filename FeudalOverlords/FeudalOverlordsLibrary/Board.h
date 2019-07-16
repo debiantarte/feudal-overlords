@@ -8,14 +8,9 @@
 #include "include/MyGAL/FortuneAlgorithm.h"
 #include "include/MyGAL/Diagram.h"
 
-/*
-#define BOARD_HEIGHT	10
-#define BOARD_WIDTH		10
-#define TILE_SIZE		10
-*/
-
 #define CAPITAL_TROOPS  400
 #define CAPITAL_MONEY	800
+#define NBR_LLOYD_RELAX	3
 
 using namespace std;
 
@@ -23,14 +18,13 @@ class Board :
 	public Displayable
 {
 public:
-	Board(vector<shared_ptr<Player>>);
 	Board(vector<shared_ptr<Player>>, int, int, int);
 	//~Board();
 	virtual void display(Window& window);
 	void onClick(pair<int, int>, sf::Mouse::Button, Window&);
 	map<shared_ptr<Lord>, int> territoryCount();
 	vector<unique_ptr<Territory>> territories;
-	mygal::Diagram<double> generateTerrainDiagram(int, pair<int, int>);
+	mygal::Diagram<double> generateTerrainDiagram(std::vector<mygal::Vector2<double>>, pair<int, int>, double);
 	//Territory* getSelected() const;
 	//Territory* getTarget() const;
 //private:
@@ -41,6 +35,7 @@ public:
 	sf::Texture mountainTex;
 	Territory* selected;
 	Territory* target;
-	std::vector<std::vector<pair<double, double>>>adjacency_list;
+	std::vector<std::vector<pair<double, double>>> adjacency_list;
+	std::vector<pair<string, sf::Color>> playerColors;
 };
 

@@ -160,6 +160,7 @@ void GameManager::moveTroops(Territory* attacker, Territory* defender)
 			{
 				defender->setOwner(attacker->getOwner());
 				std::cout << "Defender's owner becomes : " << getTargetOwner() << std::endl;
+				defender->newOwnerColor(attacker->getColor());
 			}
 		}
 		else
