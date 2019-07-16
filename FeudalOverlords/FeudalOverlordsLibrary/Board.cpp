@@ -105,6 +105,7 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		}
 		// we have to convert the face to a VertexArray
 		auto face = diagram.getFaces()[i];
+		auto center = pair<double, double>(face.site->point.x, face.site->point.y);
 		vector<sf::Vector2f> points;
 		double minx, maxx, miny, maxy;
 		auto halfedge = face.outerComponent;
@@ -136,15 +137,10 @@ Board::Board(vector<shared_ptr<Player>> players, int boardWidth, int boardHeight
 		// we need to compute texture coords
 
 		auto shape = sf::VertexArray(sf::TriangleFan);
-		auto center = pair<double, double>();
 		for (auto p : points)
 		{
 			shape.append(sf::Vertex(p, sf::Vector2f(64*(p.x - minx) / (maxx - minx), 64*(p.y - miny) / (maxy - miny))));
-			center.first += p.x;
-			center.second += p.y;
 		}
-		center.first /= points.size();
-		center.second /= points.size();
 		territories.push_back(make_unique<Territory>(Territory(Resource(money, ResourceType::money), Resource(troops, ResourceType::military), type, owner, shape, center, color)));
 		coords.push_back(center.first);
 		coords.push_back(center.second);
