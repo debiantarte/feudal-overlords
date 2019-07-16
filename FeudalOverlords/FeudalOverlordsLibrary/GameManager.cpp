@@ -4,15 +4,15 @@
 
 
 
-GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions) :
-	GameManager(nbrAIs, players, dimensions, 5)
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, endingCondition ec) :
+	GameManager(nbrAIs, players, dimensions, ec, 5)
 {
 }
 
-GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, int finishTurn=5) :
+GameManager::GameManager(int nbrAIs, vector<shared_ptr<Player>> players, pair<int, int> dimensions, endingCondition ec, int finishTurn=5) :
 	nbrPlayers(players.size()), nbrAIs(nbrAIs), players(players),
 	board(players, dimensions.first, dimensions.second, NBR_POINTS),
-	endingCond(turnLimit), turn(0), finishTurn(finishTurn), currentPlayerId(0)
+	endingCond(ec), turn(0), finishTurn(finishTurn), currentPlayerId(0)
 {
 	assert(nbrAIs >= 0);
 }
@@ -21,6 +21,9 @@ void GameManager::nextTurn()
 {
 	// take all the players and iterate through them
 	// then the AIs
+	if (isGameFinished()) { // TODO : show this on the Window
+		auto winnerPlayer = winner();
+	}
 	if (board.selected != nullptr)
 	{
 		board.selected->setColor(sf::Color::White);
@@ -71,17 +74,28 @@ shared_ptr<Lord> GameManager::winner()
 		return nullptr;
 	}
 	// else, it is the player who has the most territories
-	shared_ptr<Lord> lord = nullptr;
-	int count = 0;
-	for (auto& mapElement : territoryCount())
+	if (endingCond == turnLimit)
 	{
-		if (count < mapElement.second)
+		shared_ptr<	Lord> lord = nullptr;
+		int count = 0;
+		for (auto& mapElement : territoryCount())
 		{
-			lord = mapElement.first;
-			count = mapElement.second;
+			if (count < mapElement.second)
+			{
+				lord = mapElement.first;
+				count = mapElement.second;
+			}
 		}
+		return lord;
+	} else if (endingCond == conquest)
+	{
+		for (auto &territory: board.territories) {
+			if (territory->getType() == capital) {
+				return territory->getOwner();
+			}
+		}
+
 	}
-	return lord;
 }
 
 /**
@@ -89,16 +103,34 @@ shared_ptr<Lord> GameManager::winner()
 */
 bool GameManager::isGameFinished()
 {
+	// function to check whether there is only one owner of all the capitals
+
 	// if total conquest has been achieved, or it is the last turn
-	if (territoryCount().size() == 1 || endingCond == turnLimit && turn >= finishTurn)
+	if (territoryCount().size() == 1
+	|| (endingCond == turnLimit && turn >= finishTurn))
 	{
 		return true;
+	} else if (endingCond == conquest)
+	{
+	for (auto &territory: board.territories) {
+		string prevLordName = "";
+		if (territory->getType() == capital) {
+			string name = territory->getOwner()->getName();
+			if (prevLordName == "") {
+				prevLordName = name;
+			} else if (prevLordName != name) {
+				return false;
+			}
+		}
+	}
+	return true;
 	}
 	else
 	{
 		return false;
 	}
 }
+
 
 map<shared_ptr<Lord>, int> GameManager::territoryCount()
 {

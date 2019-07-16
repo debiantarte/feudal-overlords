@@ -32,8 +32,8 @@ public:
 	Board board;
 	int currentPlayerId; // the index of the current player in the vector players
 
-	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>);
-	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, int);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, endingCondition);
+	GameManager(int nbrAIs, vector<shared_ptr<Player>>, const pair<int, int>, endingCondition, int);
 
 	void nextTurn(); // TODO
 	void regenTerritories();
