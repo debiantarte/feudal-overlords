@@ -10,6 +10,7 @@
 
 #define CAPITAL_TROOPS  400
 #define CAPITAL_MONEY	800
+#define NBR_LLOYD_RELAX	3
 
 using namespace std;
 
@@ -23,7 +24,7 @@ public:
 	void onClick(pair<int, int>, sf::Mouse::Button, Window&);
 	map<shared_ptr<Lord>, int> territoryCount();
 	vector<unique_ptr<Territory>> territories;
-	mygal::Diagram<double> generateTerrainDiagram(int, pair<int, int>);
+	mygal::Diagram<double> generateTerrainDiagram(std::vector<mygal::Vector2<double>>, pair<int, int>, double);
 	//Territory* getSelected() const;
 	//Territory* getTarget() const;
 //private:
