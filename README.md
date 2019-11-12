@@ -16,4 +16,4 @@ Once you imported the solution in Visual Studio, and made sure to have all depen
 
 ### More info
 
-If you wish to know more about this project, you can check the wiki [[here | https://github.com/debiantarte/feudal-overlords/wiki]]
+If you wish to know more about this project, you can check the wiki [here]( https://github.com/debiantarte/feudal-overlords/wiki)
