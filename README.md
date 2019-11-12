@@ -13,3 +13,7 @@ It is also based on [MyGal](https://github.com/pvigier/MyGAL), that is already i
 #### Runnning the project
 
 Once you imported the solution in Visual Studio, and made sure to have all dependencies insalled, all you should need to do is compiling it and running it.
+
+### More info
+
+If you wish to know more about this project, you can check the wiki [[here | https://github.com/debiantarte/feudal-overlords/wiki]]
